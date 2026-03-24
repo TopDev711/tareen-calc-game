@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Calculus Quest — Join</title>
+<title>Mr. Tareen's Super Cool Calc Game 🔥</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Oxanium:wght@400;600;800&family=Share+Tech+Mono&display=swap');
 :root{
@@ -157,6 +157,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow:hidde
 .btn-again{background:transparent;border:1px solid rgba(0,184,255,0.35);color:var(--blue);padding:10px 32px;font-family:var(--fu);font-size:12px;font-weight:700;letter-spacing:4px;cursor:pointer;transition:all 0.2s;}
 .btn-again:hover{background:rgba(0,184,255,0.08);}
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:rgba(0,184,255,0.18);}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 </style>
 </head>
 <body>
@@ -164,15 +165,42 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow:hidde
 <!-- JOIN -->
 <div id="join" class="screen active">
   <canvas id="jbg"></canvas>
+
+  <!-- Joke ticker -->
+  <div style="position:absolute;top:0;left:0;right:0;z-index:3;background:rgba(0,255,136,0.07);border-bottom:1px solid rgba(0,255,136,0.2);padding:7px 0;overflow:hidden;pointer-events:none;">
+    <div id="s-ticker" style="font-family:var(--fm);font-size:10px;color:rgba(0,255,136,0.8);white-space:nowrap;display:inline-block;letter-spacing:1px;animation:ticker 30s linear infinite;padding-left:100%;"></div>
+  </div>
+
+  <!-- Mr. Tareen portrait LEFT -->
+  <div style="position:absolute;left:clamp(8px,3vw,50px);top:50%;transform:translateY(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;">
+    <div style="border:2px solid rgba(0,255,136,0.5);box-shadow:0 0 20px rgba(0,255,136,0.25);position:relative;">
+      <img id="s-tareen-l" src="" style="width:100px;height:auto;display:block;image-rendering:pixelated;">
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);pointer-events:none;"></div>
+    </div>
+    <div style="font-family:var(--fm);font-size:8px;color:var(--green);letter-spacing:2px;text-align:center;text-shadow:0 0 8px rgba(0,255,136,0.6);">MR. TAREEN<br><span style="color:rgba(0,184,255,0.7);font-size:7px;">CALC LEGEND 🔥</span></div>
+    <div id="s-quote" style="background:rgba(4,12,24,0.92);border:1px solid rgba(0,184,255,0.3);border-radius:4px;padding:6px 8px;max-width:110px;font-family:var(--fm);font-size:7px;color:rgba(200,232,255,0.75);text-align:center;line-height:1.5;"></div>
+  </div>
+
+  <!-- Mr. Tareen portrait RIGHT -->
+  <div style="position:absolute;right:clamp(8px,3vw,50px);top:50%;transform:translateY(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;">
+    <div style="border:2px solid rgba(0,184,255,0.5);box-shadow:0 0 20px rgba(0,184,255,0.25);position:relative;">
+      <img id="s-tareen-r" src="" style="width:100px;height:auto;display:block;image-rendering:pixelated;transform:scaleX(-1);filter:hue-rotate(30deg);">
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);pointer-events:none;"></div>
+    </div>
+    <div style="font-family:var(--fm);font-size:8px;color:var(--blue);letter-spacing:2px;text-align:center;text-shadow:0 0 8px rgba(0,184,255,0.6);">DIFF EQ MASTER<br><span style="color:rgba(0,255,136,0.7);font-size:7px;">AP CALC AB 😎</span></div>
+    <div style="background:rgba(4,12,24,0.92);border:1px solid rgba(0,255,136,0.3);border-radius:4px;padding:6px 8px;max-width:110px;font-family:var(--fm);font-size:7px;color:rgba(200,232,255,0.75);text-align:center;line-height:1.5;">"dy/dx or<br>dy/don't 😤"</div>
+  </div>
+
   <div class="jz">
-    <div class="j-top">UNSC EDUCATIONAL DIVISION — AP CALCULUS AB</div>
-    <div class="j-title">CALCULUS <span>QUEST</span></div>
-    <div class="j-sub">⬡ SPARTAN DEPLOYMENT TERMINAL ⬡</div>
+    <div class="j-top" style="letter-spacing:5px;">⬡ AP CALCULUS AB — MR. TAREEN ⬡</div>
+    <div class="j-title" style="font-size:clamp(16px,3vw,36px);margin-bottom:2px;">MR. TAREEN'S</div>
+    <div class="j-title"><span>SUPER COOL</span> CALC GAME</div>
+    <div class="j-sub" style="letter-spacing:3px;margin-bottom:22px;">⚠ Side effects include actually learning calculus ⚠</div>
     <div class="jpanel">
       <div class="jph">MISSION JOIN</div>
       <div class="fg"><label>YOUR CALLSIGN</label><input id="name-input" type="text" placeholder="Enter your name…" maxlength="14" autofocus /></div>
       <div class="fg"><label>ROOM CODE</label><input id="code-input" type="text" placeholder="6-LETTER CODE" maxlength="6" oninput="this.value=this.value.toUpperCase()" /></div>
-      <button class="btn-join" onclick="joinGame()">⬡ DEPLOY SPARTAN</button>
+      <button class="btn-join" onclick="joinGame()">🔥 LET'S GET CALCULUS-ING!</button>
       <div class="j-err" id="jerr"></div>
     </div>
   </div>
@@ -561,6 +589,58 @@ function sbBg(){const c=document.getElementById('sbcanvas');const cx=c.getContex
 
 let logTO=null;
 function setLog(m){const el=document.getElementById('evlog');el.textContent=m;el.style.opacity='1';if(logTO)clearTimeout(logTO);logTO=setTimeout(()=>el.style.opacity='0.35',4000);}
+
+// ============================================================
+// MR. TAREEN'S BRANDING 😎
+// ============================================================
+const TAREEN_JOKES=[
+  "Why did the calculus student break up? The limits weren't working out! 💔",
+  "I tried to tell a joke about integrals... but it went on forever. ∫∫∫",
+  "Why is the derivative of sin(x) always happy? It's always cos(x)! ☀️",
+  "Mr. Tareen's law: Every wrong answer = equal and opposite facepalm. 🤦",
+  "Why don't calculus teachers look out the window? Nothing to do! 🪟",
+  "A student asked: 'When will I use this?' Mr. Tareen: 'Rocket science.' 🚀",
+  "Why was the math book sad? Too many problems. 😢📚",
+  "My calculus teacher called me average. I said 'That's MEAN!' 📊",
+  "What's the integral of 1/cabin? Log cabin. Don't forget the +c! ⛵",
+  "dy/dx or dy/don't — that is the question. 🎭",
+  "Parallel lines have so much in common... shame they'll never meet. 😭",
+  "e^x walked into a bar. Bartender: 'We don't serve your type here.' 🍺",
+  "Student: 'I got 100 on my derivative test!' Mr. Tareen: 'That's prime!' 💯",
+  "If calculus were easy, they'd call it Tareenulus. 😂",
+  "The limit of my patience → 0 as the exam → ∞. ε → 0",
+];
+const TAREEN_QUOTES=[
+  '"Calculus is just\narithmetic on\nsteroids." 💪',
+  '"Study hard and\nyou will derive\ngreat things." 📚',
+  '"dy/dx is not\na fraction...\nwell, kinda." 🤔',
+  '"My jokes have\nno asymptote." ∞',
+  '"Homework =\nlove language." ❤️',
+  '"The integral sign\nis a fancy S for\nSuper Cool." 😎',
+];
+const TAREEN_IMG="data:image/png;base64,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";
+
+let sqIdx=0;
+function setupStudentBranding(){
+  // inject photo
+  ['s-tareen-l','s-tareen-r'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.src=TAREEN_IMG;
+  });
+  // joke ticker
+  const el=document.getElementById('s-ticker');
+  if(el){
+    const txt=[...TAREEN_JOKES].sort(()=>Math.random()-0.5).map(j=>`   ⬡   ${j}`).join('');
+    el.textContent=txt+txt; // duplicate for seamless loop
+  }
+  // rotating quote
+  function rotateQ(){
+    const q=document.getElementById('s-quote');
+    if(q){q.textContent=TAREEN_QUOTES[sqIdx%TAREEN_QUOTES.length];sqIdx++;}
+  }
+  rotateQ();setInterval(rotateQ,4000);
+}
+window.addEventListener('load',setupStudentBranding);
+
 </script>
 </body>
 </html>
