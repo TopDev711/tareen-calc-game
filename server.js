@@ -211,6 +211,7 @@ function handle(ws, msg) {
     case 'send_quiz': {
       const room = rooms[ws.roomCode];
       if (!room || ws.role !== 'host') return;
+      if (!msg.playerId) return; // ignore turn-change pings with no quiz
       const targetWs = room.students.get(msg.playerId);
       if (targetWs) {
         safeSend(targetWs, JSON.stringify({

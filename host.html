@@ -585,8 +585,6 @@ function updateTurnUI(){
   const el=document.getElementById('tb-name');el.textContent=`${p.emoji} ${p.name}`;el.style.color=p.color;
   document.getElementById('tb-hint').textContent=`Waiting for ${p.name}…`;
   renderHUD();pushState();
-  // tell the active student it's their turn
-  send({type:'send_quiz',playerId:null,playerName:p.name,playerColor:p.color,action:'your_turn'});
 }
 
 // ── MOVEMENT ──────────────────────────────────────────────────
