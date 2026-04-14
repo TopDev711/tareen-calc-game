@@ -554,13 +554,15 @@ function handleMsg(msg){
       break;
 
     case 'rocket_powerup':
-      if(msg.targetId===myId) showQuiz(msg.question);
+      // Server only sends this to the correct player, no need to check targetId
+      showQuiz(msg.question);
       break;
 
     case 'rocket_boost':
-      // server confirmed boost grant/deny after quiz
-      if(GS && msg.targetId===myId){
-        if(msg.granted){ GS.players[playerNum-1].boost=Math.min(BOOST_MAX,GS.players[playerNum-1].boost+60); }
+      if(GS){
+        if(msg.granted){
+          GS.players[playerNum-1].boost=Math.min(BOOST_MAX,GS.players[playerNum-1].boost+60);
+        }
         setCommentary(msg.granted ? randomFrom(POWERUP_CORRECT) : randomFrom(POWERUP_WRONG));
       }
       break;
@@ -763,65 +765,82 @@ function render(){
 }
 
 function drawField(){
-  // Background
-  const bg=ctx.createRadialGradient(FIELD_W/2,FIELD_H/2,50,FIELD_W/2,FIELD_H/2,FIELD_W/2);
-  bg.addColorStop(0,'#0a1a0a');
-  bg.addColorStop(1,'#020a02');
-  ctx.fillStyle=bg;
-  ctx.fillRect(0,0,FIELD_W,FIELD_H);
+  // Grass base — alternating stripe pattern like a real pitch
+  for(let i=0;i<10;i++){
+    const x=i*(FIELD_W/10);
+    ctx.fillStyle=i%2===0?'#0a1f0a':'#091a09';
+    ctx.fillRect(x,0,FIELD_W/10,FIELD_H);
+  }
+
+  // Subtle vignette
+  const vig=ctx.createRadialGradient(FIELD_W/2,FIELD_H/2,FIELD_H*.3,FIELD_W/2,FIELD_H/2,FIELD_W*.7);
+  vig.addColorStop(0,'rgba(0,0,0,0)');
+  vig.addColorStop(1,'rgba(0,0,0,0.45)');
+  ctx.fillStyle=vig; ctx.fillRect(0,0,FIELD_W,FIELD_H);
 
   // Field lines
-  ctx.strokeStyle='rgba(255,255,255,0.12)';
-  ctx.lineWidth=2;
+  ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.lineWidth=2;
 
   // Outer boundary
-  ctx.strokeRect(2,2,FIELD_W-4,FIELD_H-4);
+  ctx.strokeRect(3,3,FIELD_W-6,FIELD_H-6);
 
   // Centre line
-  ctx.beginPath();
-  ctx.setLineDash([8,6]);
-  ctx.moveTo(FIELD_W/2,0);
-  ctx.lineTo(FIELD_W/2,FIELD_H);
-  ctx.stroke();
+  ctx.setLineDash([10,8]);
+  ctx.beginPath(); ctx.moveTo(FIELD_W/2,0); ctx.lineTo(FIELD_W/2,FIELD_H); ctx.stroke();
   ctx.setLineDash([]);
 
   // Centre circle
-  ctx.beginPath();
-  ctx.arc(FIELD_W/2,FIELD_H/2,80,0,Math.PI*2);
-  ctx.stroke();
+  ctx.beginPath(); ctx.arc(FIELD_W/2,FIELD_H/2,85,0,Math.PI*2); ctx.stroke();
 
   // Centre dot
-  ctx.fillStyle='rgba(255,255,255,0.3)';
-  ctx.beginPath();
-  ctx.arc(FIELD_W/2,FIELD_H/2,4,0,Math.PI*2);
-  ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,0.35)';
+  ctx.beginPath(); ctx.arc(FIELD_W/2,FIELD_H/2,5,0,Math.PI*2); ctx.fill();
 
-  // Goals
-  const goalTop=(FIELD_H-GOAL_H)/2;
-  const goalBot=(FIELD_H+GOAL_H)/2;
+  // Penalty boxes
+  ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=1.5;
+  const pb=100;
+  ctx.strokeRect(0,(FIELD_H-pb*2)/2,pb,pb*2); // left
+  ctx.strokeRect(FIELD_W-pb,(FIELD_H-pb*2)/2,pb,pb*2); // right
 
-  // Left goal
-  ctx.fillStyle='rgba(255,106,0,0.15)';
-  ctx.fillRect(0,goalTop,GOAL_W,GOAL_H);
-  ctx.strokeStyle='rgba(255,106,0,0.8)';
-  ctx.lineWidth=3;
-  ctx.beginPath();
-  ctx.moveTo(0,goalTop); ctx.lineTo(GOAL_W,goalTop);
-  ctx.lineTo(GOAL_W,goalBot); ctx.lineTo(0,goalBot);
-  ctx.stroke();
+  // Goals — 3D recessed look
+  const goalTop=(FIELD_H-GOAL_H)/2, goalBot=(FIELD_H+GOAL_H)/2;
+  const t=Date.now()/1000;
 
-  // Right goal
-  ctx.fillStyle='rgba(0,184,255,0.15)';
-  ctx.fillRect(FIELD_W-GOAL_W,goalTop,GOAL_W,GOAL_H);
-  ctx.strokeStyle='rgba(0,184,255,0.8)';
-  ctx.lineWidth=3;
+  // Left goal glow (orange team)
+  const lgG=ctx.createLinearGradient(0,goalTop,GOAL_W*3,goalTop);
+  lgG.addColorStop(0,'rgba(255,106,0,0.35)'); lgG.addColorStop(1,'rgba(255,106,0,0)');
+  ctx.fillStyle=lgG; ctx.fillRect(0,goalTop,GOAL_W*3,GOAL_H);
+  // Left goal net lines
+  ctx.strokeStyle='rgba(255,106,0,0.15)'; ctx.lineWidth=1;
+  for(let y=goalTop;y<goalBot;y+=12){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(GOAL_W*2,y); ctx.stroke(); }
+  for(let x=0;x<GOAL_W*2;x+=12){ ctx.beginPath(); ctx.moveTo(x,goalTop); ctx.lineTo(x,goalBot); ctx.stroke(); }
+  // Left goal frame
+  ctx.strokeStyle='rgba(255,106,0,0.9)'; ctx.lineWidth=4;
+  ctx.shadowColor='rgba(255,106,0,0.6)'; ctx.shadowBlur=12;
   ctx.beginPath();
-  ctx.moveTo(FIELD_W,goalTop); ctx.lineTo(FIELD_W-GOAL_W,goalTop);
-  ctx.lineTo(FIELD_W-GOAL_W,goalBot); ctx.lineTo(FIELD_W,goalBot);
-  ctx.stroke();
+  ctx.moveTo(0,goalTop); ctx.lineTo(GOAL_W+4,goalTop);
+  ctx.moveTo(GOAL_W+4,goalTop); ctx.lineTo(GOAL_W+4,goalBot);
+  ctx.moveTo(GOAL_W+4,goalBot); ctx.lineTo(0,goalBot);
+  ctx.stroke(); ctx.shadowBlur=0;
+
+  // Right goal glow (blue team)
+  const rgG=ctx.createLinearGradient(FIELD_W,goalTop,FIELD_W-GOAL_W*3,goalTop);
+  rgG.addColorStop(0,'rgba(0,184,255,0.35)'); rgG.addColorStop(1,'rgba(0,184,255,0)');
+  ctx.fillStyle=rgG; ctx.fillRect(FIELD_W-GOAL_W*3,goalTop,GOAL_W*3,GOAL_H);
+  // Right goal net lines
+  ctx.strokeStyle='rgba(0,184,255,0.15)'; ctx.lineWidth=1;
+  for(let y=goalTop;y<goalBot;y+=12){ ctx.beginPath(); ctx.moveTo(FIELD_W,y); ctx.lineTo(FIELD_W-GOAL_W*2,y); ctx.stroke(); }
+  for(let x=FIELD_W;x>FIELD_W-GOAL_W*2;x-=12){ ctx.beginPath(); ctx.moveTo(x,goalTop); ctx.lineTo(x,goalBot); ctx.stroke(); }
+  // Right goal frame
+  ctx.strokeStyle='rgba(0,184,255,0.9)'; ctx.lineWidth=4;
+  ctx.shadowColor='rgba(0,184,255,0.6)'; ctx.shadowBlur=12;
+  ctx.beginPath();
+  ctx.moveTo(FIELD_W,goalTop); ctx.lineTo(FIELD_W-GOAL_W-4,goalTop);
+  ctx.moveTo(FIELD_W-GOAL_W-4,goalTop); ctx.lineTo(FIELD_W-GOAL_W-4,goalBot);
+  ctx.moveTo(FIELD_W-GOAL_W-4,goalBot); ctx.lineTo(FIELD_W,goalBot);
+  ctx.stroke(); ctx.shadowBlur=0;
+
   ctx.lineWidth=1;
-
-  // Mr. Tareen pixel art at center — big "T" logo
   drawTareenLogo(FIELD_W/2, FIELD_H/2);
 }
 
@@ -876,121 +895,251 @@ function drawPowerup(p){
 function drawCar(p){
   if(!p) return;
   const t=Date.now()/1000;
+  const isBoosting=(p.id===myId)&&(keys['ShiftLeft']||keys['ShiftRight']||keys['Enter']);
+  const CW=CAR_W, CH=CAR_H;
+
   ctx.save();
   ctx.translate(p.x, p.y);
   ctx.rotate(p.angle);
 
-  // Shadow
-  ctx.fillStyle='rgba(0,0,0,0.35)';
+  // ── 1. GROUND SHADOW ──
+  ctx.fillStyle='rgba(0,0,0,0.45)';
   ctx.beginPath();
-  ctx.ellipse(2,3,CAR_W/2,CAR_H/3,0,0,Math.PI*2);
+  ctx.ellipse(3, 6, CW*0.55, CH*0.38, 0, 0, Math.PI*2);
   ctx.fill();
 
-  // Boost flame
-  if(p.boost > 20 && (keys['ShiftLeft']||keys['ShiftRight']||keys['Enter'])){
-    const flame=ctx.createRadialGradient(-CAR_W/2,0,0,-CAR_W/2-14,0,10);
-    flame.addColorStop(0,'rgba(255,200,0,0.9)');
-    flame.addColorStop(0.5,'rgba(255,80,0,0.6)');
-    flame.addColorStop(1,'rgba(255,0,0,0)');
-    ctx.fillStyle=flame;
+  // ── 2. BOOST FLAME ──
+  if(isBoosting && p.boost>5){
+    // outer flame
+    const fl=ctx.createRadialGradient(-CW/2-2,0,0,-CW/2-18,0,12);
+    fl.addColorStop(0,'rgba(255,240,80,1)');
+    fl.addColorStop(0.3,'rgba(255,120,0,0.85)');
+    fl.addColorStop(0.7,'rgba(255,30,0,0.4)');
+    fl.addColorStop(1,'rgba(255,0,0,0)');
+    ctx.fillStyle=fl;
     ctx.beginPath();
-    ctx.ellipse(-CAR_W/2-8,0,12,5,0,0,Math.PI*2);
+    // teardrop flame shape
+    ctx.moveTo(-CW/2, -CH/4);
+    ctx.quadraticCurveTo(-CW/2-22, 0, -CW/2, CH/4);
     ctx.fill();
+    // inner bright core
+    const fc=ctx.createRadialGradient(-CW/2-4,0,0,-CW/2-4,0,6);
+    fc.addColorStop(0,'rgba(255,255,200,1)');
+    fc.addColorStop(1,'rgba(255,150,0,0)');
+    ctx.fillStyle=fc;
+    ctx.beginPath();
+    ctx.ellipse(-CW/2-6,0,7,4,0,0,Math.PI*2);
+    ctx.fill();
+    // glow
+    ctx.shadowColor='rgba(255,100,0,0.9)';
+    ctx.shadowBlur=18;
+    ctx.fillStyle='rgba(255,150,0,0.3)';
+    ctx.beginPath();
+    ctx.ellipse(-CW/2-10,0,14,6,0,0,Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur=0;
   }
 
-  // Car body
-  const carG=ctx.createLinearGradient(-CAR_W/2,-CAR_H/2,CAR_W/2,CAR_H/2);
-  carG.addColorStop(0, lightenColor(p.color, 0.5));
-  carG.addColorStop(0.6, p.color);
-  carG.addColorStop(1, darkenColor(p.color));
-  ctx.fillStyle=carG;
+  // ── 3. WHEELS (four corners) ──
+  const wx=CW/2-2, wy=CH/2+1, ww=7, wh=5;
+  const wheelColor='#1a1a2e';
+  const wheelShine='rgba(100,100,140,0.7)';
+  [[-wx,-wy],[-wx,wy],[wx,-wy],[wx,wy]].forEach(([x,y])=>{
+    ctx.fillStyle=wheelColor;
+    ctx.beginPath(); ctx.ellipse(x,y,ww/2,wh/2,0,0,Math.PI*2); ctx.fill();
+    // wheel rim highlight
+    ctx.fillStyle=wheelShine;
+    ctx.beginPath(); ctx.ellipse(x-1,y-1,ww/4,wh/4,0,0,Math.PI*2); ctx.fill();
+    // tyre edge
+    ctx.strokeStyle='rgba(80,80,120,0.8)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.ellipse(x,y,ww/2,wh/2,0,0,Math.PI*2); ctx.stroke();
+  });
+
+  // ── 4. CHASSIS UNDERSIDE ──
+  const darkCol=darkenColor(p.color);
+  ctx.fillStyle=darkCol;
+  ctx.beginPath(); ctx.roundRect(-CW/2+2, -CH/2+2, CW-4, CH-4, 3); ctx.fill();
+
+  // ── 5. MAIN BODY PANEL ──
+  const bodyGrad=ctx.createLinearGradient(-CW/2,-CH/2, CW/2, CH/2);
+  bodyGrad.addColorStop(0, lightenColor(p.color,0.65));
+  bodyGrad.addColorStop(0.3, lightenColor(p.color,0.25));
+  bodyGrad.addColorStop(0.7, p.color);
+  bodyGrad.addColorStop(1, darkCol);
+  ctx.fillStyle=bodyGrad;
+  // main body shape — slightly rounded, tapered at front
   ctx.beginPath();
-  ctx.roundRect(-CAR_W/2,-CAR_H/2,CAR_W,CAR_H,4);
+  ctx.moveTo(-CW/2+3, -CH/2+2);   // rear left
+  ctx.lineTo( CW/2-1, -CH/2+4);   // front left (tapered)
+  ctx.lineTo( CW/2-1,  CH/2-4);   // front right
+  ctx.lineTo(-CW/2+3,  CH/2-2);   // rear right
+  ctx.closePath();
   ctx.fill();
 
-  // Windshield
-  ctx.fillStyle='rgba(0,200,255,0.7)';
-  ctx.shadowColor='rgba(0,200,255,0.8)';
-  ctx.shadowBlur=6;
-  ctx.fillRect(0,-CAR_H/2+3,CAR_W/2-3,CAR_H-6);
-  ctx.shadowBlur=0;
-
-  // Outline
-  ctx.strokeStyle='rgba(255,255,255,0.25)';
+  // ── 6. SIDE PANEL LINES (depth detail) ──
+  ctx.strokeStyle=`rgba(255,255,255,0.12)`;
   ctx.lineWidth=1;
   ctx.beginPath();
-  ctx.roundRect(-CAR_W/2,-CAR_H/2,CAR_W,CAR_H,4);
-  ctx.stroke();
+  ctx.moveTo(-CW/2+4, -CH/2+6); ctx.lineTo(CW/2-3, -CH/2+6); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(-CW/2+4,  CH/2-6); ctx.lineTo(CW/2-3,  CH/2-6); ctx.stroke();
+
+  // ── 7. HOOD / NOSE ──
+  const hoodG=ctx.createLinearGradient(CW/4,-CH/2,CW/2,0);
+  hoodG.addColorStop(0, lightenColor(p.color,0.5));
+  hoodG.addColorStop(1, p.color);
+  ctx.fillStyle=hoodG;
+  ctx.beginPath();
+  ctx.moveTo(CW/4, -CH/2+4); ctx.lineTo(CW/2-1, -CH/2+4);
+  ctx.lineTo(CW/2-1,  CH/2-4); ctx.lineTo(CW/4,  CH/2-4);
+  ctx.closePath(); ctx.fill();
+
+  // ── 8. WINDSHIELD ──
+  const wsG=ctx.createLinearGradient(CW/4-4,-CH/2+5, CW/2-2, CH/2-5);
+  wsG.addColorStop(0,'rgba(160,230,255,0.9)');
+  wsG.addColorStop(0.5,'rgba(80,180,255,0.7)');
+  wsG.addColorStop(1,'rgba(0,100,200,0.5)');
+  ctx.fillStyle=wsG;
+  ctx.shadowColor='rgba(0,200,255,0.8)'; ctx.shadowBlur=6;
+  ctx.beginPath();
+  ctx.roundRect(CW/4-4, -CH/2+5, CW/4, CH-10, 2);
+  ctx.fill(); ctx.shadowBlur=0;
+  // windshield glare
+  ctx.fillStyle='rgba(255,255,255,0.35)';
+  ctx.beginPath();
+  ctx.roundRect(CW/4-2, -CH/2+6, CW/10, CH/2-8, 1);
+  ctx.fill();
+
+  // ── 9. HEADLIGHTS ──
+  const hlG=ctx.createRadialGradient(CW/2-2,-CH/2+5,0,CW/2-2,-CH/2+5,5);
+  hlG.addColorStop(0,'rgba(255,255,180,1)');
+  hlG.addColorStop(1,'rgba(255,200,0,0)');
+  ctx.fillStyle=hlG; ctx.shadowColor='rgba(255,240,0,0.9)'; ctx.shadowBlur=8;
+  ctx.beginPath(); ctx.ellipse(CW/2-3, -CH/2+6, 4, 3, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(CW/2-3,  CH/2-6, 4, 3, 0, 0, Math.PI*2); ctx.fill();
+  ctx.shadowBlur=0;
+
+  // ── 10. TAIL LIGHTS ──
+  ctx.fillStyle='rgba(255,40,40,0.9)';
+  ctx.shadowColor='rgba(255,0,0,0.7)'; ctx.shadowBlur=5;
+  ctx.beginPath(); ctx.ellipse(-CW/2+4, -CH/2+5, 3, 2, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-CW/2+4,  CH/2-5, 3, 2, 0, 0, Math.PI*2); ctx.fill();
+  ctx.shadowBlur=0;
+
+  // ── 11. SPOILER (rear wing) ──
+  ctx.fillStyle=darkenColor(p.color);
+  ctx.fillRect(-CW/2-2, -CH/2+3, 4, CH-6);
+  ctx.fillStyle=lightenColor(p.color,0.2);
+  ctx.fillRect(-CW/2-3, -CH/2+2, 2, CH-4);
+
+  // ── 12. BODY OUTLINE ──
+  ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(-CW/2+3, -CH/2+2); ctx.lineTo(CW/2-1, -CH/2+4);
+  ctx.lineTo(CW/2-1, CH/2-4); ctx.lineTo(-CW/2+3, CH/2-2);
+  ctx.closePath(); ctx.stroke();
+
+  // ── 13. ROOF SPECULAR HIGHLIGHT ──
+  ctx.fillStyle='rgba(255,255,255,0.18)';
+  ctx.beginPath();
+  ctx.ellipse(-CW/8, -CH/4, CW/4, CH/6, -0.2, 0, Math.PI*2);
+  ctx.fill();
 
   ctx.restore();
 
-  // Name tag
-  ctx.font='bold 9px Oxanium';
-  ctx.fillStyle=p.color;
-  ctx.textAlign='center'; ctx.textBaseline='bottom';
-  ctx.shadowColor=p.color; ctx.shadowBlur=5;
-  ctx.fillText(p.name.slice(0,10), p.x, p.y-CAR_H/2-3);
+  // ── NAME TAG ──
+  ctx.font=`bold 10px Oxanium`;
+  ctx.fillStyle=p.color; ctx.textAlign='center'; ctx.textBaseline='bottom';
+  ctx.shadowColor=p.color; ctx.shadowBlur=7;
+  ctx.fillText(p.name.slice(0,10), p.x, p.y - CH/2 - 5);
   ctx.shadowBlur=0;
 
-  // Boost indicator
-  const bPct=p.boost/BOOST_MAX;
-  ctx.fillStyle='rgba(0,0,0,0.4)';
-  ctx.beginPath();
-  ctx.roundRect(p.x-14,p.y+CAR_H/2+4,28,4,2);
-  ctx.fill();
-  const bc=bPct>0.5?'rgba(0,255,136,0.85)':bPct>0.25?'rgba(255,200,0,0.85)':'rgba(255,50,80,0.85)';
+  // ── BOOST BAR UNDER CAR ──
+  const bPct=Math.max(0,p.boost)/BOOST_MAX;
+  const bw=32, bh=4, bx=p.x-bw/2, by=p.y+CH/2+5;
+  ctx.fillStyle='rgba(0,0,0,0.5)';
+  ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,2); ctx.fill();
+  const bc=bPct>0.5?'rgba(0,255,136,0.9)':bPct>0.25?'rgba(255,200,0,0.9)':'rgba(255,50,80,0.9)';
   ctx.fillStyle=bc;
-  ctx.beginPath();
-  ctx.roundRect(p.x-14,p.y+CAR_H/2+4,28*bPct,4,2);
-  ctx.fill();
+  ctx.shadowColor=bc; ctx.shadowBlur=4;
+  ctx.beginPath(); ctx.roundRect(bx,by,bw*bPct,bh,2); ctx.fill();
+  ctx.shadowBlur=0;
 }
 
 function drawBall(ball){
   const t=Date.now()/1000;
-
-  // Shadow
-  ctx.fillStyle='rgba(0,0,0,0.3)';
-  ctx.beginPath();
-  ctx.ellipse(ball.x+2,ball.y+3,BALL_R*0.8,BALL_R*0.4,0,0,Math.PI*2);
-  ctx.fill();
-
-  // Ball glow
   const spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-  const glowA=Math.min(0.6,spd/300);
-  if(glowA>0.05){
-    const g=ctx.createRadialGradient(ball.x,ball.y,BALL_R*.5,ball.x,ball.y,BALL_R*2);
-    g.addColorStop(0,`rgba(255,255,255,${glowA})`);
-    g.addColorStop(1,'transparent');
-    ctx.fillStyle=g;
-    ctx.beginPath(); ctx.arc(ball.x,ball.y,BALL_R*2,0,Math.PI*2); ctx.fill();
+  const R=BALL_R;
+
+  // Motion blur trail
+  if(spd>80){
+    const trailLen=Math.min(spd/12,18);
+    const ang=Math.atan2(ball.vy,ball.vx);
+    const tg=ctx.createLinearGradient(
+      ball.x-Math.cos(ang)*trailLen, ball.y-Math.sin(ang)*trailLen,
+      ball.x, ball.y);
+    tg.addColorStop(0,'rgba(255,255,255,0)');
+    tg.addColorStop(1,'rgba(255,255,255,0.15)');
+    ctx.fillStyle=tg;
+    ctx.beginPath();
+    ctx.ellipse(ball.x-Math.cos(ang)*trailLen/2,
+                ball.y-Math.sin(ang)*trailLen/2,
+                trailLen, R*0.7, ang, 0, Math.PI*2);
+    ctx.fill();
   }
 
-  // Main ball
-  const bg=ctx.createRadialGradient(ball.x-BALL_R*.35,ball.y-BALL_R*.35,1,ball.x,ball.y,BALL_R);
+  // Shadow
+  ctx.fillStyle='rgba(0,0,0,0.4)';
+  ctx.beginPath(); ctx.ellipse(ball.x+3, ball.y+4, R*0.85, R*0.45, 0, 0, Math.PI*2); ctx.fill();
+
+  // Speed glow
+  if(spd>60){
+    const glowA=Math.min(0.5,spd/400);
+    const gG=ctx.createRadialGradient(ball.x,ball.y,R*.4,ball.x,ball.y,R*2.2);
+    gG.addColorStop(0,`rgba(255,255,180,${glowA})`);
+    gG.addColorStop(1,'rgba(255,150,0,0)');
+    ctx.fillStyle=gG;
+    ctx.beginPath(); ctx.arc(ball.x,ball.y,R*2.2,0,Math.PI*2); ctx.fill();
+  }
+
+  // Main ball body — layered radial gradients for 3D look
+  const bg=ctx.createRadialGradient(
+    ball.x-R*0.38, ball.y-R*0.38, R*0.05,
+    ball.x, ball.y, R);
   bg.addColorStop(0,'#ffffff');
-  bg.addColorStop(0.4,'#e0e8ff');
-  bg.addColorStop(1,'#8090c0');
+  bg.addColorStop(0.25,'#f0f4ff');
+  bg.addColorStop(0.6,'#c8d8f0');
+  bg.addColorStop(0.85,'#8898c8');
+  bg.addColorStop(1,'#3040a0');
   ctx.fillStyle=bg;
-  ctx.shadowColor='rgba(200,220,255,0.6)';
-  ctx.shadowBlur=8;
-  ctx.beginPath(); ctx.arc(ball.x,ball.y,BALL_R,0,Math.PI*2); ctx.fill();
+  ctx.shadowColor='rgba(180,200,255,0.6)'; ctx.shadowBlur=10;
+  ctx.beginPath(); ctx.arc(ball.x,ball.y,R,0,Math.PI*2); ctx.fill();
   ctx.shadowBlur=0;
 
-  // Ball seams (rotating)
-  ctx.strokeStyle='rgba(100,120,180,0.5)';
-  ctx.lineWidth=1.5;
-  const rot=t*2;
-  ctx.save();
-  ctx.translate(ball.x,ball.y);
-  ctx.rotate(rot);
-  ctx.beginPath(); ctx.moveTo(-BALL_R,0); ctx.lineTo(BALL_R,0); ctx.stroke();
-  ctx.beginPath(); ctx.arc(0,0,BALL_R,Math.PI*.1,Math.PI*.9); ctx.stroke();
+  // Panel lines (rotating with ball spin)
+  const spin=t*(spd/30+0.5);
+  ctx.save(); ctx.translate(ball.x,ball.y); ctx.rotate(spin);
+  ctx.strokeStyle='rgba(60,80,160,0.4)'; ctx.lineWidth=1.2;
+  // horizontal seam
+  ctx.beginPath(); ctx.moveTo(-R,0); ctx.lineTo(R,0); ctx.stroke();
+  // vertical seam
+  ctx.beginPath(); ctx.moveTo(0,-R); ctx.lineTo(0,R); ctx.stroke();
+  // curved seam arcs
+  ctx.beginPath(); ctx.arc(0,0,R,Math.PI*0.08,Math.PI*0.92); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0,0,R,Math.PI*1.08,Math.PI*1.92); ctx.stroke();
   ctx.restore();
 
-  // Outline
-  ctx.strokeStyle='rgba(255,255,255,0.3)';
-  ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.arc(ball.x,ball.y,BALL_R,0,Math.PI*2); ctx.stroke();
+  // Primary specular highlight
+  ctx.fillStyle='rgba(255,255,255,0.75)';
+  ctx.beginPath(); ctx.ellipse(ball.x-R*0.32, ball.y-R*0.32, R*0.28, R*0.18, -Math.PI/4, 0, Math.PI*2); ctx.fill();
+
+  // Secondary smaller specular
+  ctx.fillStyle='rgba(255,255,255,0.35)';
+  ctx.beginPath(); ctx.ellipse(ball.x-R*0.52, ball.y-R*0.45, R*0.1, R*0.07, -Math.PI/4, 0, Math.PI*2); ctx.fill();
+
+  // Rim highlight
+  ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(ball.x,ball.y,R,0,Math.PI*2); ctx.stroke();
 }
 
 function lightenColor(hex, amt){
