@@ -620,6 +620,11 @@ function onMsg(msg){
       if(GS)mergeState(msg.state);
       break;
     case 'rocket_goal':
+      // Server tells us to reset ball to specific position
+      if(GS&&GS.ball&&typeof msg.ballX==='number'){
+        GS.ball.x=msg.ballX; GS.ball.y=msg.ballY;
+        GS.ball.vx=msg.ballVx; GS.ball.vy=msg.ballVy;
+      }
       showGoal(msg.scorer,msg.scorerColor,msg.p1score,msg.p2score);
       break;
     case 'rocket_powerup':
@@ -628,9 +633,16 @@ function onMsg(msg){
     case 'rocket_boost':
       if(GS){
         const me=GS.players[myNum-1];
-        if(me){
-          if(msg.granted) me.boost=Math.min(BOOST_MAX,me.boost+70);
-          setComm(msg.granted?rnd(P_CORRECT):rnd(P_WRONG));
+        if(me&&msg.granted){
+          // Full boost + instant speed burst!
+          me.boost=BOOST_MAX;
+          if(typeof me.speed==='number') me.speed=Math.max(me.speed,MAX_SPEED*0.8);
+          setComm(rnd(P_CORRECT));
+          // Flash effect
+          document.getElementById('scorehud').style.boxShadow=`0 0 40px ${me.color}`;
+          setTimeout(()=>document.getElementById('scorehud').style.boxShadow='',800);
+        } else if(msg.granted===false){
+          setComm(rnd(P_WRONG));
         }
       }
       break;
@@ -649,14 +661,15 @@ function onMsg(msg){
 
 function mergeState(s){
   if(!GS)return;
+  // Only sync the OTHER player's car — NEVER touch the ball (client-side only)
   const other=myNum===1?1:0;
   if(s.players&&s.players[other]){
     const op=s.players[other],gp=GS.players[other];
     gp.x=op.x;gp.y=op.y;gp.angle=op.angle;
     gp.vx=op.vx;gp.vy=op.vy;gp.boost=op.boost;
-    gp.speed=op.speed;
+    gp.speed=op.speed||0;
   }
-  if(s.ball)GS.ball=s.ball;
+  // Sync scores, time, powerups only — ball stays client-side
   if(s.powerups)GS.powerups=s.powerups;
   if(typeof s.timeLeft==='number')GS.timeLeft=s.timeLeft;
   if(typeof s.p1score==='number'){GS.p1score=s.p1score;GS.p2score=s.p2score;}
@@ -773,51 +786,60 @@ function update(dt){
   if(me.y<hw){ me.y=hw; me.speed*=-0.4; }
   if(me.y>FH-hw){ me.y=FH-hw; me.speed*=-0.4; }
 
-  // Ball interaction (P1 authoritative)
+  // Ball interaction — BOTH players affect ball locally
   const ball=GS.ball;
   if(ball){
-    const dx=ball.x-me.x,dy=ball.y-me.y;
-    const dist=Math.sqrt(dx*dx+dy*dy)||1;
-    const minD=BR+Math.max(CAR_L,CAR_W)/2+2;
-    if(dist<minD){
-      const nx=dx/dist,ny=dy/dist;
-      const relV=(ball.vx-me.vx)*nx+(ball.vy-me.vy)*ny;
-      if(relV<0){
-        const imp=-relV*2.5+Math.abs(me.speed)*0.3;
-        ball.vx+=nx*imp;
-        ball.vy+=ny*imp;
+    // Check collision with BOTH cars (so P2 also hits ball locally)
+    GS.players.forEach((car,ci)=>{
+      if(!car)return;
+      const dx=ball.x-car.x,dy=ball.y-car.y;
+      const dist=Math.sqrt(dx*dx+dy*dy)||1;
+      const minD=BR+Math.max(CAR_L,CAR_W)/2+2;
+      if(dist<minD){
+        const nx=dx/dist,ny=dy/dist;
+        const carSpd=car.speed||0;
+        const relV=(ball.vx-car.vx)*nx+(ball.vy-car.vy)*ny;
+        if(relV<0){
+          // BOOST multiplies hit power by 3x!
+          const boostMul = (ci===myNum-1&&boost) ? 3.2 : 1.0;
+          const imp=(-relV*2.8+Math.abs(carSpd)*0.5)*boostMul;
+          ball.vx+=nx*imp;
+          ball.vy+=ny*imp;
+          // Cap ball speed so it doesn't go through walls
+          const bSpd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
+          if(bSpd>600){ball.vx=ball.vx/bSpd*600;ball.vy=ball.vy/bSpd*600;}
+          spawnParticles(ball.x,ball.y,car.color, boost&&ci===myNum-1?16:6);
+        }
+        ball.x+=nx*(minD-dist+1);
+        ball.y+=ny*(minD-dist+1);
       }
-      ball.x+=nx*(minD-dist+1);
-      ball.y+=ny*(minD-dist+1);
+    });
 
-      // spawn hit particles
-      spawnParticles(ball.x,ball.y,me.color,6);
-    }
-
-    // Ball physics
-    ball.vx*=Math.pow(0.985,dt*60);
-    ball.vy*=Math.pow(0.985,dt*60);
+    // Ball physics — low friction so it keeps rolling
+    ball.vx*=Math.pow(0.992,dt*60);
+    ball.vy*=Math.pow(0.992,dt*60);
     ball.x+=ball.vx*dt;
     ball.y+=ball.vy*dt;
     const gTop=(FH-GH)/2,gBot=(FH+GH)/2;
     if(ball.x-BR<0){
-      if(ball.y>gTop&&ball.y<gBot){/* server handles */}
+      if(ball.y>gTop&&ball.y<gBot){/* server detects goal */}
       else{ball.x=BR;ball.vx*=-BALL_BOUNCE;}
     }
     if(ball.x+BR>FW){
-      if(ball.y>gTop&&ball.y<gBot){/* server handles */}
+      if(ball.y>gTop&&ball.y<gBot){/* server detects goal */}
       else{ball.x=FW-BR;ball.vx*=-BALL_BOUNCE;}
     }
     if(ball.y-BR<0){ball.y=BR;ball.vy*=-BALL_BOUNCE;}
     if(ball.y+BR>FH){ball.y=FH-BR;ball.vy*=-BALL_BOUNCE;}
   }
 
-  // Boost particles
-  if(boost&&Math.random()<0.4){
+  // Boost particles — lots more when boosting!
+  if(boost){
+    const n=Math.random()<0.6?4:2;
     spawnParticles(
       me.x-Math.cos(me.angle)*CAR_L/2,
       me.y-Math.sin(me.angle)*CAR_L/2,
-      '#ff8800',3);
+      Math.random()<0.5?'#ff8800':'#ffdd00', n);
   }
 
   // Update particles

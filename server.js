@@ -156,18 +156,33 @@ function rCast(room, obj) { safeSend(room.p1, obj); safeSend(room.p2, obj); }
 
 function makeRS(p1, p2) {
   const pu=[];
-  for(let i=0;i<3;i++) pu.push({id:i,x:200+Math.random()*(FW-400),y:80+Math.random()*(FH-160),active:true});
+  for(let i=0;i<3;i++) pu.push({
+    id:i,
+    x:150+Math.random()*(FW-300),
+    y:60+Math.random()*(FH-120),
+    active:true
+  });
   return {
     players:[
-      {id:p1.id,name:p1.rName,color:p1.rColor,x:180,y:FH/2,angle:0,vx:0,vy:0,boost:100},
-      {id:p2.id,name:p2.rName,color:p2.rColor,x:FW-180,y:FH/2,angle:Math.PI,vx:0,vy:0,boost:100}
+      {id:p1.id,name:p1.rName,color:p1.rColor,x:180,y:FH/2,angle:0,vx:0,vy:0,boost:100,speed:0},
+      {id:p2.id,name:p2.rName,color:p2.rColor,x:FW-180,y:FH/2,angle:Math.PI,vx:0,vy:0,boost:100,speed:0}
     ],
+    // Ball is tracked server-side ONLY for goal detection
     ball:{x:FW/2,y:FH/2,vx:0,vy:0},
     pu, p1score:0, p2score:0, timeLeft:MT, usedQ:new Set()
   };
 }
 
-function resetBall(s){ s.ball={x:FW/2,y:FH/2,vx:(Math.random()-.5)*120,vy:(Math.random()-.5)*80}; }
+function resetBall(s){
+  // Small random kick off center so it's not perfectly straight
+  const angle = (Math.random() * Math.PI/3) - Math.PI/6; // ±30 degrees
+  const dir = Math.random() < 0.5 ? 1 : -1;
+  s.ball = {
+    x: FW/2, y: FH/2,
+    vx: Math.cos(angle) * dir * 80,
+    vy: Math.sin(angle) * 80
+  };
+}
 
 function pickQ(s){
   let av=RQS.map((_,i)=>i).filter(i=>!s.usedQ.has(i));
@@ -190,13 +205,19 @@ function startLoop(code){
     // Goals
     if(ball.x-BR<=GW && ball.y>gt && ball.y<gb){
       s.p2score++;
-      rCast(rm,{type:'rocket_goal',scorer:s.players[1].name,scorerColor:s.players[1].color,p1score:s.p1score,p2score:s.p2score});
       resetBall(s);
+      rCast(rm,{type:'rocket_goal',scorer:s.players[1].name,
+        scorerColor:s.players[1].color,
+        p1score:s.p1score,p2score:s.p2score,
+        ballX:s.ball.x,ballY:s.ball.y,ballVx:s.ball.vx,ballVy:s.ball.vy});
     }
     if(ball.x+BR>=FW-GW && ball.y>gt && ball.y<gb){
       s.p1score++;
-      rCast(rm,{type:'rocket_goal',scorer:s.players[0].name,scorerColor:s.players[0].color,p1score:s.p1score,p2score:s.p2score});
       resetBall(s);
+      rCast(rm,{type:'rocket_goal',scorer:s.players[0].name,
+        scorerColor:s.players[0].color,
+        p1score:s.p1score,p2score:s.p2score,
+        ballX:s.ball.x,ballY:s.ball.y,ballVx:s.ball.vx,ballVy:s.ball.vy});
     }
 
     // Powerups
@@ -218,9 +239,16 @@ function startLoop(code){
     if(tick%250===0) rCast(rm,{type:'rocket_commentary',text:LINES[Math.floor(Math.random()*LINES.length)]});
 
     if(tick%3===0){
+      // NOTE: We do NOT broadcast ball position — ball physics run entirely
+      // client-side to avoid rubber-banding. P1 sends ball pos to server
+      // only for goal detection. We only sync player positions + scores.
       rCast(rm,{type:'rocket_state',state:{
-        players:s.players.map(p=>({id:p.id,name:p.name,color:p.color,x:p.x,y:p.y,angle:p.angle,vx:p.vx,vy:p.vy,boost:p.boost})),
-        ball:{...s.ball},
+        players:s.players.map(p=>({
+          id:p.id,name:p.name,color:p.color,
+          x:p.x,y:p.y,angle:p.angle,
+          vx:p.vx,vy:p.vy,boost:p.boost,speed:p.speed||0
+        })),
+        // Only send powerup state + scores + time — NO ball
         powerups:s.pu.map(p=>({id:p.id,x:p.x,y:p.y,active:p.active})),
         p1score:s.p1score,p2score:s.p2score,timeLeft:s.timeLeft
       }});
@@ -289,13 +317,15 @@ function handleRocket(ws, msg){
       const s=rm.state, idx=ws.rNum===1?0:1, other=1-idx;
       const otherWs=idx===0?rm.p2:rm.p1;
       if(msg.correct){
-        s.players[idx].boost=Math.min(100,s.players[idx].boost+70);
-        safeSend(ws,{type:'rocket_boost',granted:true});
-        safeSend(otherWs,{type:'rocket_boost',granted:false});
+        // Give winner FULL boost
+        s.players[idx].boost=100;
+        safeSend(ws,{type:'rocket_boost',granted:true,amount:100});
+        safeSend(otherWs,{type:'rocket_boost',granted:false,amount:0});
       } else {
-        s.players[other].boost=Math.min(100,s.players[other].boost+50);
-        safeSend(ws,{type:'rocket_boost',granted:false});
-        safeSend(otherWs,{type:'rocket_boost',granted:true});
+        // Give opponent significant boost as penalty
+        s.players[other].boost=Math.min(100,s.players[other].boost+60);
+        safeSend(ws,{type:'rocket_boost',granted:false,amount:0});
+        safeSend(otherWs,{type:'rocket_boost',granted:true,amount:60});
       }
       break;
     }
