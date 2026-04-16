@@ -346,7 +346,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fu);
     <div class="qscan"></div>
     <div class="qi">
       <div class="qtop">
-        <div class="qtag" id="qtag">SECTION 7.4</div>
+        <div class="qtag" id="qtag">DISK METHOD</div>
         <div class="qbadge">⚡ POWER-UP — ANSWER FOR BOOST!</div>
       </div>
       <div class="qprow">
@@ -359,7 +359,25 @@ body{background:var(--bg);color:var(--text);font-family:var(--fu);
       <div class="qtbar"><div class="qtfill" id="qtfill"
         style="width:100%;background:var(--orange)"></div></div>
       <div class="qq" id="qq"></div>
-      <div class="qcs" id="qcs"></div>
+      <!-- Pre-built answer buttons — text filled by JS -->
+      <div id="qcs" style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+        <button id="qbtn0" onclick="answerQuizBtn(0)" style="background:rgba(6,14,28,0.95);border:1px solid rgba(255,106,0,0.25);border-left:4px solid rgba(255,106,0,0.6);padding:12px 16px;color:#c8e8ff;cursor:pointer;text-align:left;width:100%;font-size:15px;font-family:Oxanium,sans-serif;display:flex;align-items:center;gap:12px;">
+          <span style="color:#ff6a00;font-weight:700;min-width:24px;font-size:13px;">A</span>
+          <span id="qopt0">—</span>
+        </button>
+        <button id="qbtn1" onclick="answerQuizBtn(1)" style="background:rgba(6,14,28,0.95);border:1px solid rgba(255,106,0,0.25);border-left:4px solid rgba(255,106,0,0.6);padding:12px 16px;color:#c8e8ff;cursor:pointer;text-align:left;width:100%;font-size:15px;font-family:Oxanium,sans-serif;display:flex;align-items:center;gap:12px;">
+          <span style="color:#ff6a00;font-weight:700;min-width:24px;font-size:13px;">B</span>
+          <span id="qopt1">—</span>
+        </button>
+        <button id="qbtn2" onclick="answerQuizBtn(2)" style="background:rgba(6,14,28,0.95);border:1px solid rgba(255,106,0,0.25);border-left:4px solid rgba(255,106,0,0.6);padding:12px 16px;color:#c8e8ff;cursor:pointer;text-align:left;width:100%;font-size:15px;font-family:Oxanium,sans-serif;display:flex;align-items:center;gap:12px;">
+          <span style="color:#ff6a00;font-weight:700;min-width:24px;font-size:13px;">C</span>
+          <span id="qopt2">—</span>
+        </button>
+        <button id="qbtn3" onclick="answerQuizBtn(3)" style="background:rgba(6,14,28,0.95);border:1px solid rgba(255,106,0,0.25);border-left:4px solid rgba(255,106,0,0.6);padding:12px 16px;color:#c8e8ff;cursor:pointer;text-align:left;width:100%;font-size:15px;font-family:Oxanium,sans-serif;display:flex;align-items:center;gap:12px;">
+          <span style="color:#ff6a00;font-weight:700;min-width:24px;font-size:13px;">D</span>
+          <span id="qopt3">—</span>
+        </button>
+      </div>
       <div class="qres" id="qres"></div>
     </div>
   </div>
@@ -1407,63 +1425,83 @@ function showGoal(name,color,p1s,p2s){
 // ═══════════════════════════════════════
 // QUIZ
 // ═══════════════════════════════════════
+// Current question stored globally so answerQuizBtn can access it
+let currentQ=null;
+
+function answerQuizBtn(i){ answerQuiz(i, currentQ); }
+
 function showQuiz(q){
-  // Safety check — if question malformed, skip
-  if(!q||!q.cs||!q.cs.length){ console.warn('Bad question object',q); return; }
+  if(!q||!q.cs||!q.cs.length){ console.warn('Bad question',q); return; }
+  currentQ=q;
   qAnswered=false;
+
+  // Populate text
   document.getElementById('qtag').textContent=`${q.t} — ${(TOPICS[q.t]||q.t).toUpperCase()}`;
-  document.getElementById('qico').textContent='🚀';
   document.getElementById('qico').style.borderColor=myColor;
   document.getElementById('qico').style.background=rgba(myColor,.12);
   document.getElementById('qpname').textContent=myName;
   document.getElementById('qpname').style.color=myColor;
   document.getElementById('qq').textContent=q.q;
   document.getElementById('qres').className='qres';
-  const L=['A','B','C','D'];
-  const qcs=document.getElementById('qcs');
-  qcs.innerHTML='';
-  // Build each choice button explicitly
-  for(let i=0;i<q.cs.length;i++){
-    const b=document.createElement('button');
-    b.className='qc';
-    b.style.cssText='background:rgba(6,14,28,.95);border:1px solid rgba(255,106,0,0.2);border-left:4px solid rgba(255,106,0,0.5);padding:12px 16px;font-size:14px;color:#c8e8ff;cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;width:100%;margin-bottom:6px;';
-    const label=document.createElement('span');
-    label.style.cssText='font-weight:700;color:var(--orange);min-width:24px;font-size:13px;';
-    label.textContent=L[i];
-    const text=document.createElement('span');
-    text.textContent=q.cs[i];
-    b.appendChild(label);
-    b.appendChild(text);
-    b.onclick=(()=>{const idx=i;return()=>answerQuiz(idx,q);})();
-    qcs.appendChild(b);
+
+  // Fill the 4 pre-built buttons
+  for(let i=0;i<4;i++){
+    const opt=document.getElementById('qopt'+i);
+    const btn=document.getElementById('qbtn'+i);
+    if(opt) opt.textContent = q.cs[i]||'';
+    if(btn){
+      btn.disabled=false;
+      btn.style.opacity='1';
+      btn.style.borderLeftColor='rgba(255,106,0,0.6)';
+      btn.style.background='rgba(6,14,28,0.95)';
+      btn.style.color='#c8e8ff';
+    }
   }
+
+  // Timer
   let tl=20;
   const fill=document.getElementById('qtfill');
-  fill.style.width='100%';fill.style.background='var(--orange)';
-  if(qTimerInt)clearInterval(qTimerInt);
+  fill.style.width='100%'; fill.style.background='var(--orange)';
+  if(qTimerInt) clearInterval(qTimerInt);
   qTimerInt=setInterval(()=>{
-    tl--;fill.style.width=(tl/20*100)+'%';
-    if(tl<6)fill.style.background='var(--red)';
-    if(tl<=0){clearInterval(qTimerInt);if(!qAnswered)answerQuiz(-1,q);}
+    tl--;
+    fill.style.width=(tl/20*100)+'%';
+    if(tl<6) fill.style.background='var(--red)';
+    if(tl<=0){ clearInterval(qTimerInt); if(!qAnswered) answerQuiz(-1,q); }
   },1000);
+
   document.getElementById('qov').classList.add('show');
 }
 
 function answerQuiz(chosen,q){
-  if(qAnswered)return;qAnswered=true;
-  if(qTimerInt)clearInterval(qTimerInt);
-  const correct=chosen===q.a;
-  document.querySelectorAll('.qc').forEach((b,i)=>{
-    b.disabled=true;
-    if(i===q.a)b.classList.add('correct');
-    else if(i===chosen&&!correct)b.classList.add('wrong');
-  });
-  const re=document.getElementById('qres');re.classList.add('show');
-  if(correct){re.className='qres show ok';re.textContent='✅ CORRECT! FULL BOOST ACTIVATED! 🚀';}
-  else{re.className='qres show fail';
-    re.textContent=chosen===-1?'⏱ TIME UP — Opponent gets boost!':'❌ WRONG! Opponent steals your boost! 😅';}
-  send({type:'rocket_quiz_answer',correct});
-  setTimeout(()=>document.getElementById('qov').classList.remove('show'),2200);
+  if(qAnswered||!q) return; qAnswered=true;
+  if(qTimerInt) clearInterval(qTimerInt);
+  const correct = chosen===q.a;
+  // Highlight buttons
+  for(let i=0;i<4;i++){
+    const btn=document.getElementById('qbtn'+i);
+    if(!btn) continue;
+    btn.disabled=true;
+    if(i===q.a){
+      btn.style.background='rgba(0,255,136,0.12)';
+      btn.style.borderLeftColor='var(--green)';
+      btn.style.color='#aaffcc';
+    } else if(i===chosen&&!correct){
+      btn.style.background='rgba(255,34,68,0.1)';
+      btn.style.borderLeftColor='var(--red)';
+      btn.style.color='#ffaaaa';
+    }
+  }
+  const re=document.getElementById('qres'); re.classList.add('show');
+  if(correct){
+    re.className='qres show ok';
+    re.textContent='✅ CORRECT! FULL BOOST ACTIVATED! 🚀';
+  } else {
+    re.className='qres show fail';
+    re.textContent=chosen===-1?'⏱ TIME UP — Opponent gets boost!':'❌ WRONG! Opponent steals your boost! 😅';
+  }
+  send({type:'rocket_quiz_answer', correct});
+  setTimeout(()=>document.getElementById('qov').classList.remove('show'), 2200);
 }
 
 // ═══════════════════════════════════════
