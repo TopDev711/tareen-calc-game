@@ -6,10 +6,10 @@
 <title>Mr. Tareen's Rocket Calc 🚀</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;800;900&family=Share+Tech+Mono&display=swap');
-:root {
-  --bg:#04080f; --blue:#00b8ff; --green:#00ff88; --orange:#ff6a00;
-  --red:#ff2244; --gold:#ffd700; --text:#c8e8ff;
-  --fu:'Oxanium',sans-serif; --fm:'Share Tech Mono',monospace;
+:root{
+  --bg:#020508;--orange:#ff6a00;--gold:#ffd700;--green:#00ff88;
+  --blue:#00b8ff;--red:#ff2244;--text:#c8e8ff;
+  --fu:'Oxanium',sans-serif;--fm:'Share Tech Mono',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--fu);
@@ -17,185 +17,236 @@ body{background:var(--bg);color:var(--text);font-family:var(--fu);
 .screen{display:none;width:100%;height:100%;}
 .screen.active{display:flex;}
 
-/* ── JOIN ── */
+/* ══ JOIN ══ */
 #join{flex-direction:column;align-items:center;justify-content:center;
   position:relative;overflow:hidden;}
-#jbg{position:absolute;inset:0;}
+#jbg{position:absolute;inset:0;width:100%;height:100%;}
 .jz{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
-.j-title{font-size:clamp(24px,5vw,56px);font-weight:900;color:#fff;
-  text-shadow:0 0 40px rgba(255,106,0,0.7);letter-spacing:2px;line-height:1.1;text-align:center;}
-.j-title span{color:var(--orange);}
-.j-sub{font-family:var(--fm);font-size:10px;color:rgba(255,106,0,0.5);
-  letter-spacing:5px;margin-top:6px;margin-bottom:28px;text-align:center;}
-.jpanel{background:rgba(4,12,24,0.97);border:1px solid rgba(255,106,0,0.3);
-  border-top:2px solid var(--orange);padding:24px 30px;width:min(400px,92vw);}
-.jph{font-size:10px;letter-spacing:4px;color:var(--orange);margin-bottom:16px;
-  display:flex;align-items:center;gap:10px;}
-.jph::before,.jph::after{content:'';flex:1;height:1px;background:rgba(255,106,0,0.2);}
-.fg{margin-bottom:12px;}
-.fg label{display:block;font-family:var(--fm);font-size:9px;letter-spacing:3px;
-  color:rgba(255,106,0,0.6);margin-bottom:4px;}
-.fg input,.fg select{width:100%;background:rgba(0,10,25,0.9);
-  border:1px solid rgba(255,106,0,0.2);border-bottom-color:rgba(255,106,0,0.4);
-  color:var(--text);padding:9px 12px;font-family:var(--fm);font-size:13px;outline:none;}
-.fg select option{background:#040a14;}
-.color-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:4px;}
-.color-btn{height:28px;border-radius:3px;border:2px solid transparent;cursor:pointer;
-  transition:all 0.15s;}
-.color-btn.selected{border-color:#fff;transform:scale(1.15);}
-.btn-join{width:100%;margin-top:8px;background:linear-gradient(135deg,rgba(255,106,0,0.2),rgba(255,150,0,0.1));
-  border:1px solid rgba(255,106,0,0.5);border-top-color:rgba(255,106,0,0.8);
-  color:var(--orange);padding:13px;font-size:14px;font-weight:700;
-  letter-spacing:3px;cursor:pointer;transition:all 0.2s;}
-.btn-join:hover{background:rgba(255,106,0,0.25);box-shadow:0 0 20px rgba(255,106,0,0.2);}
-.j-err{font-family:var(--fm);font-size:9px;color:var(--red);
-  text-align:center;margin-top:6px;min-height:14px;}
+.j-eyebrow{font-family:var(--fm);font-size:10px;letter-spacing:8px;
+  color:rgba(255,106,0,0.5);margin-bottom:12px;}
+.j-title{font-size:clamp(28px,6vw,72px);font-weight:900;color:#fff;
+  text-shadow:0 0 60px rgba(255,106,0,0.6),0 0 120px rgba(255,106,0,0.2);
+  letter-spacing:2px;line-height:1;text-align:center;}
+.j-title .hl{color:var(--orange);
+  text-shadow:0 0 40px rgba(255,106,0,1),0 0 80px rgba(255,106,0,0.5);}
+.j-sub{font-family:var(--fm);font-size:9px;letter-spacing:6px;
+  color:rgba(255,106,0,0.4);margin-top:8px;margin-bottom:36px;}
 
-/* ── WAITING ── */
+.jpanel{background:rgba(4,10,20,0.96);
+  border:1px solid rgba(255,106,0,0.2);
+  border-top:2px solid var(--orange);
+  padding:28px 34px;width:min(420px,92vw);
+  box-shadow:0 0 60px rgba(255,106,0,0.08),0 30px 80px rgba(0,0,0,0.7);
+  position:relative;}
+.jpanel::before{content:'';position:absolute;top:0;left:20px;right:20px;
+  height:1px;background:linear-gradient(90deg,transparent,rgba(255,106,0,0.8),transparent);}
+.ph{font-size:10px;letter-spacing:5px;color:var(--orange);margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;}
+.ph::before,.ph::after{content:'';flex:1;height:1px;background:rgba(255,106,0,0.2);}
+
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-family:var(--fm);font-size:8px;letter-spacing:3px;
+  color:rgba(255,106,0,0.55);margin-bottom:5px;text-transform:uppercase;}
+.fg input{width:100%;background:rgba(0,8,20,0.9);
+  border:1px solid rgba(255,106,0,0.18);border-bottom:1px solid rgba(255,106,0,0.4);
+  color:#fff;padding:10px 13px;font-family:var(--fm);font-size:14px;
+  outline:none;letter-spacing:2px;transition:border-color .2s;}
+.fg input:focus{border-color:rgba(255,106,0,0.7);
+  box-shadow:0 0 12px rgba(255,106,0,0.15);}
+.fg input::placeholder{color:rgba(200,232,255,0.2);font-size:11px;letter-spacing:1px;}
+
+.color-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;}
+.cb{height:26px;border-radius:3px;border:2px solid rgba(255,255,255,0);
+  cursor:pointer;transition:all .15s;box-shadow:inset 0 1px 0 rgba(255,255,255,0.3);}
+.cb.sel{border-color:#fff;transform:scale(1.18);
+  box-shadow:0 0 10px currentColor,inset 0 1px 0 rgba(255,255,255,0.3);}
+
+.ctrl-info{background:rgba(255,106,0,0.06);border:1px solid rgba(255,106,0,0.15);
+  padding:10px 14px;margin:10px 0;font-family:var(--fm);font-size:8px;
+  color:rgba(255,200,100,0.6);line-height:1.8;letter-spacing:.5px;}
+.ctrl-info strong{color:rgba(255,150,50,0.9);}
+
+.btn-join{width:100%;margin-top:8px;
+  background:linear-gradient(135deg,rgba(255,106,0,0.22),rgba(255,60,0,0.1));
+  border:1px solid rgba(255,106,0,0.5);border-top:1px solid rgba(255,150,0,0.8);
+  color:var(--orange);padding:14px;font-size:15px;font-weight:800;
+  letter-spacing:4px;cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;}
+.btn-join::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,106,0,0.12),transparent);
+  transform:translateX(-100%);transition:transform .4s;}
+.btn-join:hover::after{transform:translateX(100%);}
+.btn-join:hover{background:rgba(255,106,0,0.28);
+  box-shadow:0 0 28px rgba(255,106,0,0.22);}
+.j-err{font-family:var(--fm);font-size:9px;color:var(--red);
+  text-align:center;margin-top:7px;min-height:14px;letter-spacing:1px;}
+
+/* ══ WAITING ══ */
 #waiting{flex-direction:column;align-items:center;justify-content:center;
   background:var(--bg);position:relative;overflow:hidden;}
 #wbg{position:absolute;inset:0;}
 .wz{position:relative;z-index:2;display:flex;flex-direction:column;
-  align-items:center;text-align:center;gap:12px;}
-.w-icon{font-size:60px;animation:hov 1.8s ease-in-out infinite;}
-@keyframes hov{0%,100%{transform:translateY(0) rotate(-5deg);}
-  50%{transform:translateY(-12px) rotate(5deg);}}
-.w-title{font-size:clamp(18px,3vw,30px);font-weight:800;color:#fff;}
-.w-name{font-size:clamp(22px,4vw,40px);font-weight:900;}
-.w-dots{display:flex;gap:6px;}
-.w-dot{width:9px;height:9px;border-radius:50%;
+  align-items:center;text-align:center;gap:14px;}
+.w-car{font-size:64px;animation:carBob 1.6s ease-in-out infinite;}
+@keyframes carBob{0%,100%{transform:translateY(0) rotate(-4deg);}
+  50%{transform:translateY(-14px) rotate(4deg);}}
+.w-title{font-size:clamp(18px,3vw,32px);font-weight:900;color:#fff;letter-spacing:2px;}
+.w-name{font-size:clamp(24px,4vw,44px);font-weight:900;}
+.w-dots{display:flex;gap:7px;}
+.wd{width:10px;height:10px;border-radius:50%;
   animation:blink 1.3s ease-in-out infinite;}
-.w-dot:nth-child(2){animation-delay:.2s;}
-.w-dot:nth-child(3){animation-delay:.4s;}
+.wd:nth-child(2){animation-delay:.22s;}
+.wd:nth-child(3){animation-delay:.44s;}
 @keyframes blink{0%,80%,100%{opacity:.15;}40%{opacity:1;}}
-.w-status{font-family:var(--fm);font-size:10px;letter-spacing:2px;
-  color:rgba(255,255,255,0.35);}
-
-/* ── GAME ── */
-#game{flex-direction:column;overflow:hidden;background:#000;}
-#game-canvas-wrap{flex:1;position:relative;display:flex;
-  align-items:center;justify-content:center;overflow:hidden;}
-#gc{display:block;}
-
-/* Score bar */
-#scorebar{flex-shrink:0;height:52px;background:rgba(3,7,15,0.98);
-  border-bottom:1px solid rgba(255,255,255,0.08);
-  display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
-.sb-team{display:flex;align-items:center;gap:10px;}
-.sb-name{font-size:13px;font-weight:800;letter-spacing:1px;}
-.sb-score{font-size:28px;font-weight:900;min-width:36px;text-align:center;}
-.sb-mid{display:flex;flex-direction:column;align-items:center;gap:2px;}
-.sb-timer{font-family:var(--fm);font-size:18px;font-weight:700;color:#fff;letter-spacing:2px;}
-.sb-label{font-family:var(--fm);font-size:7px;letter-spacing:3px;
+.w-msg{font-family:var(--fm);font-size:9px;letter-spacing:3px;
   color:rgba(255,255,255,0.3);}
 
-/* Boost bar */
-.boost-bar-wrap{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;}
-.boost-label{font-family:var(--fm);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.4);}
-.boost-track{width:120px;height:8px;background:rgba(255,255,255,0.08);
-  border-radius:4px;overflow:hidden;}
-.boost-fill{height:100%;border-radius:4px;transition:width 0.1s;
-  background:linear-gradient(90deg,var(--orange),var(--gold));}
+/* ══ GAME ══ */
+#game{flex-direction:column;overflow:hidden;background:#000;}
+
+/* Score HUD */
+#scorehud{flex-shrink:0;height:58px;
+  background:linear-gradient(180deg,rgba(5,10,20,1),rgba(2,5,10,0.95));
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;position:relative;}
+#scorehud::after{content:'';position:absolute;bottom:0;left:0;right:0;
+  height:1px;background:linear-gradient(90deg,
+    transparent,rgba(255,106,0,0.4),rgba(0,184,255,0.4),transparent);}
+.sh-team{display:flex;align-items:center;gap:12px;}
+.sh-score{font-size:32px;font-weight:900;min-width:40px;
+  text-shadow:0 0 20px currentColor;}
+.sh-name{font-size:14px;font-weight:700;letter-spacing:1px;}
+.sh-boost{width:60px;height:5px;background:rgba(255,255,255,0.08);
+  border-radius:3px;overflow:hidden;margin-top:4px;}
+.sh-boost-fill{height:100%;border-radius:3px;transition:width .1s;}
+.sh-mid{display:flex;flex-direction:column;align-items:center;}
+.sh-timer{font-family:var(--fm);font-size:22px;font-weight:700;
+  color:#fff;letter-spacing:3px;text-shadow:0 0 15px rgba(255,255,255,0.3);}
+.sh-timer.warn{color:var(--red);text-shadow:0 0 15px rgba(255,34,68,0.5);
+  animation:timerPulse .5s ease-in-out infinite alternate;}
+@keyframes timerPulse{from{opacity:1;}to{opacity:.6;}}
+.sh-lbl{font-family:var(--fm);font-size:7px;letter-spacing:4px;
+  color:rgba(255,255,255,0.25);margin-top:2px;}
+
+/* Canvas wrap */
+#cwrap{flex:1;position:relative;display:flex;
+  align-items:center;justify-content:center;overflow:hidden;
+  background:radial-gradient(ellipse at center,#050e05 0%,#020508 100%);}
+#gc{display:block;border-radius:2px;}
+
+/* Commentary */
+#comm{position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  background:rgba(3,8,18,0.94);
+  border:1px solid rgba(255,106,0,0.25);border-top:2px solid var(--orange);
+  padding:6px 18px;font-family:var(--fm);font-size:10px;
+  color:rgba(255,180,80,0.9);max-width:520px;text-align:center;
+  pointer-events:none;transition:opacity .6s;letter-spacing:1px;
+  white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
 
 /* Controls hint */
-.ctrl-hint{position:absolute;bottom:14px;font-family:var(--fm);
-  font-size:8px;color:rgba(255,255,255,0.25);letter-spacing:1px;pointer-events:none;}
+.hint{position:absolute;bottom:10px;font-family:var(--fm);font-size:8px;
+  color:rgba(255,255,255,0.2);letter-spacing:1px;pointer-events:none;
+  background:rgba(0,0,0,0.4);padding:3px 10px;border-radius:10px;}
 
-/* Quiz overlay */
-#qoverlay{display:none;position:fixed;inset:0;background:rgba(0,0,8,0.92);
-  z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
-#qoverlay.show{display:flex;}
-.qbox{background:#030a14;border:1px solid rgba(255,106,0,0.5);
-  border-top:3px solid var(--orange);width:min(600px,94vw);
-  max-height:90vh;overflow-y:auto;
-  box-shadow:0 0 80px rgba(255,106,0,0.15);
-  animation:qin .28s cubic-bezier(.16,1,.3,1);}
-@keyframes qin{from{transform:scale(.9) translateY(16px);opacity:0;}to{transform:none;opacity:1;}}
+/* ══ GOAL FLASH ══ */
+#gflash{position:fixed;inset:0;pointer-events:none;z-index:300;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .25s;}
+#gflash.show{opacity:1;}
+.gt{font-size:clamp(60px,12vw,120px);font-weight:900;letter-spacing:4px;
+  animation:goalPop .35s cubic-bezier(.17,.67,.35,1.5);}
+.gs{font-family:var(--fm);font-size:13px;letter-spacing:4px;
+  margin-top:8px;opacity:.85;}
+.goverlay{position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(255,215,0,0.12),transparent 70%);
+  pointer-events:none;}
+@keyframes goalPop{from{transform:scale(.3) rotate(-8deg);opacity:0;}
+  to{transform:scale(1) rotate(0);opacity:1;}}
+
+/* ══ QUIZ ══ */
+#qov{display:none;position:fixed;inset:0;background:rgba(0,0,5,0.92);
+  z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+#qov.show{display:flex;}
+.qm{background:linear-gradient(180deg,#030c18,#020810);
+  border:1px solid rgba(255,106,0,0.45);border-top:3px solid var(--orange);
+  width:min(620px,95vw);max-height:92vh;overflow-y:auto;
+  box-shadow:0 0 100px rgba(255,106,0,0.12),0 0 200px rgba(0,0,0,0.9);
+  animation:qin .3s cubic-bezier(.16,1,.3,1);}
+@keyframes qin{from{transform:scale(.88) translateY(20px);opacity:0;}to{transform:none;opacity:1;}}
 .qscan{position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,
-    rgba(0,20,40,.25) 2px,rgba(0,20,40,.25) 4px);}
-.qi{position:relative;z-index:1;padding:22px 26px;}
-.qtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,
+    rgba(255,106,0,0.02) 3px,rgba(255,106,0,0.02) 4px);}
+.qi{position:relative;z-index:1;padding:26px 30px;}
+.qtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .qtag{font-family:var(--fm);font-size:8px;letter-spacing:3px;color:var(--orange);
-  background:rgba(255,106,0,0.07);border:1px solid rgba(255,106,0,0.2);padding:3px 9px;}
-.qpower{font-size:11px;font-weight:700;letter-spacing:2px;padding:3px 10px;
-  background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.3);}
-.qprow{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.qicon{width:38px;height:38px;border-radius:2px;display:flex;
-  align-items:center;justify-content:center;font-size:22px;border:2px solid;}
-.qpname{font-size:16px;font-weight:800;}
+  background:rgba(255,106,0,0.08);border:1px solid rgba(255,106,0,0.22);padding:3px 10px;}
+.qbadge{font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 12px;
+  background:rgba(255,215,0,0.12);color:var(--gold);
+  border:1px solid rgba(255,215,0,0.3);}
+.qprow{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.qico{width:42px;height:42px;border-radius:3px;display:flex;
+  align-items:center;justify-content:center;font-size:24px;border:2px solid;}
+.qpname{font-size:18px;font-weight:900;letter-spacing:1px;}
 .qpsub{font-family:var(--fm);font-size:8px;opacity:.4;letter-spacing:2px;margin-top:2px;}
-.qtbar{height:4px;background:rgba(255,255,255,.07);margin-bottom:16px;
-  border-radius:2px;overflow:hidden;}
-.qtfill{height:100%;border-radius:2px;transition:width .1s linear;}
-.qq{font-size:clamp(13px,1.5vw,16px);font-weight:500;line-height:1.7;
-  color:#ddeeff;margin-bottom:16px;border-left:3px solid rgba(255,106,0,0.4);padding-left:12px;}
-.qcs{display:flex;flex-direction:column;gap:7px;}
-.qc{background:rgba(8,18,32,.9);border:1px solid rgba(255,106,0,0.12);
-  border-left:3px solid transparent;padding:10px 14px;font-size:13px;
-  color:rgba(200,232,255,.8);cursor:pointer;text-align:left;
-  transition:all .15s;display:flex;align-items:center;gap:10px;width:100%;}
+.qtbar{height:5px;background:rgba(255,255,255,.06);margin-bottom:18px;
+  border-radius:3px;overflow:hidden;}
+.qtfill{height:100%;border-radius:3px;transition:width .1s linear;}
+.qq{font-size:clamp(14px,1.6vw,17px);font-weight:500;line-height:1.75;
+  color:#e8f0ff;margin-bottom:18px;
+  border-left:4px solid rgba(255,106,0,0.5);padding-left:14px;}
+.qcs{display:flex;flex-direction:column;gap:8px;}
+.qc{background:rgba(6,14,28,.95);
+  border:1px solid rgba(255,106,0,0.1);border-left:4px solid transparent;
+  padding:12px 16px;font-size:14px;color:rgba(200,232,255,.82);
+  cursor:pointer;text-align:left;transition:all .15s;
+  display:flex;align-items:center;gap:12px;width:100%;font-family:var(--fu);}
 .qc:hover:not(:disabled){background:rgba(255,106,0,0.08);
-  border-left-color:var(--orange);color:#fff;transform:translateX(3px);}
-.ql{font-family:var(--fm);font-size:11px;font-weight:700;
-  color:var(--orange);min-width:18px;}
+  border-left-color:var(--orange);color:#fff;transform:translateX(4px);}
+.ql{font-family:var(--fm);font-size:12px;font-weight:700;
+  color:var(--orange);min-width:20px;}
 .qc.correct{background:rgba(0,255,136,.1);border-color:var(--green);
   border-left-color:var(--green);color:#aaffcc;}
 .qc.correct .ql{color:var(--green);}
 .qc.wrong{background:rgba(255,34,68,.08);border-color:var(--red);
   border-left-color:var(--red);color:#ffaaaa;}
-.qres{margin-top:12px;padding:10px 14px;text-align:center;
-  font-size:13px;font-weight:700;letter-spacing:3px;display:none;border-radius:1px;}
+.qres{margin-top:14px;padding:12px 16px;text-align:center;
+  font-size:14px;font-weight:700;letter-spacing:3px;display:none;border-radius:2px;}
 .qres.show{display:block;}
 .qres.ok{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.35);color:var(--green);}
 .qres.fail{background:rgba(255,34,68,.07);border:1px solid rgba(255,34,68,.25);color:var(--red);}
 
-/* Goal celebration */
-#goal-flash{position:fixed;inset:0;pointer-events:none;z-index:150;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  opacity:0;transition:opacity .3s;}
-#goal-flash.show{opacity:1;}
-.goal-text{font-size:clamp(48px,10vw,100px);font-weight:900;
-  text-shadow:0 0 40px currentColor;letter-spacing:4px;animation:goalPop .4s ease;}
-.goal-scorer{font-family:var(--fm);font-size:14px;letter-spacing:3px;
-  margin-top:8px;opacity:.8;}
-@keyframes goalPop{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
-
-/* Commentary ticker */
-#commentary{position:absolute;top:8px;left:50%;transform:translateX(-50%);
-  background:rgba(4,10,20,.92);border:1px solid rgba(255,106,0,.2);
-  border-top:2px solid var(--orange);padding:5px 16px;
-  font-family:var(--fm);font-size:9px;color:rgba(255,200,100,.85);
-  max-width:500px;text-align:center;pointer-events:none;
-  transition:opacity .5s;letter-spacing:1px;white-space:nowrap;}
-
-/* Final screen */
+/* ══ FINAL ══ */
 #final{flex-direction:column;align-items:center;justify-content:center;
   background:var(--bg);position:relative;overflow:hidden;}
 #fbg{position:absolute;inset:0;}
 .fz{position:relative;z-index:2;display:flex;flex-direction:column;
-  align-items:center;text-align:center;}
-.f-over{font-family:var(--fm);font-size:10px;letter-spacing:6px;
-  color:rgba(255,106,0,.5);margin-bottom:8px;}
-.f-title{font-size:clamp(28px,6vw,60px);font-weight:900;color:#fff;
-  text-shadow:0 0 40px rgba(255,106,0,.5);letter-spacing:3px;}
-.f-winner{font-size:clamp(14px,2vw,20px);margin-top:8px;margin-bottom:28px;
-  letter-spacing:2px;}
-.score-display{display:flex;align-items:center;gap:30px;
-  background:rgba(4,12,24,.95);border:1px solid rgba(255,106,0,.3);
-  border-top:2px solid var(--orange);padding:20px 40px;margin-bottom:24px;}
-.score-team{display:flex;flex-direction:column;align-items:center;gap:6px;}
-.score-team-name{font-size:14px;font-weight:700;letter-spacing:2px;}
-.score-team-score{font-size:56px;font-weight:900;}
-.score-vs{font-family:var(--fm);font-size:16px;color:rgba(255,255,255,.3);}
-.btn-again{background:transparent;border:1px solid rgba(255,106,0,.4);
-  color:var(--orange);padding:11px 36px;font-size:13px;font-weight:700;
-  letter-spacing:4px;cursor:pointer;transition:all .2s;}
-.btn-again:hover{background:rgba(255,106,0,.1);}
+  align-items:center;text-align:center;gap:6px;}
+.f-over{font-family:var(--fm);font-size:10px;letter-spacing:7px;
+  color:rgba(255,106,0,0.45);margin-bottom:4px;}
+.f-title{font-size:clamp(32px,7vw,72px);font-weight:900;color:#fff;
+  text-shadow:0 0 50px rgba(255,106,0,0.5),0 0 100px rgba(255,106,0,0.2);
+  letter-spacing:3px;}
+.f-winner{font-size:clamp(14px,2vw,22px);font-weight:700;
+  margin-top:4px;margin-bottom:28px;letter-spacing:2px;}
+.f-scores{display:flex;align-items:center;gap:36px;
+  background:rgba(4,10,20,.96);
+  border:1px solid rgba(255,106,0,0.25);border-top:3px solid var(--orange);
+  padding:24px 48px;margin-bottom:28px;
+  box-shadow:0 0 60px rgba(255,106,0,0.08);}
+.f-team{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.f-tname{font-size:15px;font-weight:700;letter-spacing:2px;}
+.f-tscore{font-size:64px;font-weight:900;
+  text-shadow:0 0 30px currentColor;line-height:1;}
+.f-vs{font-family:var(--fm);font-size:18px;color:rgba(255,255,255,.2);letter-spacing:4px;}
+.btn-again{background:transparent;border:1px solid rgba(255,106,0,0.4);
+  color:var(--orange);padding:12px 40px;font-size:13px;font-weight:800;
+  letter-spacing:4px;cursor:pointer;transition:all .2s;font-family:var(--fu);}
+.btn-again:hover{background:rgba(255,106,0,0.1);
+  box-shadow:0 0 24px rgba(255,106,0,0.2);}
 
 ::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-thumb{background:rgba(255,106,0,.2);}
+::-webkit-scrollbar-thumb{background:rgba(255,106,0,0.2);}
 </style>
 </head>
 <body>
@@ -204,18 +255,30 @@ body{background:var(--bg);color:var(--text);font-family:var(--fu);
 <div id="join" class="screen active">
   <canvas id="jbg"></canvas>
   <div class="jz">
-    <div class="j-title">MR. TAREEN'S<br><span>ROCKET CALC</span> 🚀</div>
-    <div class="j-sub">⬡ 1v1 PHYSICS MADNESS — AP CALCULUS AB ⬡</div>
+    <div class="j-eyebrow">⬡ AP CALCULUS AB — MR. TAREEN ⬡</div>
+    <div class="j-title">MR. TAREEN'S<br><span class="hl">ROCKET CALC</span> 🚀</div>
+    <div class="j-sub">HIGH-OCTANE 1v1 PHYSICS MADNESS</div>
     <div class="jpanel">
-      <div class="jph">JOIN MATCH</div>
-      <div class="fg"><label>YOUR NAME</label>
-        <input id="pname" type="text" placeholder="Enter your name…" maxlength="14" autofocus/></div>
-      <div class="fg"><label>ROOM CODE</label>
+      <div class="ph">JOIN MATCH</div>
+      <div class="fg">
+        <label>Your Callsign</label>
+        <input id="pname" type="text" placeholder="Enter your name…" maxlength="14" autofocus/>
+      </div>
+      <div class="fg">
+        <label>Room Code</label>
         <input id="rcode" type="text" placeholder="6-LETTER CODE" maxlength="6"
-          oninput="this.value=this.value.toUpperCase()" style="font-size:20px;letter-spacing:6px;"/></div>
-      <div class="fg"><label>CAR COLOR</label>
-        <div class="color-grid" id="color-grid"></div></div>
-      <button class="btn-join" onclick="joinGame()">🚀 LAUNCH CAR!</button>
+          oninput="this.value=this.value.toUpperCase()"
+          style="font-size:22px;letter-spacing:8px;text-align:center;"/>
+      </div>
+      <div class="fg">
+        <label>Car Color</label>
+        <div class="color-grid" id="cgrid"></div>
+      </div>
+      <div class="ctrl-info">
+        <strong>↑</strong> Accelerate &nbsp;|&nbsp; <strong>↓</strong> Brake/Reverse &nbsp;|&nbsp;
+        <strong>← →</strong> Steer &nbsp;|&nbsp; <strong>Enter</strong> 🔥 Boost
+      </div>
+      <button class="btn-join" onclick="doJoin()">🚀 LAUNCH CAR!</button>
       <div class="j-err" id="jerr"></div>
     </div>
   </div>
@@ -225,67 +288,73 @@ body{background:var(--bg);color:var(--text);font-family:var(--fu);
 <div id="waiting" class="screen">
   <canvas id="wbg"></canvas>
   <div class="wz">
-    <div class="w-icon">🏎️</div>
-    <div class="w-title">CAR READY!</div>
+    <div class="w-car">🏎️</div>
+    <div class="w-title">ENGINE RUNNING!</div>
     <div class="w-name" id="w-pname"></div>
     <div class="w-dots">
-      <div class="w-dot" style="background:var(--orange)"></div>
-      <div class="w-dot" style="background:var(--orange)"></div>
-      <div class="w-dot" style="background:var(--orange)"></div>
+      <div class="wd" style="background:var(--orange)"></div>
+      <div class="wd" style="background:var(--orange)"></div>
+      <div class="wd" style="background:var(--orange)"></div>
     </div>
-    <div class="w-status" id="w-status">Waiting for opponent…</div>
-    <div style="font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.25);
-      letter-spacing:1px;margin-top:4px;" id="w-room"></div>
+    <div class="w-msg" id="w-msg">Waiting for opponent…</div>
+    <div style="font-family:var(--fm);font-size:8px;color:rgba(255,255,255,.2);
+      letter-spacing:2px;" id="w-code"></div>
   </div>
 </div>
 
 <!-- GAME -->
 <div id="game" class="screen">
-  <div id="scorebar">
-    <div class="sb-team">
-      <div class="sb-score" id="sb-s1" style="color:var(--orange)">0</div>
-      <div class="sb-name" id="sb-n1" style="color:var(--orange)">Player 1</div>
+  <div id="scorehud">
+    <div class="sh-team">
+      <div>
+        <div class="sh-score" id="s1" style="color:var(--orange)">0</div>
+        <div class="sh-boost"><div class="sh-boost-fill" id="b1"
+          style="width:100%;background:var(--orange)"></div></div>
+      </div>
+      <div class="sh-name" id="n1" style="color:var(--orange)">P1</div>
     </div>
-    <div class="sb-mid">
-      <div class="sb-timer" id="sb-timer">3:00</div>
-      <div class="sb-label">TIME REMAINING</div>
+    <div class="sh-mid">
+      <div class="sh-timer" id="timer">3:00</div>
+      <div class="sh-lbl">TIME REMAINING</div>
     </div>
-    <div class="sb-team">
-      <div class="sb-name" id="sb-n2" style="color:var(--blue)">Player 2</div>
-      <div class="sb-score" id="sb-s2" style="color:var(--blue)">0</div>
+    <div class="sh-team" style="flex-direction:row-reverse">
+      <div>
+        <div class="sh-score" id="s2" style="color:var(--blue);text-align:right">0</div>
+        <div class="sh-boost"><div class="sh-boost-fill" id="b2"
+          style="width:100%;background:var(--blue)"></div></div>
+      </div>
+      <div class="sh-name" id="n2" style="color:var(--blue)">P2</div>
     </div>
   </div>
-  <div id="game-canvas-wrap">
+  <div id="cwrap">
     <canvas id="gc"></canvas>
-    <div id="commentary">Mr. Tareen says: Buckle up, Spartans! 🚀</div>
-    <div class="boost-bar-wrap">
-      <div class="boost-label">BOOST</div>
-      <div class="boost-track"><div class="boost-fill" id="boost-fill" style="width:100%"></div></div>
-    </div>
-    <div class="ctrl-hint" style="left:14px;">W/A/S/D + SHIFT=Boost</div>
-    <div class="ctrl-hint" style="right:14px;">↑↓←→ + ENTER=Boost</div>
+    <div id="comm">🚀 Mr. Tareen blows the whistle — LET'S GO!</div>
+    <div class="hint" style="left:14px;">↑↓ Drive &nbsp;|&nbsp; ←→ Steer &nbsp;|&nbsp; Enter=Boost 🔥</div>
   </div>
 </div>
 
 <!-- GOAL FLASH -->
-<div id="goal-flash">
-  <div class="goal-text" id="goal-text" style="color:var(--gold)">GOAL!</div>
-  <div class="goal-scorer" id="goal-scorer"></div>
+<div id="gflash">
+  <div class="goverlay"></div>
+  <div class="gt" id="gtxt" style="color:var(--gold)">⚽ GOAL!</div>
+  <div class="gs" id="gsub"></div>
 </div>
 
 <!-- QUIZ -->
-<div id="qoverlay">
-  <div class="qbox" style="position:relative;">
+<div id="qov">
+  <div class="qm" style="position:relative">
     <div class="qscan"></div>
     <div class="qi">
       <div class="qtop">
         <div class="qtag" id="qtag">SECTION 7.4</div>
-        <div class="qpower">⚡ POWER-UP QUESTION</div>
+        <div class="qbadge">⚡ POWER-UP — ANSWER FOR BOOST!</div>
       </div>
       <div class="qprow">
-        <div class="qicon" id="qicon">🚀</div>
-        <div><div class="qpname" id="qpname">Player</div>
-          <div class="qpsub" id="qpsub">ANSWER CORRECTLY FOR BOOST!</div></div>
+        <div class="qico" id="qico">🚀</div>
+        <div>
+          <div class="qpname" id="qpname">Racer</div>
+          <div class="qpsub">CORRECT = MAX BOOST | WRONG = OPPONENT GETS IT!</div>
+        </div>
       </div>
       <div class="qtbar"><div class="qtfill" id="qtfill"
         style="width:100%;background:var(--orange)"></div></div>
@@ -300,18 +369,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--fu);
 <div id="final" class="screen">
   <canvas id="fbg"></canvas>
   <div class="fz">
-    <div class="f-over">MATCH COMPLETE — FULL TIME</div>
+    <div class="f-over">FULL TIME — MATCH COMPLETE</div>
     <div class="f-title">🏆 FINAL SCORE</div>
-    <div class="f-winner" id="f-winner"></div>
-    <div class="score-display">
-      <div class="score-team">
-        <div class="score-team-name" id="f-n1" style="color:var(--orange)">P1</div>
-        <div class="score-team-score" id="f-s1" style="color:var(--orange)">0</div>
+    <div class="f-winner" id="fwin"></div>
+    <div class="f-scores">
+      <div class="f-team">
+        <div class="f-tname" id="fn1" style="color:var(--orange)">P1</div>
+        <div class="f-tscore" id="fs1" style="color:var(--orange)">0</div>
       </div>
-      <div class="score-vs">VS</div>
-      <div class="score-team">
-        <div class="score-team-name" id="f-n2" style="color:var(--blue)">P2</div>
-        <div class="score-team-score" id="f-s2" style="color:var(--blue)">0</div>
+      <div class="f-vs">VS</div>
+      <div class="f-team">
+        <div class="f-tname" id="fn2" style="color:var(--blue)">P2</div>
+        <div class="f-tscore" id="fs2" style="color:var(--blue)">0</div>
       </div>
     </div>
     <button class="btn-again" onclick="location.reload()">↩ REMATCH</button>
@@ -319,262 +388,258 @@ body{background:var(--bg);color:var(--text);font-family:var(--fu);
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// CALCULUS QUESTIONS
-// ═══════════════════════════════════════════════════════
+'use strict';
+// ═══════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════
+const FW=1000,FH=620,GH=160,GW=20,BR=13,MT=180;
+const CAR_L=36,CAR_W=22;
+
+// Physics — PROPER arcade car model
+const MAX_SPEED=320;
+const BOOST_SPEED=520;
+const ACCEL=420;
+const BRAKE_FORCE=480;
+const REVERSE_SPEED=120;
+const STEER_SPEED=2.8;      // radians/sec — only when moving
+const FRICTION_GROUND=0.90; // per frame at 60fps
+const DRIFT_FACTOR=0.92;    // lateral velocity damping
+const BALL_BOUNCE=0.68;
+const BOOST_MAX=100;
+const BOOST_DRAIN=60;
+const BOOST_REGEN=14;
+
+const CAR_COLORS=['#ff4444','#ff6a00','#ffd700','#00ff88',
+  '#00b8ff','#cc44ff','#ff69b4','#ffffff',
+  '#ff2244','#00ffcc','#ff8800','#44aaff'];
+
 const TOPICS={"7.4":"Slope Fields","7.6":"Separation of Variables",
   "7.7":"Particular Solutions","7.8":"Exponential Models"};
+
 const QS=[
-  {t:"7.4",q:"For dy/dx = x−y, horizontal tangents occur where:",
-    cs:["x=0","y=0","x=y","y=−x"],a:2},
-  {t:"7.4",q:"dy/dx = y² has slope 0 along:",
-    cs:["y=1","x=0","y=0","x=y"],a:2},
-  {t:"7.4",q:"Which DE has all positive slopes in Quadrant I?",
-    cs:["dy/dx=−xy","dy/dx=x+y","dy/dx=x−y","dy/dx=−x"],a:1},
-  {t:"7.6",q:"Separate dy/dx = 2x/y. Which integral is correct?",
-    cs:["∫y dy=∫2x dx","∫dy/y=∫2x dx","∫y dy=∫x dx","∫1/y dy=∫2 dx"],a:0},
-  {t:"7.6",q:"General solution to dy/dx = ky:",
-    cs:["y=kx+C","y=Ce^(kx)","y=e^(kx)+C","y=k·ln|x|+C"],a:1},
-  {t:"7.6",q:"Which DE is NOT separable?",
-    cs:["dy/dx=xy","dy/dx=x+y","dy/dx=x/y","dy/dx=y·e^x"],a:1},
-  {t:"7.7",q:"Particular solution to dy/dx=2x with y(0)=5:",
-    cs:["y=x²+5","y=2x+5","y=x²−5","y=2x²+5"],a:0},
-  {t:"7.7",q:"Solve dy/dx=3y with y(0)=2:",
-    cs:["y=3e^(2x)","y=2e^(3x)","y=2+3x","y=6e^x"],a:1},
-  {t:"7.7",q:"dy/dx=−2y, y(0)=10. Find y(1):",
-    cs:["10e^(−2)","−20","10e^2","8"],a:0},
-  {t:"7.7",q:"Solve dy/dx=2xy with y(0)=1:",
-    cs:["y=e^(x²)","y=e^(2x)","y=x²+1","y=2x+1"],a:0},
-  {t:"7.8",q:"y=5e^(3t) satisfies dy/dt=ky. Find k:",
-    cs:["k=5","k=3","k=15","k=1/3"],a:1},
-  {t:"7.8",q:"4% continuous decay model:",
-    cs:["A=A₀e^(0.04t)","A=A₀(0.96)^t","A=A₀e^(−0.04t)","A=A₀−0.04t"],a:2},
-  {t:"7.8",q:"Newton's Cooling: for a cooling object, k is:",
-    cs:["Positive","Negative","Zero","Any real number"],a:1},
-  {t:"7.8",q:"Solution to logistic dP/dt=kP(1−P/M):",
-    cs:["P=Ce^(kt)","P=M/(1+Ae^(−kt))","P=M·e^(kt)","P=kMt"],a:1},
-  {t:"7.4",q:"Slope field for dy/dx=−y: curves with y>0 will:",
-    cs:["Grow exponentially","Approach y=0 from above","Oscillate","Become vertical"],a:1},
+  {t:"7.4",q:"dy/dx = x−y has horizontal tangents where:",cs:["x = 0","y = 0","x = y","y = −x"],a:2},
+  {t:"7.4",q:"dy/dx = y² — slope along y = 0 is:",cs:["Undefined","1","0","−1"],a:2},
+  {t:"7.4",q:"Which DE has all positive slopes in Quadrant I?",cs:["dy/dx = −xy","dy/dx = x+y","dy/dx = x−y","dy/dx = −x"],a:1},
+  {t:"7.6",q:"Separating dy/dx = 2x/y gives:",cs:["∫y dy = ∫2x dx","∫dy/y = ∫2x dx","∫y dy = ∫x dx","∫1/y dy = ∫2 dx"],a:0},
+  {t:"7.6",q:"General solution to dy/dx = ky:",cs:["y = kx+C","y = Ce^(kx)","y = e^(kx)+C","y = k ln|x|+C"],a:1},
+  {t:"7.6",q:"Which DE is NOT separable?",cs:["dy/dx = xy","dy/dx = x+y","dy/dx = x/y","dy/dx = ye^x"],a:1},
+  {t:"7.7",q:"dy/dx = 2x with y(0) = 5:",cs:["y = x²+5","y = 2x+5","y = x²−5","y = 2x²+5"],a:0},
+  {t:"7.7",q:"dy/dx = 3y with y(0) = 2:",cs:["y = 3e^(2x)","y = 2e^(3x)","y = 2+3x","y = 6e^x"],a:1},
+  {t:"7.7",q:"dy/dx = −2y, y(0) = 10. Find y(1):",cs:["10e^(−2)","−20","10e^2","8"],a:0},
+  {t:"7.7",q:"dy/dx = 2xy, y(0) = 1:",cs:["y = e^(x²)","y = e^(2x)","y = x²+1","y = 2x+1"],a:0},
+  {t:"7.8",q:"y = 5e^(3t) satisfies dy/dt = ky. k = ?",cs:["5","3","15","1/3"],a:1},
+  {t:"7.8",q:"4% continuous decay model:",cs:["A₀e^(0.04t)","A₀(0.96)^t","A₀e^(−0.04t)","A₀−0.04t"],a:2},
+  {t:"7.8",q:"Newton's Cooling: cooling object, k is:",cs:["Positive","Negative","Zero","Any real"],a:1},
+  {t:"7.8",q:"Logistic dP/dt = kP(1−P/M) solution:",cs:["Ce^(kt)","M/(1+Ae^(−kt))","Me^(kt)","kMt"],a:1},
 ];
 
-// Commentary lines
-const TAREEN_COMMENTARY = [
-  "Mr. Tareen screams into the void! 😱",
-  "As Mr. Tareen always says: integrate harder! 💪",
-  "That's what a stable equilibrium looks like! 🎯",
-  "dy/dx of that move = INFINITE! 🔥",
-  "Mr. Tareen spills his coffee! ☕",
-  "The limit of that shot approaches GLORY! ✨",
-  "That's separable from all other plays! 🤯",
-  "Mr. Tareen stands up from his chair! 🪑",
-  "e^amazing right there! 📈",
-  "Particular solution: GET THAT GOAL! 🏆",
+const GOAL_LINES=["GOOOOOAL! Mr. Tareen's wig flies off! 🎉",
+  "dy/dx of that shot = VERTICAL! 🚀","SCORE! Mr. Tareen does a backflip! 🤸",
+  "GOAL! Particular solution to WINNING! 🏆","SCORE! e^amazing! 📈"];
+const COMMENTARY=["Mr. Tareen spills his coffee! ☕",
+  "dy/dx of that move = INFINITE! 🔥","The limit of that shot approaches GLORY! ✨",
+  "e^amazing right there! 📈","Mr. Tareen stands up! 🪑",
   "Newton's law of scoring = always positive! ➕",
-  "That shot was exponentially good! 📊",
-];
-const GOAL_COMMENTS = [
-  "GOOOOOAL! Mr. Tareen's wig flies off! 🎉",
-  "dy/dx of that = VERTICAL! 🚀",
-  "GOAL! The integral under that curve = INFINITE! ∞",
-  "SCORE! Mr. Tareen does a backflip! 🤸",
-  "GOAL! That was a particular solution to WINNING! 🏆",
-];
-const MISS_COMMENTS = [
-  "Mr. Tareen facepalms... 🤦",
-  "Even Carbon-14 decays faster than that shot 😬",
-  "The limit of that aim does NOT exist 😅",
-  "Show your work on how you missed that! 📝",
-  "dy/dx of that shot = undefined 📉",
-];
-const POWERUP_CORRECT = [
-  "CORRECT! Full boost! Physics + Calculus = UNSTOPPABLE! 🔥",
-  "RIGHT ANSWER! Turbocharged! Mr. Tareen nods approvingly 💪",
-  "NICE! Boost max! dy/dx of your skill = huge! 📈",
-];
-const POWERUP_WRONG = [
-  "WRONG! No boost for you! Study section 7.4! 📚",
-  "Incorrect! Car frozen! Mr. Tareen sighs deeply 😮‍💨",
-  "Nope! Opponent gets your boost! That's Newton's Law of Karma ⚖️",
-];
+  "That was exponentially good! 📊","Particular solution: GET THAT GOAL! 🏆"];
+const P_CORRECT=["CORRECT! MAX BOOST! Physics + Calculus = UNSTOPPABLE! 🔥",
+  "RIGHT! Turbocharged! Mr. Tareen nods! 💪","NICE! Full boost! dy/dx of skill = huge! 📈"];
+const P_WRONG=["WRONG! Opponent steals your boost! Study section 7.4! 📚",
+  "Incorrect! Mr. Tareen sighs deeply 😮‍💨","Nope! That's Newton's Law of Karma! ⚖️"];
 
-// Car colors
-const CAR_COLORS = ['#ff4444','#ff6a00','#ffd700','#00ff88',
-  '#00b8ff','#a855f7','#ff69b4','#ffffff'];
-
-// ═══════════════════════════════════════════════════════
-// PHYSICS CONSTANTS
-// ═══════════════════════════════════════════════════════
-const FIELD_W = 1000, FIELD_H = 650;
-const GOAL_W = 18, GOAL_H = 180;
-const CAR_W = 30, CAR_H = 20;
-const BALL_R = 14;
-const CAR_SPEED = 280;
-const BOOST_SPEED = 480;
-const CAR_TURN = 3.2;
-const FRICTION = 0.88;
-const BALL_FRICTION = 0.985;
-const BALL_BOUNCE = 0.72;
-const BOOST_MAX = 100;
-const BOOST_DRAIN = 55;
-const BOOST_REGEN = 12;
-const MATCH_TIME = 180; // 3 minutes
-const POWERUP_COUNT = 3;
-
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
 const WS_URL=`${location.protocol==='https:'?'wss':'ws'}://${location.host}`;
-let ws, myId, myName, myColor='#ff6a00', myRoomCode;
-let playerNum = 0; // 1 or 2
-let gameRunning = false;
-let animFrame = null;
-let lastTime = 0;
-let qTimerInt = null, qAnswered = false;
-let commentaryTO = null;
+let ws,myId,myName,myColor='#ff6a00',myNum=0;
+let GS=null;
+let gameRunning=false;
+let animFrame=null,lastTime=0;
+let qTimerInt=null,qAnswered=false;
+let commTO=null;
+let particles=[];
 
-// Game state (authoritative on server, replicated here)
-let GS = null; // full game state from server
+const keys={};
+document.addEventListener('keydown',e=>{
+  keys[e.code]=true;
+  // prevent page scroll
+  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','Enter'].includes(e.code))
+    e.preventDefault();
+});
+document.addEventListener('keyup',e=>{ keys[e.code]=false; });
 
-// Local input state
-const keys = {};
-document.addEventListener('keydown', e => { keys[e.code] = true; });
-document.addEventListener('keyup', e => { keys[e.code] = false; });
+const canvas=document.getElementById('gc');
+const ctx=canvas.getContext('2d');
+let scale=1;
 
-// Canvas
-const canvas = document.getElementById('gc');
-const ctx = canvas.getContext('2d');
-let scale = 1;
+// roundRect polyfill
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+    const v=typeof r==='number'?[r,r,r,r]:r;
+    const[a,b,c,d]=v.map(n=>Math.min(n,w/2,h/2));
+    this.beginPath();this.moveTo(x+a,y);this.lineTo(x+w-b,y);
+    this.arcTo(x+w,y,x+w,y+b,b);this.lineTo(x+w,y+h-c);
+    this.arcTo(x+w,y+h,x+w-c,y+h,c);this.lineTo(x+d,y+h);
+    this.arcTo(x,y+h,x,y+h-d,d);this.lineTo(x,y+a);
+    this.arcTo(x,y,x+a,y,a);this.closePath();return this;
+  };
+}
 
-// ═══════════════════════════════════════════════════════
-// UI HELPERS
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// COLOR UTILITIES
+// ═══════════════════════════════════════
+function hexRGB(hex){
+  const n=parseInt(hex.replace('#',''),16);
+  return[(n>>16)&255,(n>>8)&255,n&255];
+}
+function lighter(hex,f=0.5){
+  const[r,g,b]=hexRGB(hex);
+  return `rgb(${Math.min(255,r+Math.round(f*255))},${Math.min(255,g+Math.round(f*255))},${Math.min(255,b+Math.round(f*255))})`;
+}
+function darker(hex,f=0.5){
+  const[r,g,b]=hexRGB(hex);
+  return `rgb(${r*f|0},${g*f|0},${b*f|0})`;
+}
+function rgba(hex,a){
+  const[r,g,b]=hexRGB(hex);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+// ═══════════════════════════════════════
+// UI SETUP
+// ═══════════════════════════════════════
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-function bgAnim(id, color){
-  const c=document.getElementById(id); if(!c) return;
-  const cx=c.getContext('2d'); let pts=[];
-  function rsz(){c.width=innerWidth;c.height=innerHeight;pts=[];
-    for(let i=0;i<120;i++) pts.push({x:Math.random()*c.width,y:Math.random()*c.height,
-      r:Math.random()*1.4,t:Math.random()*Math.PI*2,s:.1+Math.random()*.4});}
-  function draw(){cx.clearRect(0,0,c.width,c.height);
-    cx.fillStyle='#04080f';cx.fillRect(0,0,c.width,c.height);
+function bgCanvas(id,r,g,b){
+  const c=document.getElementById(id);if(!c)return;
+  const cx=c.getContext('2d');let pts=[];
+  function rsz(){
+    c.width=innerWidth;c.height=innerHeight;pts=[];
+    for(let i=0;i<160;i++) pts.push({
+      x:Math.random()*c.width,y:Math.random()*c.height,
+      r:Math.random()*1.5,t:Math.random()*Math.PI*2,s:.08+Math.random()*.35
+    });
+  }
+  function draw(){
+    cx.clearRect(0,0,c.width,c.height);
+    // bg gradient
+    const bg=cx.createRadialGradient(c.width/2,c.height/2,100,c.width/2,c.height/2,c.width*.7);
+    bg.addColorStop(0,`rgba(${r*.12|0},${g*.06|0},${b*.04|0},1)`);
+    bg.addColorStop(1,'rgba(2,5,8,1)');
+    cx.fillStyle=bg;cx.fillRect(0,0,c.width,c.height);
     // hex grid
-    cx.strokeStyle='rgba(255,106,0,0.04)';cx.lineWidth=1;const sz=54;
-    for(let r=0;r<28;r++)for(let co=0;co<28;co++){
-      const xo=co*sz*1.5,yo=r*sz*Math.sqrt(3)+(co%2)*sz*Math.sqrt(3)/2;
-      cx.beginPath();for(let i=0;i<6;i++){const a=Math.PI/3*i-Math.PI/6;
-        cx.lineTo(xo+sz/2*Math.cos(a),yo+sz/2*Math.sin(a));}cx.closePath();cx.stroke();}
-    pts.forEach(p=>{p.t+=p.s*.01;const a=.18+.18*Math.sin(p.t);
-      cx.fillStyle=`rgba(${color},${a})`;cx.beginPath();
-      cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fill();});
-    requestAnimationFrame(draw);}
-  rsz(); window.addEventListener('resize',rsz); draw();
+    cx.strokeStyle=`rgba(${r},${g},${b},0.04)`;cx.lineWidth=1;const sz=55;
+    for(let row=0;row<30;row++) for(let col=0;col<30;col++){
+      const xo=col*sz*1.5,yo=row*sz*Math.sqrt(3)+(col%2)*sz*Math.sqrt(3)/2;
+      cx.beginPath();
+      for(let i=0;i<6;i++){const a=Math.PI/3*i-Math.PI/6;cx.lineTo(xo+sz/2*Math.cos(a),yo+sz/2*Math.sin(a));}
+      cx.closePath();cx.stroke();
+    }
+    // stars
+    pts.forEach(p=>{
+      p.t+=p.s*.01;const a=.2+.2*Math.sin(p.t);
+      cx.fillStyle=`rgba(${r},${g},${b},${a})`;
+      cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fill();
+    });
+    // sweep
+    const sw=(Date.now()/1000*60)%c.height;
+    const sg=cx.createLinearGradient(0,sw-40,0,sw+40);
+    sg.addColorStop(0,'transparent');
+    sg.addColorStop(.5,`rgba(${r},${g},${b},0.025)`);
+    sg.addColorStop(1,'transparent');
+    cx.fillStyle=sg;cx.fillRect(0,sw-40,c.width,80);
+    requestAnimationFrame(draw);
+  }
+  rsz();window.addEventListener('resize',rsz);draw();
 }
 
-function setCommentary(text, duration=4000){
-  const el=document.getElementById('commentary');
-  el.textContent=text; el.style.opacity='1';
-  if(commentaryTO) clearTimeout(commentaryTO);
-  commentaryTO=setTimeout(()=>el.style.opacity='.35', duration);
-}
-
-function randomFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-// ═══════════════════════════════════════════════════════
-// SETUP COLOR PICKER
-// ═══════════════════════════════════════════════════════
-let selectedColor = CAR_COLORS[0];
-(function setupColors(){
-  const grid = document.getElementById('color-grid');
-  CAR_COLORS.forEach((c,i) => {
-    const btn = document.createElement('div');
-    btn.className = 'color-btn' + (i===0?' selected':'');
-    btn.style.background = c;
-    btn.onclick = () => {
-      document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected');
-      selectedColor = c;
-      myColor = c;
+// Color picker
+let selColor=CAR_COLORS[0];
+(function(){
+  const grid=document.getElementById('cgrid');
+  CAR_COLORS.forEach((c,i)=>{
+    const btn=document.createElement('div');
+    btn.className='cb'+(i===0?' sel':'');
+    btn.style.cssText=`background:${c};box-shadow:inset 0 1px 0 rgba(255,255,255,0.3)`;
+    btn.onclick=()=>{
+      document.querySelectorAll('.cb').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');
+      selColor=c;myColor=c;
     };
     grid.appendChild(btn);
   });
-  bgAnim('jbg','255,106,0');
+  bgCanvas('jbg',255,106,0);
 })();
 
-// ═══════════════════════════════════════════════════════
-// JOIN
-// ═══════════════════════════════════════════════════════
-function joinGame(){
+function setComm(txt,dur=4500){
+  const el=document.getElementById('comm');
+  el.textContent=txt;el.style.opacity='1';
+  if(commTO)clearTimeout(commTO);
+  commTO=setTimeout(()=>el.style.opacity='.3',dur);
+}
+function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+// ═══════════════════════════════════════
+// WEBSOCKET + JOIN
+// ═══════════════════════════════════════
+function doJoin(){
   const name=document.getElementById('pname').value.trim();
   const code=document.getElementById('rcode').value.trim().toUpperCase();
   if(!name){document.getElementById('jerr').textContent='Enter your name!';return;}
-  if(code.length!==6){document.getElementById('jerr').textContent='Need a 6-letter room code.';return;}
-  myName=name; myRoomCode=code; myColor=selectedColor;
+  if(code.length!==6){document.getElementById('jerr').textContent='Need a 6-letter room code!';return;}
+  myName=name;myColor=selColor;
   document.getElementById('jerr').textContent='Connecting…';
   ws=new WebSocket(WS_URL);
   ws.onopen=()=>ws.send(JSON.stringify({type:'rocket_join',code,name,color:myColor}));
-  ws.onmessage=e=>handleMsg(JSON.parse(e.data));
-  ws.onclose=()=>{document.getElementById('jerr').textContent='Connection lost. Refresh!';};
+  ws.onmessage=e=>onMsg(JSON.parse(e.data));
+  ws.onclose=()=>{document.getElementById('jerr').textContent='Connection lost — refresh!';};
   ws.onerror=()=>{document.getElementById('jerr').textContent='Cannot reach server.';};
 }
-function send(obj){if(ws&&ws.readyState===1)ws.send(JSON.stringify(obj));}
+function send(o){if(ws&&ws.readyState===1)ws.send(JSON.stringify(o));}
 
-// ═══════════════════════════════════════════════════════
-// MESSAGE HANDLER
-// ═══════════════════════════════════════════════════════
-function handleMsg(msg){
+function onMsg(msg){
   switch(msg.type){
     case 'rocket_joined':
-      myId=msg.id; playerNum=msg.playerNum;
-      document.getElementById('w-pname').textContent=`${name} — P${playerNum}`;
+      myId=msg.id;myNum=msg.playerNum;
+      document.getElementById('w-pname').textContent=myName;
       document.getElementById('w-pname').style.color=myColor;
-      document.getElementById('w-room').textContent=`ROOM: ${myRoomCode}`;
-      bgAnim('wbg','255,106,0');
+      document.getElementById('w-code').textContent=`ROOM: ${document.getElementById('rcode').value.toUpperCase()}`;
+      bgCanvas('wbg',255,106,0);
       showScreen('waiting');
       break;
-
     case 'rocket_waiting':
-      document.getElementById('w-status').textContent=msg.msg||'Waiting for opponent…';
+      document.getElementById('w-msg').textContent=msg.msg||'Waiting…';
       break;
-
     case 'rocket_start':
       GS=msg.state;
       startMatch();
       break;
-
     case 'rocket_state':
-      if(GS) mergeState(msg.state);
+      if(GS)mergeState(msg.state);
       break;
-
     case 'rocket_goal':
-      showGoal(msg.scorer, msg.scorerColor, msg.p1score, msg.p2score);
+      showGoal(msg.scorer,msg.scorerColor,msg.p1score,msg.p2score);
       break;
-
     case 'rocket_powerup':
-      // Server only sends this to the correct player, no need to check targetId
       showQuiz(msg.question);
       break;
-
     case 'rocket_boost':
       if(GS){
-        if(msg.granted){
-          GS.players[playerNum-1].boost=Math.min(BOOST_MAX,GS.players[playerNum-1].boost+60);
+        const me=GS.players[myNum-1];
+        if(me){
+          if(msg.granted) me.boost=Math.min(BOOST_MAX,me.boost+70);
+          setComm(msg.granted?rnd(P_CORRECT):rnd(P_WRONG));
         }
-        setCommentary(msg.granted ? randomFrom(POWERUP_CORRECT) : randomFrom(POWERUP_WRONG));
       }
       break;
-
-    case 'rocket_end':
-      endMatch(msg.p1score, msg.p2score, msg.p1name, msg.p2name, msg.p1color, msg.p2color);
-      break;
-
     case 'rocket_commentary':
-      setCommentary(msg.text);
+      setComm(msg.text);
       break;
-
+    case 'rocket_end':
+      endMatch(msg);
+      break;
     case 'error':
       document.getElementById('jerr').textContent=msg.msg;
       showScreen('join');
@@ -583,31 +648,29 @@ function handleMsg(msg){
 }
 
 function mergeState(s){
-  if(!GS) return;
-  // Merge authoritative positions for the OTHER player's car
-  // (our own car we update locally for responsiveness)
-  const other = playerNum===1 ? 1 : 0;
-  if(s.players && s.players[other]){
-    GS.players[other].x = s.players[other].x;
-    GS.players[other].y = s.players[other].y;
-    GS.players[other].angle = s.players[other].angle;
-    GS.players[other].boost = s.players[other].boost;
+  if(!GS)return;
+  const other=myNum===1?1:0;
+  if(s.players&&s.players[other]){
+    const op=s.players[other],gp=GS.players[other];
+    gp.x=op.x;gp.y=op.y;gp.angle=op.angle;
+    gp.vx=op.vx;gp.vy=op.vy;gp.boost=op.boost;
+    gp.speed=op.speed;
   }
-  if(s.ball){ GS.ball=s.ball; }
-  if(s.powerups){ GS.powerups=s.powerups; }
-  if(typeof s.timeLeft==='number') GS.timeLeft=s.timeLeft;
-  if(typeof s.p1score==='number'){ GS.p1score=s.p1score; GS.p2score=s.p2score; }
+  if(s.ball)GS.ball=s.ball;
+  if(s.powerups)GS.powerups=s.powerups;
+  if(typeof s.timeLeft==='number')GS.timeLeft=s.timeLeft;
+  if(typeof s.p1score==='number'){GS.p1score=s.p1score;GS.p2score=s.p2score;}
 }
 
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // START MATCH
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
 function setupCanvas(){
-  const wrap=document.getElementById('game-canvas-wrap');
-  const scx=wrap.clientWidth/FIELD_W, scy=wrap.clientHeight/FIELD_H;
-  scale=Math.min(scx,scy);
-  canvas.width=Math.round(FIELD_W*scale);
-  canvas.height=Math.round(FIELD_H*scale);
+  const wrap=document.getElementById('cwrap');
+  const sx=wrap.clientWidth/FW,sy=wrap.clientHeight/FH;
+  scale=Math.min(sx,sy)*.98;
+  canvas.width=Math.round(FW*scale);
+  canvas.height=Math.round(FH*scale);
 }
 
 function startMatch(){
@@ -615,579 +678,637 @@ function startMatch(){
   setupCanvas();
   gameRunning=true;
   lastTime=performance.now();
+  particles=[];
 
-  // Set up scorebar names/colors
-  document.getElementById('sb-n1').textContent=GS.players[0].name;
-  document.getElementById('sb-n1').style.color=GS.players[0].color;
-  document.getElementById('sb-n2').textContent=GS.players[1].name;
-  document.getElementById('sb-n2').style.color=GS.players[1].color;
+  // HUD names
+  if(GS.players[0]){
+    document.getElementById('n1').textContent=GS.players[0].name;
+    document.getElementById('n1').style.color=GS.players[0].color;
+    document.getElementById('s1').style.color=GS.players[0].color;
+    document.getElementById('b1').style.background=GS.players[0].color;
+  }
+  if(GS.players[1]){
+    document.getElementById('n2').textContent=GS.players[1].name;
+    document.getElementById('n2').style.color=GS.players[1].color;
+    document.getElementById('s2').style.color=GS.players[1].color;
+    document.getElementById('b2').style.background=GS.players[1].color;
+  }
 
-  setCommentary('🚀 KICKOFF! Mr. Tareen blows the whistle! GET IT!');
-  if(animFrame) cancelAnimationFrame(animFrame);
-  requestAnimationFrame(gameLoop);
+  // init local speed tracker
+  GS.players.forEach(p=>{ if(!p.speed)p.speed=0; });
+
+  setComm('🏁 KICKOFF! Mr. Tareen blows the whistle — FLOOR IT!');
+  if(animFrame)cancelAnimationFrame(animFrame);
+  requestAnimationFrame(loop);
 }
 
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // GAME LOOP
-// ═══════════════════════════════════════════════════════
-function gameLoop(now){
-  if(!gameRunning){ animFrame=requestAnimationFrame(gameLoop); return; }
-  const dt=Math.min((now-lastTime)/1000, 0.05);
+// ═══════════════════════════════════════
+function loop(now){
+  animFrame=requestAnimationFrame(loop);
+  if(!gameRunning)return;
+  const dt=Math.min((now-lastTime)/1000,.05);
   lastTime=now;
   update(dt);
   render();
-  animFrame=requestAnimationFrame(gameLoop);
 }
 
+// ═══════════════════════════════════════
+// PHYSICS — PROPER ARCADE CAR MODEL
+// ═══════════════════════════════════════
 function update(dt){
-  if(!GS || !gameRunning) return;
-  const me = GS.players[playerNum-1];
-  if(!me) return;
+  if(!GS||!gameRunning)return;
+  const me=GS.players[myNum-1];
+  if(!me)return;
 
-  // Input
-  const p1 = playerNum===1;
-  const leftKey = p1 ? (keys['KeyA']||keys['ArrowLeft']) : keys['ArrowLeft'];
-  const rightKey = p1 ? (keys['KeyD']||keys['ArrowRight']) : keys['ArrowRight'];
-  const upKey = p1 ? (keys['KeyW']||keys['ArrowUp']) : keys['ArrowUp'];
-  const downKey = p1 ? (keys['KeyS']||keys['ArrowDown']) : keys['ArrowDown'];
-  const boostKey = p1 ? (keys['ShiftLeft']||keys['ShiftRight']) : (keys['Enter']||keys['NumpadEnter']);
+  // Keys
+  const up    = keys['ArrowUp']   || keys['KeyW'];
+  const down  = keys['ArrowDown'] || keys['KeyS'];
+  const left  = keys['ArrowLeft'] || keys['KeyA'];
+  const right = keys['ArrowRight']|| keys['KeyD'];
+  const boost = (keys['Enter']||keys['NumpadEnter']||keys['ShiftLeft']||keys['ShiftRight'])
+                && me.boost>0;
 
-  // Turn
-  if(leftKey) me.angle -= CAR_TURN * dt * 60;
-  if(rightKey) me.angle += CAR_TURN * dt * 60;
+  // ── PROPER CAR PHYSICS ──
+  // Track forward speed (scalar along car axis)
+  if(!me.speed) me.speed=0;
 
-  // Accelerate
-  const boosting = boostKey && me.boost > 0;
-  const speed = boosting ? BOOST_SPEED : (upKey ? CAR_SPEED : (downKey ? -CAR_SPEED*0.6 : 0));
-
-  if(upKey || downKey){
-    me.vx += Math.cos(me.angle) * speed * dt;
-    me.vy += Math.sin(me.angle) * speed * dt;
+  // Accelerate / brake
+  const topSpeed = boost ? BOOST_SPEED : MAX_SPEED;
+  if(up){
+    me.speed = Math.min(me.speed + ACCEL*dt, topSpeed);
+  } else if(down){
+    if(me.speed > 0) me.speed = Math.max(me.speed - BRAKE_FORCE*dt, 0);
+    else me.speed = Math.max(me.speed - ACCEL*0.5*dt, -REVERSE_SPEED);
+  } else {
+    // natural deceleration
+    me.speed *= Math.pow(0.88, dt*60);
+    if(Math.abs(me.speed)<2) me.speed=0;
   }
 
+  // Steer — only effective when moving
+  const speedRatio = Math.min(Math.abs(me.speed)/MAX_SPEED,1);
+  const steerAmount = STEER_SPEED * dt * speedRatio;
+  const dir = me.speed>=0?1:-1; // reverse flips steering
+  if(left)  me.angle -= steerAmount*dir;
+  if(right) me.angle += steerAmount*dir;
+
+  // Convert scalar speed to velocity vector
+  me.vx = Math.cos(me.angle)*me.speed;
+  me.vy = Math.sin(me.angle)*me.speed;
+
   // Boost management
-  if(boosting){ me.boost=Math.max(0,me.boost-BOOST_DRAIN*dt); }
-  else { me.boost=Math.min(BOOST_MAX,me.boost+BOOST_REGEN*dt); }
+  if(boost) me.boost=Math.max(0,me.boost-BOOST_DRAIN*dt);
+  else      me.boost=Math.min(BOOST_MAX,me.boost+BOOST_REGEN*dt);
 
-  // Friction
-  me.vx *= Math.pow(FRICTION, dt*60);
-  me.vy *= Math.pow(FRICTION, dt*60);
+  // Move
+  me.x+=me.vx*dt;
+  me.y+=me.vy*dt;
 
-  // Move car
-  me.x += me.vx * dt;
-  me.y += me.vy * dt;
+  // Wall bounce
+  const hl=CAR_L/2,hw=CAR_W/2;
+  if(me.x<hw){ me.x=hw; me.speed*=-0.4; }
+  if(me.x>FW-hw){ me.x=FW-hw; me.speed*=-0.4; }
+  if(me.y<hw){ me.y=hw; me.speed*=-0.4; }
+  if(me.y>FH-hw){ me.y=FH-hw; me.speed*=-0.4; }
 
-  // Wall collision for car
-  const hw=CAR_W/2, hh=CAR_H/2;
-  if(me.x < hw){ me.x=hw; me.vx*=-0.5; }
-  if(me.x > FIELD_W-hw){ me.x=FIELD_W-hw; me.vx*=-0.5; }
-  if(me.y < hh){ me.y=hh; me.vy*=-0.5; }
-  if(me.y > FIELD_H-hh){ me.y=FIELD_H-hh; me.vy*=-0.5; }
-
-  // Car-ball collision
+  // Ball interaction (P1 authoritative)
   const ball=GS.ball;
   if(ball){
-    const dx=ball.x-me.x, dy=ball.y-me.y;
-    const dist=Math.sqrt(dx*dx+dy*dy);
-    const minDist=BALL_R+Math.max(CAR_W,CAR_H)/2;
-    if(dist<minDist&&dist>0){
-      const nx=dx/dist, ny=dy/dist;
-      const relVx=ball.vx-me.vx, relVy=ball.vy-me.vy;
-      const dot=relVx*nx+relVy*ny;
-      if(dot<0){
-        const impulse=2.2;
-        ball.vx -= nx*dot*impulse;
-        ball.vy -= ny*dot*impulse;
-        ball.vx += me.vx*0.4;
-        ball.vy += me.vy*0.4;
+    const dx=ball.x-me.x,dy=ball.y-me.y;
+    const dist=Math.sqrt(dx*dx+dy*dy)||1;
+    const minD=BR+Math.max(CAR_L,CAR_W)/2+2;
+    if(dist<minD){
+      const nx=dx/dist,ny=dy/dist;
+      const relV=(ball.vx-me.vx)*nx+(ball.vy-me.vy)*ny;
+      if(relV<0){
+        const imp=-relV*2.5+Math.abs(me.speed)*0.3;
+        ball.vx+=nx*imp;
+        ball.vy+=ny*imp;
       }
-      const overlap=minDist-dist;
-      ball.x+=nx*overlap*0.6;
-      ball.y+=ny*overlap*0.6;
+      ball.x+=nx*(minD-dist+1);
+      ball.y+=ny*(minD-dist+1);
+
+      // spawn hit particles
+      spawnParticles(ball.x,ball.y,me.color,6);
     }
 
     // Ball physics
-    ball.vx*=Math.pow(BALL_FRICTION,dt*60);
-    ball.vy*=Math.pow(BALL_FRICTION,dt*60);
+    ball.vx*=Math.pow(0.985,dt*60);
+    ball.vy*=Math.pow(0.985,dt*60);
     ball.x+=ball.vx*dt;
     ball.y+=ball.vy*dt;
-
-    // Ball wall bounces
-    const goalTop=(FIELD_H-GOAL_H)/2, goalBot=(FIELD_H+GOAL_H)/2;
-    if(ball.x-BALL_R<0){
-      if(ball.y>goalTop&&ball.y<goalBot){ /* goal! server handles */ }
-      else{ ball.x=BALL_R; ball.vx*=-BALL_BOUNCE; }
+    const gTop=(FH-GH)/2,gBot=(FH+GH)/2;
+    if(ball.x-BR<0){
+      if(ball.y>gTop&&ball.y<gBot){/* server handles */}
+      else{ball.x=BR;ball.vx*=-BALL_BOUNCE;}
     }
-    if(ball.x+BALL_R>FIELD_W){
-      if(ball.y>goalTop&&ball.y<goalBot){ /* goal! */ }
-      else{ ball.x=FIELD_W-BALL_R; ball.vx*=-BALL_BOUNCE; }
+    if(ball.x+BR>FW){
+      if(ball.y>gTop&&ball.y<gBot){/* server handles */}
+      else{ball.x=FW-BR;ball.vx*=-BALL_BOUNCE;}
     }
-    if(ball.y-BALL_R<0){ ball.y=BALL_R; ball.vy*=-BALL_BOUNCE; }
-    if(ball.y+BALL_R>FIELD_H){ ball.y=FIELD_H-BALL_R; ball.vy*=-BALL_BOUNCE; }
+    if(ball.y-BR<0){ball.y=BR;ball.vy*=-BALL_BOUNCE;}
+    if(ball.y+BR>FH){ball.y=FH-BR;ball.vy*=-BALL_BOUNCE;}
   }
 
-  // Send my state to server
-  send({type:'rocket_input',
-    x:me.x, y:me.y, angle:me.angle,
-    vx:me.vx, vy:me.vy,
-    boost:me.boost,
-    ballX:ball?.x, ballY:ball?.y,
-    ballVx:ball?.vx, ballVy:ball?.vy
+  // Boost particles
+  if(boost&&Math.random()<0.4){
+    spawnParticles(
+      me.x-Math.cos(me.angle)*CAR_L/2,
+      me.y-Math.sin(me.angle)*CAR_L/2,
+      '#ff8800',3);
+  }
+
+  // Update particles
+  particles=particles.filter(p=>{
+    p.x+=p.vx*dt;p.y+=p.vy*dt;
+    p.life-=dt;return p.life>0;
   });
 
-  // Update boost UI
-  document.getElementById('boost-fill').style.width=(me.boost/BOOST_MAX*100)+'%';
+  // Send to server
+  send({type:'rocket_input',
+    x:me.x,y:me.y,angle:me.angle,
+    vx:me.vx,vy:me.vy,boost:me.boost,speed:me.speed,
+    ballX:ball?.x,ballY:ball?.y,
+    ballVx:ball?.vx,ballVy:ball?.vy
+  });
 
-  // Timer
-  const m=Math.floor((GS.timeLeft||0)/60).toString().padStart(2,'0');
-  const s=Math.floor((GS.timeLeft||0)%60).toString().padStart(2,'0');
-  document.getElementById('sb-timer').textContent=`${m}:${s}`;
-  const tel=document.getElementById('sb-timer');
-  tel.style.color=GS.timeLeft<30?'var(--red)':GS.timeLeft<60?'var(--gold)':'#fff';
-
-  // Scores
-  document.getElementById('sb-s1').textContent=GS.p1score||0;
-  document.getElementById('sb-s2').textContent=GS.p2score||0;
+  // HUD
+  const bPct=me.boost/BOOST_MAX;
+  document.getElementById(`b${myNum}`).style.width=(bPct*100)+'%';
+  const bColor=bPct>0.5?'var(--green)':bPct>0.25?'var(--gold)':'var(--red)';
+  document.getElementById(`b${myNum}`).style.background=bColor;
+  document.getElementById('s1').textContent=GS.p1score||0;
+  document.getElementById('s2').textContent=GS.p2score||0;
+  const tl=GS.timeLeft||0;
+  const m=Math.floor(tl/60).toString().padStart(2,'0');
+  const s=Math.floor(tl%60).toString().padStart(2,'0');
+  const tel=document.getElementById('timer');
+  tel.textContent=`${m}:${s}`;
+  tel.className=tl<30?'sh-timer warn':'sh-timer';
 }
 
-// ═══════════════════════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════════════════════
+function spawnParticles(x,y,color,n){
+  for(let i=0;i<n;i++){
+    const a=Math.random()*Math.PI*2,spd=40+Math.random()*120;
+    particles.push({x,y,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd,
+      color,r:2+Math.random()*3,life:.4+Math.random()*.3,maxLife:.7});
+  }
+}
+
+// ═══════════════════════════════════════
+// RENDER ENGINE
+// ═══════════════════════════════════════
 function render(){
-  if(!GS) return;
+  if(!GS)return;
   ctx.save();
   ctx.setTransform(scale,0,0,scale,0,0);
   drawField();
-  if(GS.powerups) GS.powerups.forEach(p=>{ if(p.active) drawPowerup(p); });
+  if(GS.powerups) GS.powerups.forEach(p=>{if(p.active)drawPowerup(p);});
+  drawParticles();
   GS.players.forEach(p=>drawCar(p));
-  if(GS.ball) drawBall(GS.ball);
+  if(GS.ball)drawBall(GS.ball);
   ctx.restore();
 }
 
+// ── FIELD ──────────────────────────────
 function drawField(){
-  // Grass base — alternating stripe pattern like a real pitch
-  for(let i=0;i<10;i++){
-    const x=i*(FIELD_W/10);
-    ctx.fillStyle=i%2===0?'#0a1f0a':'#091a09';
-    ctx.fillRect(x,0,FIELD_W/10,FIELD_H);
+  const t=Date.now()/1000;
+
+  // Grass stripes — 12 alternating bands
+  for(let i=0;i<12;i++){
+    ctx.fillStyle=i%2===0?'#091808':'#0a1e09';
+    ctx.fillRect(i*(FW/12),0,FW/12,FH);
   }
 
-  // Subtle vignette
-  const vig=ctx.createRadialGradient(FIELD_W/2,FIELD_H/2,FIELD_H*.3,FIELD_W/2,FIELD_H/2,FIELD_W*.7);
+  // Subtle pitch texture overlay
+  ctx.fillStyle='rgba(0,0,0,0.15)';
+  ctx.fillRect(0,0,FW,FH);
+
+  // Vignette
+  const vig=ctx.createRadialGradient(FW/2,FH/2,FH*.25,FW/2,FH/2,FW*.65);
   vig.addColorStop(0,'rgba(0,0,0,0)');
-  vig.addColorStop(1,'rgba(0,0,0,0.45)');
-  ctx.fillStyle=vig; ctx.fillRect(0,0,FIELD_W,FIELD_H);
+  vig.addColorStop(1,'rgba(0,0,0,0.5)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,FW,FH);
 
   // Field lines
-  ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.lineWidth=2;
-
-  // Outer boundary
-  ctx.strokeRect(3,3,FIELD_W-6,FIELD_H-6);
+  ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=2;
+  ctx.strokeRect(4,4,FW-8,FH-8);
 
   // Centre line
   ctx.setLineDash([10,8]);
-  ctx.beginPath(); ctx.moveTo(FIELD_W/2,0); ctx.lineTo(FIELD_W/2,FIELD_H); ctx.stroke();
+  ctx.beginPath();ctx.moveTo(FW/2,0);ctx.lineTo(FW/2,FH);ctx.stroke();
   ctx.setLineDash([]);
 
   // Centre circle
-  ctx.beginPath(); ctx.arc(FIELD_W/2,FIELD_H/2,85,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath();ctx.arc(FW/2,FH/2,80,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.25)';
+  ctx.beginPath();ctx.arc(FW/2,FH/2,4,0,Math.PI*2);ctx.fill();
 
-  // Centre dot
-  ctx.fillStyle='rgba(255,255,255,0.35)';
-  ctx.beginPath(); ctx.arc(FIELD_W/2,FIELD_H/2,5,0,Math.PI*2); ctx.fill();
+  // Penalty areas
+  ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1.5;
+  ctx.strokeRect(0,(FH-GH*1.8)/2,90,GH*1.8);
+  ctx.strokeRect(FW-90,(FH-GH*1.8)/2,90,GH*1.8);
 
-  // Penalty boxes
-  ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=1.5;
-  const pb=100;
-  ctx.strokeRect(0,(FIELD_H-pb*2)/2,pb,pb*2); // left
-  ctx.strokeRect(FIELD_W-pb,(FIELD_H-pb*2)/2,pb,pb*2); // right
+  // ── GOALS ──
+  const gt=(FH-GH)/2,gb=(FH+GH)/2;
 
-  // Goals — 3D recessed look
-  const goalTop=(FIELD_H-GOAL_H)/2, goalBot=(FIELD_H+GOAL_H)/2;
-  const t=Date.now()/1000;
-
-  // Left goal glow (orange team)
-  const lgG=ctx.createLinearGradient(0,goalTop,GOAL_W*3,goalTop);
-  lgG.addColorStop(0,'rgba(255,106,0,0.35)'); lgG.addColorStop(1,'rgba(255,106,0,0)');
-  ctx.fillStyle=lgG; ctx.fillRect(0,goalTop,GOAL_W*3,GOAL_H);
-  // Left goal net lines
-  ctx.strokeStyle='rgba(255,106,0,0.15)'; ctx.lineWidth=1;
-  for(let y=goalTop;y<goalBot;y+=12){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(GOAL_W*2,y); ctx.stroke(); }
-  for(let x=0;x<GOAL_W*2;x+=12){ ctx.beginPath(); ctx.moveTo(x,goalTop); ctx.lineTo(x,goalBot); ctx.stroke(); }
-  // Left goal frame
-  ctx.strokeStyle='rgba(255,106,0,0.9)'; ctx.lineWidth=4;
-  ctx.shadowColor='rgba(255,106,0,0.6)'; ctx.shadowBlur=12;
+  // Left goal — ORANGE (P1)
+  // Net pattern
+  ctx.strokeStyle='rgba(255,106,0,0.12)';ctx.lineWidth=1;
+  for(let y=gt;y<=gb;y+=14){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(GW+20,y);ctx.stroke();}
+  for(let x=0;x<=GW+20;x+=14){ctx.beginPath();ctx.moveTo(x,gt);ctx.lineTo(x,gb);ctx.stroke();}
+  // goal bg glow
+  const lgG=ctx.createLinearGradient(0,gt,GW+40,gt);
+  lgG.addColorStop(0,'rgba(255,106,0,0.3)');lgG.addColorStop(1,'rgba(255,106,0,0)');
+  ctx.fillStyle=lgG;ctx.fillRect(0,gt,GW+40,GH);
+  // goal posts
+  ctx.strokeStyle='rgba(255,106,0,0.95)';ctx.lineWidth=5;
+  ctx.shadowColor='rgba(255,106,0,0.7)';ctx.shadowBlur=18;
   ctx.beginPath();
-  ctx.moveTo(0,goalTop); ctx.lineTo(GOAL_W+4,goalTop);
-  ctx.moveTo(GOAL_W+4,goalTop); ctx.lineTo(GOAL_W+4,goalBot);
-  ctx.moveTo(GOAL_W+4,goalBot); ctx.lineTo(0,goalBot);
-  ctx.stroke(); ctx.shadowBlur=0;
+  ctx.moveTo(0,gt);ctx.lineTo(GW+6,gt);
+  ctx.moveTo(GW+6,gt);ctx.lineTo(GW+6,gb);
+  ctx.moveTo(GW+6,gb);ctx.lineTo(0,gb);
+  ctx.stroke();ctx.shadowBlur=0;
 
-  // Right goal glow (blue team)
-  const rgG=ctx.createLinearGradient(FIELD_W,goalTop,FIELD_W-GOAL_W*3,goalTop);
-  rgG.addColorStop(0,'rgba(0,184,255,0.35)'); rgG.addColorStop(1,'rgba(0,184,255,0)');
-  ctx.fillStyle=rgG; ctx.fillRect(FIELD_W-GOAL_W*3,goalTop,GOAL_W*3,GOAL_H);
-  // Right goal net lines
-  ctx.strokeStyle='rgba(0,184,255,0.15)'; ctx.lineWidth=1;
-  for(let y=goalTop;y<goalBot;y+=12){ ctx.beginPath(); ctx.moveTo(FIELD_W,y); ctx.lineTo(FIELD_W-GOAL_W*2,y); ctx.stroke(); }
-  for(let x=FIELD_W;x>FIELD_W-GOAL_W*2;x-=12){ ctx.beginPath(); ctx.moveTo(x,goalTop); ctx.lineTo(x,goalBot); ctx.stroke(); }
-  // Right goal frame
-  ctx.strokeStyle='rgba(0,184,255,0.9)'; ctx.lineWidth=4;
-  ctx.shadowColor='rgba(0,184,255,0.6)'; ctx.shadowBlur=12;
+  // Right goal — BLUE (P2)
+  ctx.strokeStyle='rgba(0,184,255,0.12)';ctx.lineWidth=1;
+  for(let y=gt;y<=gb;y+=14){ctx.beginPath();ctx.moveTo(FW,y);ctx.lineTo(FW-GW-20,y);ctx.stroke();}
+  for(let x=FW;x>=FW-GW-20;x-=14){ctx.beginPath();ctx.moveTo(x,gt);ctx.lineTo(x,gb);ctx.stroke();}
+  const rgG=ctx.createLinearGradient(FW,gt,FW-GW-40,gt);
+  rgG.addColorStop(0,'rgba(0,184,255,0.3)');rgG.addColorStop(1,'rgba(0,184,255,0)');
+  ctx.fillStyle=rgG;ctx.fillRect(FW-GW-40,gt,GW+40,GH);
+  ctx.strokeStyle='rgba(0,184,255,0.95)';ctx.lineWidth=5;
+  ctx.shadowColor='rgba(0,184,255,0.7)';ctx.shadowBlur=18;
   ctx.beginPath();
-  ctx.moveTo(FIELD_W,goalTop); ctx.lineTo(FIELD_W-GOAL_W-4,goalTop);
-  ctx.moveTo(FIELD_W-GOAL_W-4,goalTop); ctx.lineTo(FIELD_W-GOAL_W-4,goalBot);
-  ctx.moveTo(FIELD_W-GOAL_W-4,goalBot); ctx.lineTo(FIELD_W,goalBot);
-  ctx.stroke(); ctx.shadowBlur=0;
-
+  ctx.moveTo(FW,gt);ctx.lineTo(FW-GW-6,gt);
+  ctx.moveTo(FW-GW-6,gt);ctx.lineTo(FW-GW-6,gb);
+  ctx.moveTo(FW-GW-6,gb);ctx.lineTo(FW,gb);
+  ctx.stroke();ctx.shadowBlur=0;
   ctx.lineWidth=1;
-  drawTareenLogo(FIELD_W/2, FIELD_H/2);
-}
 
-function drawTareenLogo(cx,cy){
+  // Mr. Tareen branding at centre
   ctx.save();
-  ctx.globalAlpha=0.07;
+  ctx.globalAlpha=.055;
   ctx.fillStyle='#ffffff';
-  ctx.font='bold 120px Oxanium';
-  ctx.textAlign='center';
-  ctx.textBaseline='middle';
-  ctx.fillText('T', cx, cy);
-  ctx.globalAlpha=0.04;
-  ctx.font='bold 30px Oxanium';
-  ctx.fillText('MR. TAREEN', cx, cy+70);
+  ctx.font='bold 130px Oxanium';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('T',FW/2,FH/2);
+  ctx.globalAlpha=.035;
+  ctx.font='bold 28px Oxanium';
+  ctx.fillText('MR. TAREEN',FW/2,FH/2+78);
   ctx.restore();
 }
 
+// ── POWER-UP ──────────────────────────
 function drawPowerup(p){
   const t=Date.now()/1000;
-  const pulse=0.5+0.5*Math.sin(t*3);
-  const g=ctx.createRadialGradient(p.x,p.y,2,p.x,p.y,22);
-  g.addColorStop(0,`rgba(255,215,0,${0.6+0.3*pulse})`);
-  g.addColorStop(1,'rgba(255,215,0,0)');
-  ctx.fillStyle=g;
-  ctx.beginPath(); ctx.arc(p.x,p.y,22,0,Math.PI*2); ctx.fill();
+  const pulse=.5+.5*Math.sin(t*3.5);
+  const bob=Math.sin(t*2)*4;
+
+  // outer glow rings
+  for(let i=3;i>0;i--){
+    ctx.strokeStyle=`rgba(255,215,0,${0.06*i*pulse})`;
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(p.x,p.y+bob,16+i*7,0,Math.PI*2);ctx.stroke();
+  }
+
+  ctx.save();
+  ctx.translate(p.x,p.y+bob);
+  ctx.rotate(t*1.8);
+
+  // hex shape background
+  ctx.beginPath();
+  for(let i=0;i<6;i++){
+    const a=Math.PI/3*i-Math.PI/6;
+    ctx.lineTo(Math.cos(a)*16,Math.sin(a)*16);
+  }
+  ctx.closePath();
+  const hg=ctx.createRadialGradient(0,0,0,0,0,16);
+  hg.addColorStop(0,`rgba(255,230,0,${.7+.2*pulse})`);
+  hg.addColorStop(.6,`rgba(255,160,0,${.5+.2*pulse})`);
+  hg.addColorStop(1,'rgba(255,100,0,0)');
+  ctx.fillStyle=hg;
+  ctx.shadowColor='rgba(255,215,0,0.9)';ctx.shadowBlur=20;
+  ctx.fill();ctx.shadowBlur=0;
+
+  // integral symbol
+  ctx.rotate(-t*1.8); // counter-rotate so symbol stays upright
+  ctx.fillStyle='#fff';
+  ctx.font='bold 18px Oxanium';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.shadowColor='rgba(255,255,255,0.8)';ctx.shadowBlur=8;
+  ctx.fillText('∫',0,0);ctx.shadowBlur=0;
+
+  ctx.restore();
+}
+
+// ── 3D CAR ────────────────────────────
+function drawCar(p){
+  if(!p)return;
+  const t=Date.now()/1000;
+  const isMe=p.id===myId;
+  const spd=p.speed||0;
+  const isBoosting=isMe&&(keys['Enter']||keys['NumpadEnter']||keys['ShiftLeft']||keys['ShiftRight'])&&p.boost>2;
+  const CL=CAR_L,CW=CAR_W;
 
   ctx.save();
   ctx.translate(p.x,p.y);
-  ctx.rotate(t*1.5);
-
-  // outer ring
-  ctx.strokeStyle=`rgba(255,215,0,${0.7+0.2*pulse})`;
-  ctx.lineWidth=2;
-  ctx.beginPath(); ctx.arc(0,0,14,0,Math.PI*2); ctx.stroke();
-
-  // integral symbol
-  ctx.fillStyle='rgba(255,215,0,0.95)';
-  ctx.font='bold 16px Oxanium';
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('∫', 0, 0);
-  ctx.restore();
-
-  // shadow glow
-  ctx.shadowColor='rgba(255,215,0,0.8)';
-  ctx.shadowBlur=12;
-  ctx.strokeStyle='rgba(255,215,0,0.4)';
-  ctx.lineWidth=1;
-  ctx.beginPath(); ctx.arc(p.x,p.y,14,0,Math.PI*2); ctx.stroke();
-  ctx.shadowBlur=0;
-}
-
-function drawCar(p){
-  if(!p) return;
-  const t=Date.now()/1000;
-  const isBoosting=(p.id===myId)&&(keys['ShiftLeft']||keys['ShiftRight']||keys['Enter']);
-  const CW=CAR_W, CH=CAR_H;
-
-  ctx.save();
-  ctx.translate(p.x, p.y);
   ctx.rotate(p.angle);
 
-  // ── 1. GROUND SHADOW ──
-  ctx.fillStyle='rgba(0,0,0,0.45)';
-  ctx.beginPath();
-  ctx.ellipse(3, 6, CW*0.55, CH*0.38, 0, 0, Math.PI*2);
-  ctx.fill();
+  // ── Ground shadow ──
+  ctx.fillStyle='rgba(0,0,0,0.5)';
+  ctx.beginPath();ctx.ellipse(4,7,CL*.5,CW*.35,0,0,Math.PI*2);ctx.fill();
 
-  // ── 2. BOOST FLAME ──
-  if(isBoosting && p.boost>5){
-    // outer flame
-    const fl=ctx.createRadialGradient(-CW/2-2,0,0,-CW/2-18,0,12);
-    fl.addColorStop(0,'rgba(255,240,80,1)');
-    fl.addColorStop(0.3,'rgba(255,120,0,0.85)');
-    fl.addColorStop(0.7,'rgba(255,30,0,0.4)');
+  // ── Boost flame ──
+  if(isBoosting&&p.boost>3){
+    const flLen=16+Math.random()*12;
+    const fl=ctx.createLinearGradient(-CL/2,0,-CL/2-flLen,0);
+    fl.addColorStop(0,'rgba(255,255,150,1)');
+    fl.addColorStop(.3,'rgba(255,120,0,.85)');
+    fl.addColorStop(.7,'rgba(255,40,0,.4)');
     fl.addColorStop(1,'rgba(255,0,0,0)');
     ctx.fillStyle=fl;
+    ctx.shadowColor='rgba(255,100,0,0.8)';ctx.shadowBlur=22;
     ctx.beginPath();
-    // teardrop flame shape
-    ctx.moveTo(-CW/2, -CH/4);
-    ctx.quadraticCurveTo(-CW/2-22, 0, -CW/2, CH/4);
-    ctx.fill();
-    // inner bright core
-    const fc=ctx.createRadialGradient(-CW/2-4,0,0,-CW/2-4,0,6);
-    fc.addColorStop(0,'rgba(255,255,200,1)');
-    fc.addColorStop(1,'rgba(255,150,0,0)');
-    ctx.fillStyle=fc;
-    ctx.beginPath();
-    ctx.ellipse(-CW/2-6,0,7,4,0,0,Math.PI*2);
-    ctx.fill();
-    // glow
-    ctx.shadowColor='rgba(255,100,0,0.9)';
-    ctx.shadowBlur=18;
-    ctx.fillStyle='rgba(255,150,0,0.3)';
-    ctx.beginPath();
-    ctx.ellipse(-CW/2-10,0,14,6,0,0,Math.PI*2);
-    ctx.fill();
+    ctx.moveTo(-CL/2,-CW/3);
+    ctx.bezierCurveTo(-CL/2-flLen*.6,-CW/5,-CL/2-flLen*.7,0,-CL/2-flLen,0);
+    ctx.bezierCurveTo(-CL/2-flLen*.7,0,-CL/2-flLen*.6,CW/5,-CL/2,CW/3);
+    ctx.fill();ctx.shadowBlur=0;
+  }
+
+  // ── Skid marks at high speed turns ──
+  if(isMe&&Math.abs(spd)>150&&(keys['ArrowLeft']||keys['ArrowRight']||keys['KeyA']||keys['KeyD'])){
+    ctx.fillStyle='rgba(40,30,10,0.6)';
+    ctx.beginPath();ctx.ellipse(-CL/3,-CW/2,3,1.5,0,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.ellipse(-CL/3,CW/2,3,1.5,0,0,Math.PI*2);ctx.fill();
+  }
+
+  // ── Wheels ──
+  const wpos=[[-CL*.28,-CW/2-2],[CL*.28,-CW/2-2],[-CL*.28,CW/2+2],[CL*.28,CW/2+2]];
+  wpos.forEach(([wx,wy])=>{
+    const isRear=wx<0;
+    // tyre
+    ctx.fillStyle='#111';
+    ctx.beginPath();ctx.ellipse(wx,wy,isRear?8:7,4.5,0,0,Math.PI*2);ctx.fill();
+    // rim
+    const rg=ctx.createRadialGradient(wx-1,wy-1,0,wx,wy,isRear?7:6);
+    rg.addColorStop(0,'rgba(200,200,220,0.9)');
+    rg.addColorStop(.5,rgba(p.color,.6));
+    rg.addColorStop(1,'rgba(60,60,80,0.8)');
+    ctx.fillStyle=rg;
+    ctx.beginPath();ctx.ellipse(wx,wy,isRear?5:4.5,3,0,0,Math.PI*2);ctx.fill();
+    // rim spokes
+    ctx.strokeStyle='rgba(255,255,255,0.35)';ctx.lineWidth=1;
+    for(let i=0;i<4;i++){
+      const a=Math.PI/4+i*Math.PI/2+t*(spd/80);
+      const rr=isRear?4:3.5;
+      ctx.beginPath();ctx.moveTo(wx,wy);
+      ctx.lineTo(wx+Math.cos(a)*rr,wy+Math.sin(a)*rr);ctx.stroke();
+    }
+    ctx.strokeStyle='rgba(0,0,0,0.5)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.ellipse(wx,wy,isRear?8:7,4.5,0,0,Math.PI*2);ctx.stroke();
+  });
+
+  // ── Chassis base ──
+  ctx.fillStyle=darker(p.color,.35);
+  ctx.beginPath();ctx.roundRect(-CL/2+1,-CW/2+1,CL-2,CW-2,3);ctx.fill();
+
+  // ── Main body ──
+  const bodyG=ctx.createLinearGradient(-CL/2,-CW/2,CL/2,CW/2);
+  bodyG.addColorStop(0,lighter(p.color,.7));
+  bodyG.addColorStop(.25,lighter(p.color,.3));
+  bodyG.addColorStop(.65,p.color);
+  bodyG.addColorStop(1,darker(p.color,.5));
+  ctx.fillStyle=bodyG;
+  // Aerodynamic shape — wider at back, tapered front
+  ctx.beginPath();
+  ctx.moveTo(-CL/2+2,-CW/2+2);
+  ctx.lineTo(CL/2-4,-CW/2+5);
+  ctx.lineTo(CL/2-1,-CW/2+8);
+  ctx.lineTo(CL/2-1,CW/2-8);
+  ctx.lineTo(CL/2-4,CW/2-5);
+  ctx.lineTo(-CL/2+2,CW/2-2);
+  ctx.closePath();ctx.fill();
+
+  // ── Body panel detail lines ──
+  ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(-CL*.25,-CW/2+3);ctx.lineTo(CL*.35,-CW/2+3);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-CL*.25,CW/2-3);ctx.lineTo(CL*.35,CW/2-3);ctx.stroke();
+  // Centre ridge
+  ctx.beginPath();ctx.moveTo(-CL*.1,-CW/2+3);ctx.lineTo(CL*.4,-CW/2+4);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-CL*.1,CW/2-3);ctx.lineTo(CL*.4,CW/2-4);ctx.stroke();
+
+  // ── Hood / bonnet ──
+  const hoodG=ctx.createLinearGradient(CL*.1,-CW/2,CL/2,CW/2);
+  hoodG.addColorStop(0,lighter(p.color,.55));
+  hoodG.addColorStop(1,p.color);
+  ctx.fillStyle=hoodG;
+  ctx.beginPath();
+  ctx.moveTo(CL*.1,-CW/2+5);ctx.lineTo(CL/2-5,-CW/2+5);
+  ctx.lineTo(CL/2-1,-CW/2+8);ctx.lineTo(CL/2-1,CW/2-8);
+  ctx.lineTo(CL/2-5,CW/2-5);ctx.lineTo(CL*.1,CW/2-5);
+  ctx.closePath();ctx.fill();
+
+  // ── Windshield ──
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(CL*.08,-CW/2+5);ctx.lineTo(CL*.32,-CW/2+5);
+  ctx.lineTo(CL*.32,CW/2-5);ctx.lineTo(CL*.08,CW/2-5);
+  ctx.closePath();ctx.clip();
+  const wsG=ctx.createLinearGradient(CL*.08,-CW/2,CL*.32,CW/2);
+  wsG.addColorStop(0,'rgba(180,235,255,0.95)');
+  wsG.addColorStop(.5,'rgba(80,180,255,0.75)');
+  wsG.addColorStop(1,'rgba(0,80,180,0.6)');
+  ctx.fillStyle=wsG;
+  ctx.shadowColor='rgba(0,200,255,0.6)';ctx.shadowBlur=8;
+  ctx.fillRect(CL*.08,-CW/2,CL*.25,CW);ctx.shadowBlur=0;
+  // glare
+  ctx.fillStyle='rgba(255,255,255,0.45)';
+  ctx.fillRect(CL*.09,-CW/2+5,CL*.07,CW/2-6);
+  ctx.restore();
+
+  // ── Headlights ──
+  const hlColors=['rgba(255,255,180,1)','rgba(255,230,100,1)'];
+  [[CL/2-4,-CW/2+6],[CL/2-4,CW/2-6]].forEach(([lx,ly],i)=>{
+    const hg=ctx.createRadialGradient(lx,ly,0,lx,ly,5);
+    hg.addColorStop(0,hlColors[i]);hg.addColorStop(1,'rgba(255,200,0,0)');
+    ctx.fillStyle=hg;ctx.shadowColor='rgba(255,240,100,0.8)';ctx.shadowBlur=10;
+    ctx.beginPath();ctx.ellipse(lx,ly,4.5,3,0,0,Math.PI*2);ctx.fill();
+  });ctx.shadowBlur=0;
+
+  // ── Tail lights ──
+  [[-CL/2+4,-CW/2+5],[-CL/2+4,CW/2-5]].forEach(([lx,ly])=>{
+    ctx.fillStyle='rgba(255,30,30,0.95)';
+    ctx.shadowColor='rgba(255,0,0,0.6)';ctx.shadowBlur=8;
+    ctx.beginPath();ctx.ellipse(lx,ly,3.5,2.5,0,0,Math.PI*2);ctx.fill();
+  });ctx.shadowBlur=0;
+
+  // ── Rear spoiler ──
+  ctx.fillStyle=darker(p.color,.42);
+  ctx.fillRect(-CL/2-4,-CW/2+1,5,CW-2);
+  ctx.fillStyle=lighter(p.color,.15);
+  ctx.fillRect(-CL/2-6,-CW/2-1,3,CW+2);
+
+  // ── Roof specular ──
+  ctx.fillStyle='rgba(255,255,255,0.2)';
+  ctx.beginPath();ctx.ellipse(-CL*.05,-CW*.18,CL*.2,CW*.18,-0.15,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,0.08)';
+  ctx.beginPath();ctx.ellipse(-CL*.1,0,CL*.1,CW*.1,0,0,Math.PI*2);ctx.fill();
+
+  // ── Body outline ──
+  ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(-CL/2+2,-CW/2+2);ctx.lineTo(CL/2-4,-CW/2+5);
+  ctx.lineTo(CL/2-1,-CW/2+8);ctx.lineTo(CL/2-1,CW/2-8);
+  ctx.lineTo(CL/2-4,CW/2-5);ctx.lineTo(-CL/2+2,CW/2-2);
+  ctx.closePath();ctx.stroke();
+
+  // ── Active player glow ring ──
+  if(isMe){
+    ctx.strokeStyle=rgba(p.color,.5);ctx.lineWidth=2;
+    ctx.shadowColor=p.color;ctx.shadowBlur=14;
+    ctx.beginPath();ctx.ellipse(0,0,CL*.58,CW*.68,0,0,Math.PI*2);ctx.stroke();
     ctx.shadowBlur=0;
   }
 
-  // ── 3. WHEELS (four corners) ──
-  const wx=CW/2-2, wy=CH/2+1, ww=7, wh=5;
-  const wheelColor='#1a1a2e';
-  const wheelShine='rgba(100,100,140,0.7)';
-  [[-wx,-wy],[-wx,wy],[wx,-wy],[wx,wy]].forEach(([x,y])=>{
-    ctx.fillStyle=wheelColor;
-    ctx.beginPath(); ctx.ellipse(x,y,ww/2,wh/2,0,0,Math.PI*2); ctx.fill();
-    // wheel rim highlight
-    ctx.fillStyle=wheelShine;
-    ctx.beginPath(); ctx.ellipse(x-1,y-1,ww/4,wh/4,0,0,Math.PI*2); ctx.fill();
-    // tyre edge
-    ctx.strokeStyle='rgba(80,80,120,0.8)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.ellipse(x,y,ww/2,wh/2,0,0,Math.PI*2); ctx.stroke();
-  });
-
-  // ── 4. CHASSIS UNDERSIDE ──
-  const darkCol=darkenColor(p.color);
-  ctx.fillStyle=darkCol;
-  ctx.beginPath(); ctx.roundRect(-CW/2+2, -CH/2+2, CW-4, CH-4, 3); ctx.fill();
-
-  // ── 5. MAIN BODY PANEL ──
-  const bodyGrad=ctx.createLinearGradient(-CW/2,-CH/2, CW/2, CH/2);
-  bodyGrad.addColorStop(0, lightenColor(p.color,0.65));
-  bodyGrad.addColorStop(0.3, lightenColor(p.color,0.25));
-  bodyGrad.addColorStop(0.7, p.color);
-  bodyGrad.addColorStop(1, darkCol);
-  ctx.fillStyle=bodyGrad;
-  // main body shape — slightly rounded, tapered at front
-  ctx.beginPath();
-  ctx.moveTo(-CW/2+3, -CH/2+2);   // rear left
-  ctx.lineTo( CW/2-1, -CH/2+4);   // front left (tapered)
-  ctx.lineTo( CW/2-1,  CH/2-4);   // front right
-  ctx.lineTo(-CW/2+3,  CH/2-2);   // rear right
-  ctx.closePath();
-  ctx.fill();
-
-  // ── 6. SIDE PANEL LINES (depth detail) ──
-  ctx.strokeStyle=`rgba(255,255,255,0.12)`;
-  ctx.lineWidth=1;
-  ctx.beginPath();
-  ctx.moveTo(-CW/2+4, -CH/2+6); ctx.lineTo(CW/2-3, -CH/2+6); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(-CW/2+4,  CH/2-6); ctx.lineTo(CW/2-3,  CH/2-6); ctx.stroke();
-
-  // ── 7. HOOD / NOSE ──
-  const hoodG=ctx.createLinearGradient(CW/4,-CH/2,CW/2,0);
-  hoodG.addColorStop(0, lightenColor(p.color,0.5));
-  hoodG.addColorStop(1, p.color);
-  ctx.fillStyle=hoodG;
-  ctx.beginPath();
-  ctx.moveTo(CW/4, -CH/2+4); ctx.lineTo(CW/2-1, -CH/2+4);
-  ctx.lineTo(CW/2-1,  CH/2-4); ctx.lineTo(CW/4,  CH/2-4);
-  ctx.closePath(); ctx.fill();
-
-  // ── 8. WINDSHIELD ──
-  const wsG=ctx.createLinearGradient(CW/4-4,-CH/2+5, CW/2-2, CH/2-5);
-  wsG.addColorStop(0,'rgba(160,230,255,0.9)');
-  wsG.addColorStop(0.5,'rgba(80,180,255,0.7)');
-  wsG.addColorStop(1,'rgba(0,100,200,0.5)');
-  ctx.fillStyle=wsG;
-  ctx.shadowColor='rgba(0,200,255,0.8)'; ctx.shadowBlur=6;
-  ctx.beginPath();
-  ctx.roundRect(CW/4-4, -CH/2+5, CW/4, CH-10, 2);
-  ctx.fill(); ctx.shadowBlur=0;
-  // windshield glare
-  ctx.fillStyle='rgba(255,255,255,0.35)';
-  ctx.beginPath();
-  ctx.roundRect(CW/4-2, -CH/2+6, CW/10, CH/2-8, 1);
-  ctx.fill();
-
-  // ── 9. HEADLIGHTS ──
-  const hlG=ctx.createRadialGradient(CW/2-2,-CH/2+5,0,CW/2-2,-CH/2+5,5);
-  hlG.addColorStop(0,'rgba(255,255,180,1)');
-  hlG.addColorStop(1,'rgba(255,200,0,0)');
-  ctx.fillStyle=hlG; ctx.shadowColor='rgba(255,240,0,0.9)'; ctx.shadowBlur=8;
-  ctx.beginPath(); ctx.ellipse(CW/2-3, -CH/2+6, 4, 3, 0, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(CW/2-3,  CH/2-6, 4, 3, 0, 0, Math.PI*2); ctx.fill();
-  ctx.shadowBlur=0;
-
-  // ── 10. TAIL LIGHTS ──
-  ctx.fillStyle='rgba(255,40,40,0.9)';
-  ctx.shadowColor='rgba(255,0,0,0.7)'; ctx.shadowBlur=5;
-  ctx.beginPath(); ctx.ellipse(-CW/2+4, -CH/2+5, 3, 2, 0, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(-CW/2+4,  CH/2-5, 3, 2, 0, 0, Math.PI*2); ctx.fill();
-  ctx.shadowBlur=0;
-
-  // ── 11. SPOILER (rear wing) ──
-  ctx.fillStyle=darkenColor(p.color);
-  ctx.fillRect(-CW/2-2, -CH/2+3, 4, CH-6);
-  ctx.fillStyle=lightenColor(p.color,0.2);
-  ctx.fillRect(-CW/2-3, -CH/2+2, 2, CH-4);
-
-  // ── 12. BODY OUTLINE ──
-  ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.lineWidth=1;
-  ctx.beginPath();
-  ctx.moveTo(-CW/2+3, -CH/2+2); ctx.lineTo(CW/2-1, -CH/2+4);
-  ctx.lineTo(CW/2-1, CH/2-4); ctx.lineTo(-CW/2+3, CH/2-2);
-  ctx.closePath(); ctx.stroke();
-
-  // ── 13. ROOF SPECULAR HIGHLIGHT ──
-  ctx.fillStyle='rgba(255,255,255,0.18)';
-  ctx.beginPath();
-  ctx.ellipse(-CW/8, -CH/4, CW/4, CH/6, -0.2, 0, Math.PI*2);
-  ctx.fill();
-
   ctx.restore();
 
-  // ── NAME TAG ──
-  ctx.font=`bold 10px Oxanium`;
-  ctx.fillStyle=p.color; ctx.textAlign='center'; ctx.textBaseline='bottom';
-  ctx.shadowColor=p.color; ctx.shadowBlur=7;
-  ctx.fillText(p.name.slice(0,10), p.x, p.y - CH/2 - 5);
+  // ── Name + boost bar ──
+  ctx.font=`bold 11px Oxanium`;
+  ctx.fillStyle=p.color;ctx.textAlign='center';ctx.textBaseline='bottom';
+  ctx.shadowColor=p.color;ctx.shadowBlur=8;
+  ctx.fillText(p.name.slice(0,12),p.x,p.y-CW/2-8);
   ctx.shadowBlur=0;
 
-  // ── BOOST BAR UNDER CAR ──
   const bPct=Math.max(0,p.boost)/BOOST_MAX;
-  const bw=32, bh=4, bx=p.x-bw/2, by=p.y+CH/2+5;
-  ctx.fillStyle='rgba(0,0,0,0.5)';
-  ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,2); ctx.fill();
-  const bc=bPct>0.5?'rgba(0,255,136,0.9)':bPct>0.25?'rgba(255,200,0,0.9)':'rgba(255,50,80,0.9)';
-  ctx.fillStyle=bc;
-  ctx.shadowColor=bc; ctx.shadowBlur=4;
-  ctx.beginPath(); ctx.roundRect(bx,by,bw*bPct,bh,2); ctx.fill();
+  const bw=38,bh=4,bx=p.x-bw/2,by=p.y+CW/2+7;
+  ctx.fillStyle='rgba(0,0,0,0.55)';
+  ctx.beginPath();ctx.roundRect(bx,by,bw,bh,2);ctx.fill();
+  const bc=bPct>.5?'rgba(0,255,136,.95)':bPct>.25?'rgba(255,200,0,.95)':'rgba(255,50,80,.95)';
+  ctx.fillStyle=bc;ctx.shadowColor=bc;ctx.shadowBlur=5;
+  ctx.beginPath();ctx.roundRect(bx,by,bw*bPct,bh,2);ctx.fill();
   ctx.shadowBlur=0;
 }
 
+// ── BALL ──────────────────────────────
 function drawBall(ball){
   const t=Date.now()/1000;
-  const spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-  const R=BALL_R;
+  const spd=Math.sqrt((ball.vx||0)**2+(ball.vy||0)**2);
+  const R=BR;
+  const spin=t*(spd/25+.8);
 
-  // Motion blur trail
-  if(spd>80){
-    const trailLen=Math.min(spd/12,18);
+  // Motion trail
+  if(spd>100){
     const ang=Math.atan2(ball.vy,ball.vx);
+    const tl=Math.min(spd/8,28);
     const tg=ctx.createLinearGradient(
-      ball.x-Math.cos(ang)*trailLen, ball.y-Math.sin(ang)*trailLen,
-      ball.x, ball.y);
+      ball.x-Math.cos(ang)*tl,ball.y-Math.sin(ang)*tl,ball.x,ball.y);
     tg.addColorStop(0,'rgba(255,255,255,0)');
-    tg.addColorStop(1,'rgba(255,255,255,0.15)');
+    tg.addColorStop(1,'rgba(255,255,255,0.18)');
     ctx.fillStyle=tg;
     ctx.beginPath();
-    ctx.ellipse(ball.x-Math.cos(ang)*trailLen/2,
-                ball.y-Math.sin(ang)*trailLen/2,
-                trailLen, R*0.7, ang, 0, Math.PI*2);
+    ctx.ellipse(ball.x-Math.cos(ang)*tl/2,ball.y-Math.sin(ang)*tl/2,
+      tl,R*.6,ang,0,Math.PI*2);
     ctx.fill();
   }
 
   // Shadow
-  ctx.fillStyle='rgba(0,0,0,0.4)';
-  ctx.beginPath(); ctx.ellipse(ball.x+3, ball.y+4, R*0.85, R*0.45, 0, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(0,0,0,0.45)';
+  ctx.beginPath();ctx.ellipse(ball.x+3,ball.y+5,R*.9,R*.44,0,0,Math.PI*2);ctx.fill();
 
   // Speed glow
-  if(spd>60){
-    const glowA=Math.min(0.5,spd/400);
-    const gG=ctx.createRadialGradient(ball.x,ball.y,R*.4,ball.x,ball.y,R*2.2);
-    gG.addColorStop(0,`rgba(255,255,180,${glowA})`);
-    gG.addColorStop(1,'rgba(255,150,0,0)');
-    ctx.fillStyle=gG;
-    ctx.beginPath(); ctx.arc(ball.x,ball.y,R*2.2,0,Math.PI*2); ctx.fill();
+  if(spd>80){
+    const ga=Math.min(.55,spd/350);
+    const gg=ctx.createRadialGradient(ball.x,ball.y,R*.3,ball.x,ball.y,R*2.5);
+    gg.addColorStop(0,`rgba(255,255,200,${ga})`);
+    gg.addColorStop(.5,`rgba(255,150,0,${ga*.4})`);
+    gg.addColorStop(1,'rgba(255,50,0,0)');
+    ctx.fillStyle=gg;
+    ctx.beginPath();ctx.arc(ball.x,ball.y,R*2.5,0,Math.PI*2);ctx.fill();
   }
 
-  // Main ball body — layered radial gradients for 3D look
-  const bg=ctx.createRadialGradient(
-    ball.x-R*0.38, ball.y-R*0.38, R*0.05,
-    ball.x, ball.y, R);
+  // Main ball — 3-layer gradient
+  const bg=ctx.createRadialGradient(ball.x-R*.4,ball.y-R*.4,R*.04,ball.x,ball.y,R);
   bg.addColorStop(0,'#ffffff');
-  bg.addColorStop(0.25,'#f0f4ff');
-  bg.addColorStop(0.6,'#c8d8f0');
-  bg.addColorStop(0.85,'#8898c8');
-  bg.addColorStop(1,'#3040a0');
+  bg.addColorStop(.22,'#f2f6ff');
+  bg.addColorStop(.55,'#c4d4f0');
+  bg.addColorStop(.82,'#7888c8');
+  bg.addColorStop(1,'#2c3888');
   ctx.fillStyle=bg;
-  ctx.shadowColor='rgba(180,200,255,0.6)'; ctx.shadowBlur=10;
-  ctx.beginPath(); ctx.arc(ball.x,ball.y,R,0,Math.PI*2); ctx.fill();
+  ctx.shadowColor='rgba(160,190,255,0.5)';ctx.shadowBlur=12;
+  ctx.beginPath();ctx.arc(ball.x,ball.y,R,0,Math.PI*2);ctx.fill();
   ctx.shadowBlur=0;
 
-  // Panel lines (rotating with ball spin)
-  const spin=t*(spd/30+0.5);
-  ctx.save(); ctx.translate(ball.x,ball.y); ctx.rotate(spin);
-  ctx.strokeStyle='rgba(60,80,160,0.4)'; ctx.lineWidth=1.2;
-  // horizontal seam
-  ctx.beginPath(); ctx.moveTo(-R,0); ctx.lineTo(R,0); ctx.stroke();
-  // vertical seam
-  ctx.beginPath(); ctx.moveTo(0,-R); ctx.lineTo(0,R); ctx.stroke();
-  // curved seam arcs
-  ctx.beginPath(); ctx.arc(0,0,R,Math.PI*0.08,Math.PI*0.92); ctx.stroke();
-  ctx.beginPath(); ctx.arc(0,0,R,Math.PI*1.08,Math.PI*1.92); ctx.stroke();
+  // Seam panels (rotating)
+  ctx.save();ctx.translate(ball.x,ball.y);ctx.rotate(spin);
+  ctx.strokeStyle='rgba(50,70,160,.38)';ctx.lineWidth=1.3;
+  ctx.beginPath();ctx.moveTo(-R,0);ctx.lineTo(R,0);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,-R);ctx.lineTo(0,R);ctx.stroke();
+  ctx.beginPath();ctx.arc(0,0,R,Math.PI*.07,Math.PI*.93);ctx.stroke();
+  ctx.beginPath();ctx.arc(0,0,R,Math.PI*1.07,Math.PI*1.93);ctx.stroke();
   ctx.restore();
 
-  // Primary specular highlight
-  ctx.fillStyle='rgba(255,255,255,0.75)';
-  ctx.beginPath(); ctx.ellipse(ball.x-R*0.32, ball.y-R*0.32, R*0.28, R*0.18, -Math.PI/4, 0, Math.PI*2); ctx.fill();
+  // Primary specular
+  ctx.fillStyle='rgba(255,255,255,0.78)';
+  ctx.beginPath();ctx.ellipse(ball.x-R*.34,ball.y-R*.34,R*.28,R*.17,-Math.PI/4,0,Math.PI*2);ctx.fill();
+  // Secondary
+  ctx.fillStyle='rgba(255,255,255,0.32)';
+  ctx.beginPath();ctx.ellipse(ball.x-R*.55,ball.y-R*.48,R*.1,R*.07,-Math.PI/4,0,Math.PI*2);ctx.fill();
 
-  // Secondary smaller specular
-  ctx.fillStyle='rgba(255,255,255,0.35)';
-  ctx.beginPath(); ctx.ellipse(ball.x-R*0.52, ball.y-R*0.45, R*0.1, R*0.07, -Math.PI/4, 0, Math.PI*2); ctx.fill();
-
-  // Rim highlight
-  ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.arc(ball.x,ball.y,R,0,Math.PI*2); ctx.stroke();
+  ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(ball.x,ball.y,R,0,Math.PI*2);ctx.stroke();
 }
 
-function lightenColor(hex, amt){
-  const n=parseInt(hex.replace('#',''),16);
-  const r=Math.min(255,((n>>16)&255)+Math.round(amt*255));
-  const g=Math.min(255,((n>>8)&255)+Math.round(amt*255));
-  const b=Math.min(255,(n&255)+Math.round(amt*255));
-  return `rgb(${r},${g},${b})`;
-}
-function darkenColor(hex){
-  const n=parseInt(hex.replace('#',''),16);
-  return `rgb(${((n>>16)&255)*.45|0},${((n>>8)&255)*.45|0},${(n&255)*.45|0})`;
+// ── PARTICLES ─────────────────────────
+function drawParticles(){
+  particles.forEach(p=>{
+    const a=p.life/p.maxLife;
+    ctx.globalAlpha=a;
+    ctx.fillStyle=p.color;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r*a,0,Math.PI*2);ctx.fill();
+  });
+  ctx.globalAlpha=1;
 }
 
-// ═══════════════════════════════════════════════════════
-// GOAL
-// ═══════════════════════════════════════════════════════
-function showGoal(scorerName, scorerColor, p1score, p2score){
-  if(GS){ GS.p1score=p1score; GS.p2score=p2score; }
-  const el=document.getElementById('goal-flash');
-  const gt=document.getElementById('goal-text');
-  const gs=document.getElementById('goal-scorer');
-  gt.textContent='⚽ GOAL!';
-  gt.style.color=scorerColor||'var(--gold)';
-  gs.textContent=randomFrom(GOAL_COMMENTS).replace('GOAL!','').trim();
-  gs.style.color=scorerColor||'var(--gold)';
+// ═══════════════════════════════════════
+// GOAL FLASH
+// ═══════════════════════════════════════
+function showGoal(name,color,p1s,p2s){
+  if(GS){GS.p1score=p1s;GS.p2score=p2s;}
+  const el=document.getElementById('gflash');
+  document.getElementById('gtxt').textContent='⚽ GOAL!';
+  document.getElementById('gtxt').style.color=color||'var(--gold)';
+  document.getElementById('gsub').textContent=`${name} scores! ${rnd(GOAL_LINES).replace('GOAL! ','').replace('SCORE! ','')}`;
+  document.getElementById('gsub').style.color=color||'var(--gold)';
   el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2500);
-  setCommentary(`🚀 GOAL BY ${scorerName.toUpperCase()}! ${randomFrom(GOAL_COMMENTS)}`);
+  // spawn celebration particles
+  for(let i=0;i<30;i++){
+    const a=Math.random()*Math.PI*2,s=60+Math.random()*200;
+    particles.push({x:FW/2,y:FH/2,vx:Math.cos(a)*s,vy:Math.sin(a)*s,
+      color:['#ffd700','#ff6a00','#00ff88','#00b8ff','#fff'][Math.floor(Math.random()*5)],
+      r:3+Math.random()*5,life:.8+Math.random()*.6,maxLife:1.4});
+  }
+  setTimeout(()=>el.classList.remove('show'),2800);
+  setComm(`⚽ GOAL — ${name.toUpperCase()}! ${rnd(GOAL_LINES)}`);
 }
 
-// ═══════════════════════════════════════════════════════
-// QUIZ (POWER-UP)
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════
 function showQuiz(q){
   qAnswered=false;
-  const me=GS?.players[playerNum-1];
   document.getElementById('qtag').textContent=`SECTION ${q.t} — ${(TOPICS[q.t]||'').toUpperCase()}`;
-  document.getElementById('qicon').textContent='🚀';
-  document.getElementById('qicon').style.borderColor=myColor;
-  document.getElementById('qicon').style.background=myColor+'20';
+  document.getElementById('qico').textContent='🚀';
+  document.getElementById('qico').style.borderColor=myColor;
+  document.getElementById('qico').style.background=rgba(myColor,.12);
   document.getElementById('qpname').textContent=myName;
   document.getElementById('qpname').style.color=myColor;
-  document.getElementById('qpsub').textContent=`Correct = FULL BOOST! Wrong = opponent gets it! 😬`;
   document.getElementById('qq').textContent=q.q;
   document.getElementById('qres').className='qres';
   const L=['A','B','C','D'];
-  const qcs=document.getElementById('qcs'); qcs.innerHTML='';
+  const qcs=document.getElementById('qcs');qcs.innerHTML='';
   q.cs.forEach((c,i)=>{
     const b=document.createElement('button');
     b.className='qc';
@@ -1197,78 +1318,58 @@ function showQuiz(q){
   });
   let tl=20;
   const fill=document.getElementById('qtfill');
-  fill.style.width='100%'; fill.style.background='var(--orange)';
-  if(qTimerInt) clearInterval(qTimerInt);
+  fill.style.width='100%';fill.style.background='var(--orange)';
+  if(qTimerInt)clearInterval(qTimerInt);
   qTimerInt=setInterval(()=>{
-    tl--;
-    fill.style.width=(tl/20*100)+'%';
-    if(tl<6) fill.style.background='var(--red)';
-    if(tl<=0){ clearInterval(qTimerInt); if(!qAnswered) answerQuiz(-1,q); }
+    tl--;fill.style.width=(tl/20*100)+'%';
+    if(tl<6)fill.style.background='var(--red)';
+    if(tl<=0){clearInterval(qTimerInt);if(!qAnswered)answerQuiz(-1,q);}
   },1000);
-  document.getElementById('qoverlay').classList.add('show');
+  document.getElementById('qov').classList.add('show');
 }
 
 function answerQuiz(chosen,q){
-  if(qAnswered) return; qAnswered=true;
-  if(qTimerInt) clearInterval(qTimerInt);
+  if(qAnswered)return;qAnswered=true;
+  if(qTimerInt)clearInterval(qTimerInt);
   const correct=chosen===q.a;
   document.querySelectorAll('.qc').forEach((b,i)=>{
     b.disabled=true;
-    if(i===q.a) b.classList.add('correct');
-    else if(i===chosen&&!correct) b.classList.add('wrong');
+    if(i===q.a)b.classList.add('correct');
+    else if(i===chosen&&!correct)b.classList.add('wrong');
   });
-  const re=document.getElementById('qres'); re.classList.add('show');
-  if(correct){
-    re.className='qres show ok';
-    re.textContent='✅ CORRECT! FULL BOOST ACTIVATED! 🚀';
-  } else {
-    re.className='qres show fail';
-    re.textContent=chosen===-1?'⏱ TIME UP — opponent gets your boost!':'❌ WRONG! Opponent steals your boost! 😅';
-  }
-  send({type:'rocket_quiz_answer', correct});
-  setTimeout(()=>document.getElementById('qoverlay').classList.remove('show'),2000);
+  const re=document.getElementById('qres');re.classList.add('show');
+  if(correct){re.className='qres show ok';re.textContent='✅ CORRECT! FULL BOOST ACTIVATED! 🚀';}
+  else{re.className='qres show fail';
+    re.textContent=chosen===-1?'⏱ TIME UP — Opponent gets boost!':'❌ WRONG! Opponent steals your boost! 😅';}
+  send({type:'rocket_quiz_answer',correct});
+  setTimeout(()=>document.getElementById('qov').classList.remove('show'),2200);
 }
 
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // END MATCH
-// ═══════════════════════════════════════════════════════
-function endMatch(p1s,p2s,p1n,p2n,p1c,p2c){
+// ═══════════════════════════════════════
+function endMatch(msg){
   gameRunning=false;
-  if(animFrame) cancelAnimationFrame(animFrame);
-  document.getElementById('f-s1').textContent=p1s;
-  document.getElementById('f-s2').textContent=p2s;
-  document.getElementById('f-n1').textContent=p1n;
-  document.getElementById('f-n1').style.color=p1c;
-  document.getElementById('f-n2').textContent=p2n;
-  document.getElementById('f-n2').style.color=p2c;
-  const winner=p1s>p2s?p1n:p2s>p1s?p2n:null;
-  const winColor=p1s>p2s?p1c:p2s>p1s?p2c:'#ffd700';
-  const wEl=document.getElementById('f-winner');
-  if(winner){
-    wEl.textContent=`🏆 ${winner.toUpperCase()} WINS! ${randomFrom(GOAL_COMMENTS)}`;
-    wEl.style.color=winColor;
-  } else {
-    wEl.textContent="🤝 IT'S A DRAW! Mr. Tareen is satisfied! 😎";
-    wEl.style.color='var(--gold)';
-  }
-  bgAnim('fbg','255,106,0');
+  if(animFrame)cancelAnimationFrame(animFrame);
+  document.getElementById('fs1').textContent=msg.p1score;
+  document.getElementById('fs2').textContent=msg.p2score;
+  document.getElementById('fn1').textContent=msg.p1name;
+  document.getElementById('fn1').style.color=msg.p1color;
+  document.getElementById('fs1').style.color=msg.p1color;
+  document.getElementById('fn2').textContent=msg.p2name;
+  document.getElementById('fn2').style.color=msg.p2color;
+  document.getElementById('fs2').style.color=msg.p2color;
+  const win=msg.p1score>msg.p2score?msg.p1name:msg.p2score>msg.p1score?msg.p2name:null;
+  const wc=msg.p1score>msg.p2score?msg.p1color:msg.p2color;
+  const fw=document.getElementById('fwin');
+  if(win){fw.textContent=`🏆 ${win.toUpperCase()} WINS! ${rnd(GOAL_LINES).replace('GOAL!','').replace('SCORE!','')}`;fw.style.color=wc;}
+  else{fw.textContent="🤝 DRAW! Mr. Tareen is satisfied! 😎";fw.style.color='var(--gold)';}
+  bgCanvas('fbg',255,106,0);
   showScreen('final');
 }
 
-// Init
-(function(){
-  if(!CanvasRenderingContext2D.prototype.roundRect){
-    CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
-      const v=Array.isArray(r)?r:[r,r,r,r];
-      const[a,b,c,d]=v.map(n=>Math.min(n,w/2,h/2));
-      this.beginPath();this.moveTo(x+a,y);this.lineTo(x+w-b,y);
-      this.arcTo(x+w,y,x+w,y+b,b);this.lineTo(x+w,y+h-c);
-      this.arcTo(x+w,y+h,x+w-c,y+h,c);this.lineTo(x+d,y+h);
-      this.arcTo(x,y+h,x,y+h-d,d);this.lineTo(x,y+a);
-      this.arcTo(x,y,x+a,y,a);this.closePath();return this;
-    };
-  }
-})();
+// Start background on load
+bgCanvas('jbg',255,106,0);
 </script>
 </body>
 </html>
