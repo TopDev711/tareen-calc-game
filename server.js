@@ -133,24 +133,64 @@ const rrooms = {};
 const FW=1000, FH=650, BR=14, GH=260, GW=22, MT=180;
 
 const RQS=[
-  {t:"7.4",q:"dy/dx=x−y has horizontal tangents where:",cs:["x=0","y=0","x=y","y=−x"],a:2},
-  {t:"7.4",q:"dy/dx=y² has slope 0 along:",cs:["y=1","x=0","y=0","x=y"],a:2},
-  {t:"7.6",q:"Separate dy/dx=2x/y. Correct integral:",cs:["∫y dy=∫2x dx","∫dy/y=∫2x dx","∫y dy=∫x dx","∫1/y dy=∫2 dx"],a:0},
-  {t:"7.6",q:"General solution to dy/dx=ky:",cs:["y=kx+C","y=Ce^(kx)","y=e^(kx)+C","y=k ln|x|+C"],a:1},
-  {t:"7.6",q:"Which DE is NOT separable?",cs:["dy/dx=xy","dy/dx=x+y","dy/dx=x/y","dy/dx=ye^x"],a:1},
-  {t:"7.7",q:"dy/dx=2x with y(0)=5:",cs:["y=x²+5","y=2x+5","y=x²−5","y=2x²+5"],a:0},
-  {t:"7.7",q:"dy/dx=3y with y(0)=2:",cs:["y=3e^(2x)","y=2e^(3x)","y=2+3x","y=6e^x"],a:1},
-  {t:"7.7",q:"dy/dx=−2y, y(0)=10. Find y(1):",cs:["10e^(−2)","−20","10e^2","8"],a:0},
-  {t:"7.7",q:"dy/dx=2xy, y(0)=1:",cs:["y=e^(x²)","y=e^(2x)","y=x²+1","y=2x+1"],a:0},
-  {t:"7.8",q:"y=5e^(3t), dy/dt=ky. k=?",cs:["5","3","15","1/3"],a:1},
-  {t:"7.8",q:"4% continuous decay:",cs:["A₀e^(0.04t)","A₀(0.96)^t","A₀e^(−0.04t)","A₀−0.04t"],a:2},
-  {t:"7.8",q:"Newton's Cooling: cooling object, k is:",cs:["Positive","Negative","Zero","Any real"],a:1},
-  {t:"7.8",q:"Logistic dP/dt=kP(1−P/M) solution:",cs:["Ce^(kt)","M/(1+Ae^(−kt))","Me^(kt)","kMt"],a:1},
+  // ── DISK METHOD ──────────────────────────────────────────────
+  {t:"Disk",
+   q:"The region bounded by y=√x, x=4, and y=0 is rotated about the x-axis. Which integral gives the volume?",
+   cs:["π∫₀⁴ x dx","π∫₀⁴ √x dx","π∫₀⁴ x² dx","2π∫₀⁴ x dx"],a:0},
+
+  {t:"Disk",
+   q:"The region bounded by y=2x, x=3, and y=0 is rotated about the x-axis. Find the volume.",
+   cs:["12π","18π","36π","72π"],a:2},
+
+  {t:"Disk",
+   q:"The region bounded by y=x², x=0, x=2, and y=0 is rotated about the x-axis. Find the volume.",
+   cs:["32π/5","8π/3","16π/3","4π"],a:0},
+
+  {t:"Disk",
+   q:"Which method is used when a region is rotated about the x-axis and cross-sections perpendicular to the x-axis are circles?",
+   cs:["Shell method","Washer method","Disk method","Cylindrical method"],a:2},
+
+  // ── WASHER METHOD ────────────────────────────────────────────
+  {t:"Washer",
+   q:"The region between y=x and y=x² is rotated about the x-axis. Which integral gives the volume?",
+   cs:["π∫₀¹(x−x²)dx","π∫₀¹(x²−x⁴)dx","π∫₀¹(x+x²)dx","2π∫₀¹ x(x−x²)dx"],a:1},
+
+  {t:"Washer",
+   q:"The region between y=√x and y=x is rotated about the x-axis. The OUTER radius is:",
+   cs:["x","x²","√x","x−√x"],a:2},
+
+  {t:"Washer",
+   q:"The region between y=x² and y=2x is rotated about the x-axis. Find the volume.",
+   cs:["64π/15","32π/3","64π/3","16π/5"],a:2},
+
+  {t:"Washer",
+   q:"When using the washer method, the volume formula is:",
+   cs:["π∫(outer)² dx","π∫[(outer)²−(inner)²]dx","π∫[(outer)−(inner)]² dx","2π∫r·h dx"],a:1},
+
+  // ── ROTATION ABOUT OTHER AXES ────────────────────────────────
+  {t:"Other Axes",
+   q:"The region bounded by y=x² and y=4 is rotated about y=4. The radius of a typical disk is:",
+   cs:["x²","4−x²","x²−4","4+x²"],a:1},
+
+  {t:"Other Axes",
+   q:"The region bounded by y=x and y=x² is rotated about y=−1. The OUTER radius is:",
+   cs:["x−1","x+1","x²+1","x−x²"],a:1},
+
+  {t:"Other Axes",
+   q:"The region bounded by y=x² and x=y² is rotated about the x-axis. The intersections occur at:",
+   cs:["x=0 and x=2","x=0 and x=1","x=1 and x=2","x=0 and x=4"],a:1},
 ];
 
-const LINES=["Mr. Tareen screams! 😱","dy/dx of that = INFINITE! 🔥",
-  "Mr. Tareen spills his coffee! ☕","The limit of that shot approaches GLORY! ✨",
-  "e^amazing! 📈","Mr. Tareen stands up! 🪑","Newton's law = always positive! ➕"];
+const LINES=[
+  "Mr. Tareen screams: That's a perfect solid of revolution! 😱",
+  "The volume of that play = INFINITE! 🔥",
+  "Mr. Tareen spills his coffee — disk method style! ☕",
+  "Rotate that around the x-axis — GOAL! ✨",
+  "π·r²·h of amazing right there! 📈",
+  "Mr. Tareen stands up — washer method wins! 🪑",
+  "The cross-section of that shot = circle! 📊",
+  "Integrate that! Mr. Tareen is impressed! 💪",
+];
 
 function rCast(room, obj) { safeSend(room.p1, obj); safeSend(room.p2, obj); }
 
