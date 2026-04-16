@@ -620,10 +620,13 @@ function onMsg(msg){
       if(GS)mergeState(msg.state);
       break;
     case 'rocket_goal':
-      // Server tells us to reset ball to specific position
-      if(GS&&GS.ball&&typeof msg.ballX==='number'){
-        GS.ball.x=msg.ballX; GS.ball.y=msg.ballY;
-        GS.ball.vx=msg.ballVx; GS.ball.vy=msg.ballVy;
+      // Hard reset ball to center regardless of msg coords
+      if(GS&&GS.ball){
+        GS.ball.x=FW/2; GS.ball.y=FH/2;
+        GS.ball.vx=0;   GS.ball.vy=0;
+        GS.ball.frozen=true;
+        // Release ball after celebration
+        setTimeout(()=>{ if(GS&&GS.ball) GS.ball.frozen=false; }, 2500);
       }
       showGoal(msg.scorer,msg.scorerColor,msg.p1score,msg.p2score);
       break;
@@ -788,7 +791,7 @@ function update(dt){
 
   // Ball interaction — BOTH players affect ball locally
   const ball=GS.ball;
-  if(ball){
+  if(ball && !ball.frozen){
     // Check collision with BOTH cars (so P2 also hits ball locally)
     GS.players.forEach((car,ci)=>{
       if(!car)return;
@@ -831,6 +834,9 @@ function update(dt){
     }
     if(ball.y-BR<0){ball.y=BR;ball.vy*=-BALL_BOUNCE;}
     if(ball.y+BR>FH){ball.y=FH-BR;ball.vy*=-BALL_BOUNCE;}
+  } else if(ball && ball.frozen) {
+    // Keep ball locked at center during celebration
+    ball.x=FW/2; ball.y=FH/2; ball.vx=0; ball.vy=0;
   }
 
   // Boost particles — lots more when boosting!
@@ -852,8 +858,11 @@ function update(dt){
   send({type:'rocket_input',
     x:me.x,y:me.y,angle:me.angle,
     vx:me.vx,vy:me.vy,boost:me.boost,speed:me.speed,
-    ballX:ball?.x,ballY:ball?.y,
-    ballVx:ball?.vx,ballVy:ball?.vy
+    // Only send ball when not frozen — avoids overwriting server's reset
+    ballX: (!ball||ball.frozen) ? undefined : ball.x,
+    ballY: (!ball||ball.frozen) ? undefined : ball.y,
+    ballVx:(!ball||ball.frozen) ? undefined : ball.vx,
+    ballVy:(!ball||ball.frozen) ? undefined : ball.vy
   });
 
   // HUD

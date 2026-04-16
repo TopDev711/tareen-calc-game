@@ -194,7 +194,9 @@ function pickQ(s){
 function startLoop(code){
   const r=rrooms[code]; if(!r) return;
   if(r.interval) clearInterval(r.interval);
+  r.goalCooldown=0; // on the room so handleRocket can check it
   let tick=0;
+
   r.interval=setInterval(()=>{
     const rm=rrooms[code]; if(!rm||!rm.state) return;
     const s=rm.state;
@@ -202,30 +204,30 @@ function startLoop(code){
     const ball=s.ball;
     const gt=(FH-GH)/2, gb=(FH+GH)/2;
 
-    // Goals — detect when ball enters goal opening
-
-    if(ball.x-BR<=GW && ball.y>gt && ball.y<gb){
-      // P2 scores (ball went into left/orange goal)
-      s.p2score++;
-      resetBall(s, 2);
-      rCast(rm,{type:'rocket_goal',
-        scorer:s.players[1].name, scorerColor:s.players[1].color,
-        p1score:s.p1score, p2score:s.p2score,
-        ballX:s.ball.x, ballY:s.ball.y,
-        ballVx:s.ball.vx, ballVy:s.ball.vy});
-      console.log(`[ROCKET ${code}] GOAL! P2 ${s.players[1].name} scores! ${s.p1score}-${s.p2score}`);
-    }
-
-    if(ball.x+BR>=FW-GW && ball.y>gt && ball.y<gb){
-      // P1 scores (ball went into right/blue goal)
-      s.p1score++;
-      resetBall(s, 1);
-      rCast(rm,{type:'rocket_goal',
-        scorer:s.players[0].name, scorerColor:s.players[0].color,
-        p1score:s.p1score, p2score:s.p2score,
-        ballX:s.ball.x, ballY:s.ball.y,
-        ballVx:s.ball.vx, ballVy:s.ball.vy});
-      console.log(`[ROCKET ${code}] GOAL! P1 ${s.players[0].name} scores! ${s.p1score}-${s.p2score}`);
+    // Goal cooldown — ignore ball position for 20 ticks (2s) after a goal
+    if(rm.goalCooldown>0){ rm.goalCooldown--; }
+    else {
+      // Goals — detect when ball enters goal opening
+      if(ball.x-BR<=GW && ball.y>gt && ball.y<gb){
+        s.p2score++;
+        rm.goalCooldown=20;
+        s.ball={x:FW/2,y:FH/2,vx:0,vy:0};
+        rCast(rm,{type:'rocket_goal',
+          scorer:s.players[1].name, scorerColor:s.players[1].color,
+          p1score:s.p1score, p2score:s.p2score,
+          ballX:FW/2, ballY:FH/2, ballVx:0, ballVy:0});
+        console.log(`[ROCKET ${code}] GOAL! ${s.players[1].name} scores! ${s.p1score}-${s.p2score}`);
+      }
+      else if(ball.x+BR>=FW-GW && ball.y>gt && ball.y<gb){
+        s.p1score++;
+        rm.goalCooldown=20;
+        s.ball={x:FW/2,y:FH/2,vx:0,vy:0};
+        rCast(rm,{type:'rocket_goal',
+          scorer:s.players[0].name, scorerColor:s.players[0].color,
+          p1score:s.p1score, p2score:s.p2score,
+          ballX:FW/2, ballY:FH/2, ballVx:0, ballVy:0});
+        console.log(`[ROCKET ${code}] GOAL! ${s.players[0].name} scores! ${s.p1score}-${s.p2score}`);
+      }
     }
 
     // Powerups
@@ -314,7 +316,7 @@ function handleRocket(ws, msg){
         s.players[idx].vx=msg.vx; s.players[idx].vy=msg.vy;
         s.players[idx].boost=msg.boost;
       }
-      if(ws.rNum===1&&typeof msg.ballX==='number'){
+      if(ws.rNum===1&&typeof msg.ballX==='number'&&!(rm.goalCooldown>0)){
         s.ball.x=msg.ballX; s.ball.y=msg.ballY;
         s.ball.vx=msg.ballVx; s.ball.vy=msg.ballVy;
       }
