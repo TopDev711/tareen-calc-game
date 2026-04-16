@@ -392,7 +392,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fu);
 // ═══════════════════════════════════════
 // CONSTANTS
 // ═══════════════════════════════════════
-const FW=1000,FH=620,GH=160,GW=20,BR=13,MT=180;
+const FW=1000,FH=650,GH=260,GW=22,BR=13,MT=180;
 const CAR_L=36,CAR_W=22;
 
 // Physics — PROPER arcade car model
@@ -1298,21 +1298,44 @@ function drawParticles(){
 // GOAL FLASH
 // ═══════════════════════════════════════
 function showGoal(name,color,p1s,p2s){
-  if(GS){GS.p1score=p1s;GS.p2score=p2s;}
+  // ── Immediately update scores everywhere ──
+  if(GS){ GS.p1score=p1s; GS.p2score=p2s; }
+  document.getElementById('s1').textContent=p1s;
+  document.getElementById('s2').textContent=p2s;
+
+  // Big score flash effect
+  ['s1','s2'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.style.transform='scale(1.6)';
+    el.style.transition='transform 0.3s';
+    setTimeout(()=>{el.style.transform='scale(1)';},400);
+  });
+
+  // ── Goal flash overlay ──
   const el=document.getElementById('gflash');
   document.getElementById('gtxt').textContent='⚽ GOAL!';
   document.getElementById('gtxt').style.color=color||'var(--gold)';
-  document.getElementById('gsub').textContent=`${name} scores! ${rnd(GOAL_LINES).replace('GOAL! ','').replace('SCORE! ','')}`;
+  document.getElementById('gsub').textContent=
+    `${name.toUpperCase()} SCORES! ${rnd(GOAL_LINES).replace('GOAL! ','').replace('SCORE! ','')}`;
   document.getElementById('gsub').style.color=color||'var(--gold)';
   el.classList.add('show');
-  // spawn celebration particles
-  for(let i=0;i<30;i++){
-    const a=Math.random()*Math.PI*2,s=60+Math.random()*200;
-    particles.push({x:FW/2,y:FH/2,vx:Math.cos(a)*s,vy:Math.sin(a)*s,
-      color:['#ffd700','#ff6a00','#00ff88','#00b8ff','#fff'][Math.floor(Math.random()*5)],
-      r:3+Math.random()*5,life:.8+Math.random()*.6,maxLife:1.4});
+
+  // ── Confetti particles from goal mouth ──
+  for(let i=0;i<40;i++){
+    const a=Math.random()*Math.PI*2, s=80+Math.random()*250;
+    particles.push({x:FW/2,y:FH/2,
+      vx:Math.cos(a)*s,vy:Math.sin(a)*s,
+      color:['#ffd700','#ff6a00','#00ff88','#00b8ff','#fff','#ff69b4'][Math.floor(Math.random()*6)],
+      r:3+Math.random()*6, life:1.0+Math.random()*.8, maxLife:1.8});
   }
-  setTimeout(()=>el.classList.remove('show'),2800);
+
+  // ── Freeze ball briefly during celebration (2s), then it moves ──
+  if(GS&&GS.ball){
+    GS.ball.vx=0; GS.ball.vy=0;
+    // Ball already repositioned by the rocket_goal handler above
+  }
+
+  setTimeout(()=>el.classList.remove('show'), 2500);
   setComm(`⚽ GOAL — ${name.toUpperCase()}! ${rnd(GOAL_LINES)}`);
 }
 

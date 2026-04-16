@@ -130,7 +130,7 @@ function handleCQ(ws, msg) {
 // ════════════════════════════════════════════
 const rrooms = {};
 
-const FW=1000, FH=650, BR=14, GH=180, GW=18, MT=180;
+const FW=1000, FH=650, BR=14, GH=260, GW=22, MT=180;
 
 const RQS=[
   {t:"7.4",q:"dy/dx=x−y has horizontal tangents where:",cs:["x=0","y=0","x=y","y=−x"],a:2},
@@ -173,14 +173,14 @@ function makeRS(p1, p2) {
   };
 }
 
-function resetBall(s){
-  // Small random kick off center so it's not perfectly straight
-  const angle = (Math.random() * Math.PI/3) - Math.PI/6; // ±30 degrees
-  const dir = Math.random() < 0.5 ? 1 : -1;
+function resetBall(s, scoringTeam){
+  // Kick off toward the team that just conceded (to give them a chance)
+  const dir = scoringTeam===1 ? -1 : 1; // if P1 scored, kick toward P1's side
+  const angle = (Math.random()*0.6)-0.3; // slight random angle
   s.ball = {
     x: FW/2, y: FH/2,
-    vx: Math.cos(angle) * dir * 80,
-    vy: Math.sin(angle) * 80
+    vx: Math.cos(angle) * dir * 200,
+    vy: Math.sin(angle) * 120
   };
 }
 
@@ -202,22 +202,30 @@ function startLoop(code){
     const ball=s.ball;
     const gt=(FH-GH)/2, gb=(FH+GH)/2;
 
-    // Goals
+    // Goals — detect when ball enters goal opening
+
     if(ball.x-BR<=GW && ball.y>gt && ball.y<gb){
+      // P2 scores (ball went into left/orange goal)
       s.p2score++;
-      resetBall(s);
-      rCast(rm,{type:'rocket_goal',scorer:s.players[1].name,
-        scorerColor:s.players[1].color,
-        p1score:s.p1score,p2score:s.p2score,
-        ballX:s.ball.x,ballY:s.ball.y,ballVx:s.ball.vx,ballVy:s.ball.vy});
+      resetBall(s, 2);
+      rCast(rm,{type:'rocket_goal',
+        scorer:s.players[1].name, scorerColor:s.players[1].color,
+        p1score:s.p1score, p2score:s.p2score,
+        ballX:s.ball.x, ballY:s.ball.y,
+        ballVx:s.ball.vx, ballVy:s.ball.vy});
+      console.log(`[ROCKET ${code}] GOAL! P2 ${s.players[1].name} scores! ${s.p1score}-${s.p2score}`);
     }
+
     if(ball.x+BR>=FW-GW && ball.y>gt && ball.y<gb){
+      // P1 scores (ball went into right/blue goal)
       s.p1score++;
-      resetBall(s);
-      rCast(rm,{type:'rocket_goal',scorer:s.players[0].name,
-        scorerColor:s.players[0].color,
-        p1score:s.p1score,p2score:s.p2score,
-        ballX:s.ball.x,ballY:s.ball.y,ballVx:s.ball.vx,ballVy:s.ball.vy});
+      resetBall(s, 1);
+      rCast(rm,{type:'rocket_goal',
+        scorer:s.players[0].name, scorerColor:s.players[0].color,
+        p1score:s.p1score, p2score:s.p2score,
+        ballX:s.ball.x, ballY:s.ball.y,
+        ballVx:s.ball.vx, ballVy:s.ball.vy});
+      console.log(`[ROCKET ${code}] GOAL! P1 ${s.players[0].name} scores! ${s.p1score}-${s.p2score}`);
     }
 
     // Powerups
