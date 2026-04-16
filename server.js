@@ -231,6 +231,28 @@ function pickQ(s){
   s.usedQ.add(i); return RQS[i];
 }
 
+function triggerGoal(rm, code, side){
+  if(rm.goalCooldown>0) return; // prevent double-count
+  const s=rm.state;
+  rm.goalCooldown=30;
+  s.ball={x:FW/2,y:FH/2,vx:0,vy:0};
+  if(side==='left'){
+    // Ball went into left goal — P2 scores
+    s.p2score++;
+    rCast(rm,{type:'rocket_goal',
+      scorer:s.players[1].name, scorerColor:s.players[1].color,
+      p1score:s.p1score, p2score:s.p2score});
+    console.log(`[ROCKET ${code}] GOAL(L)! ${s.players[1].name} scores! ${s.p1score}-${s.p2score}`);
+  } else {
+    // Ball went into right goal — P1 scores
+    s.p1score++;
+    rCast(rm,{type:'rocket_goal',
+      scorer:s.players[0].name, scorerColor:s.players[0].color,
+      p1score:s.p1score, p2score:s.p2score});
+    console.log(`[ROCKET ${code}] GOAL(R)! ${s.players[0].name} scores! ${s.p1score}-${s.p2score}`);
+  }
+}
+
 function startLoop(code){
   const r=rrooms[code]; if(!r) return;
   if(r.interval) clearInterval(r.interval);
@@ -244,33 +266,14 @@ function startLoop(code){
     const ball=s.ball;
     const gt=(FH-GH)/2, gb=(FH+GH)/2;
 
-    // Goal cooldown — ignore ball position for 30 ticks (3s) after a goal
+    // Server-side goal detection as backup (catches any ball that slips through)
     if(rm.goalCooldown>0){ rm.goalCooldown--; }
     else {
-      // Client sends ballX=-1 or ballX=FW+1 as goal signals
-      // Also catch any ball that somehow makes it past the wall
-      const isLeftGoal  = (ball.x <= 0 || ball.x-BR <= GW) && ball.y>gt && ball.y<gb;
-      const isRightGoal = (ball.x >= FW || ball.x+BR >= FW-GW) && ball.y>gt && ball.y<gb;
-
-      if(isLeftGoal){
-        s.p2score++;
-        rm.goalCooldown=30;
-        s.ball={x:FW/2,y:FH/2,vx:0,vy:0};
-        rCast(rm,{type:'rocket_goal',
-          scorer:s.players[1].name, scorerColor:s.players[1].color,
-          p1score:s.p1score, p2score:s.p2score,
-          ballX:FW/2, ballY:FH/2, ballVx:0, ballVy:0});
-        console.log(`[ROCKET ${code}] GOAL! ${s.players[1].name} scores! ${s.p1score}-${s.p2score}`);
-      }
-      else if(isRightGoal){
-        s.p1score++;
-        rm.goalCooldown=30;
-        s.ball={x:FW/2,y:FH/2,vx:0,vy:0};
-        rCast(rm,{type:'rocket_goal',
-          scorer:s.players[0].name, scorerColor:s.players[0].color,
-          p1score:s.p1score, p2score:s.p2score,
-          ballX:FW/2, ballY:FH/2, ballVx:0, ballVy:0});
-        console.log(`[ROCKET ${code}] GOAL! ${s.players[0].name} scores! ${s.p1score}-${s.p2score}`);
+      const gt=(FH-GH)/2, gb=(FH+GH)/2;
+      if(ball.x-BR<=GW && ball.y>gt && ball.y<gb){
+        triggerGoal(rm, code, 'left');
+      } else if(ball.x+BR>=FW-GW && ball.y>gt && ball.y<gb){
+        triggerGoal(rm, code, 'right');
       }
     }
 
@@ -349,6 +352,12 @@ function handleRocket(ws, msg){
       } else {
         safeSend(ws,{type:'error',msg:'Room full! Try a different code.'});
       }
+      break;
+    }
+    case 'rocket_goal_signal': {
+      // Client detected ball crossing goal line — trigger goal on server
+      const rm=rrooms[ws.rCode]; if(!rm||!rm.state) return;
+      triggerGoal(rm, ws.rCode, msg.goal);
       break;
     }
     case 'rocket_input': {

@@ -872,27 +872,19 @@ function update(dt){
     const gTop=(FH-GH)/2,gBot=(FH+GH)/2;
     if(ball.x-BR<0){
       if(ball.y>gTop&&ball.y<gBot){
-        // Ball entered LEFT goal — P2 scores
-        // Reset immediately on client so it doesn't fly off screen
+        // Ball entered LEFT goal — freeze immediately and tell server
         ball.x=FW/2; ball.y=FH/2; ball.vx=0; ball.vy=0; ball.frozen=true;
-        setTimeout(()=>{ if(GS&&GS.ball) GS.ball.frozen=false; }, 2500);
-        // Notify server (server will send official rocket_goal to both players)
-        send({type:'rocket_input',
-          x:me.x,y:me.y,angle:me.angle,vx:me.vx,vy:me.vy,
-          boost:me.boost,speed:me.speed,
-          ballX:-1, ballY:FH/2, ballVx:0, ballVy:0}); // x=-1 triggers server goal
+        setTimeout(()=>{ if(GS&&GS.ball) GS.ball.frozen=false; }, 2800);
+        send({type:'rocket_goal_signal', goal:'left'});
       }
       else{ ball.x=BR; ball.vx*=-BALL_BOUNCE; }
     }
     if(ball.x+BR>FW){
       if(ball.y>gTop&&ball.y<gBot){
-        // Ball entered RIGHT goal — P1 scores
+        // Ball entered RIGHT goal — freeze immediately and tell server
         ball.x=FW/2; ball.y=FH/2; ball.vx=0; ball.vy=0; ball.frozen=true;
-        setTimeout(()=>{ if(GS&&GS.ball) GS.ball.frozen=false; }, 2500);
-        send({type:'rocket_input',
-          x:me.x,y:me.y,angle:me.angle,vx:me.vx,vy:me.vy,
-          boost:me.boost,speed:me.speed,
-          ballX:FW+1, ballY:FH/2, ballVx:0, ballVy:0}); // x=FW+1 triggers server goal
+        setTimeout(()=>{ if(GS&&GS.ball) GS.ball.frozen=false; }, 2800);
+        send({type:'rocket_goal_signal', goal:'right'});
       }
       else{ ball.x=FW-BR; ball.vx*=-BALL_BOUNCE; }
     }
@@ -1416,8 +1408,10 @@ function showGoal(name,color,p1s,p2s){
 // QUIZ
 // ═══════════════════════════════════════
 function showQuiz(q){
+  // Safety check — if question malformed, skip
+  if(!q||!q.cs||!q.cs.length){ console.warn('Bad question object',q); return; }
   qAnswered=false;
-  document.getElementById('qtag').textContent=`SECTION ${q.t} — ${(TOPICS[q.t]||'').toUpperCase()}`;
+  document.getElementById('qtag').textContent=`${q.t} — ${(TOPICS[q.t]||q.t).toUpperCase()}`;
   document.getElementById('qico').textContent='🚀';
   document.getElementById('qico').style.borderColor=myColor;
   document.getElementById('qico').style.background=rgba(myColor,.12);
@@ -1426,14 +1420,23 @@ function showQuiz(q){
   document.getElementById('qq').textContent=q.q;
   document.getElementById('qres').className='qres';
   const L=['A','B','C','D'];
-  const qcs=document.getElementById('qcs');qcs.innerHTML='';
-  q.cs.forEach((c,i)=>{
+  const qcs=document.getElementById('qcs');
+  qcs.innerHTML='';
+  // Build each choice button explicitly
+  for(let i=0;i<q.cs.length;i++){
     const b=document.createElement('button');
     b.className='qc';
-    b.innerHTML=`<span class="ql">${L[i]}</span>${c}`;
-    b.onclick=()=>answerQuiz(i,q);
+    b.style.cssText='background:rgba(6,14,28,.95);border:1px solid rgba(255,106,0,0.2);border-left:4px solid rgba(255,106,0,0.5);padding:12px 16px;font-size:14px;color:#c8e8ff;cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;width:100%;margin-bottom:6px;';
+    const label=document.createElement('span');
+    label.style.cssText='font-weight:700;color:var(--orange);min-width:24px;font-size:13px;';
+    label.textContent=L[i];
+    const text=document.createElement('span');
+    text.textContent=q.cs[i];
+    b.appendChild(label);
+    b.appendChild(text);
+    b.onclick=(()=>{const idx=i;return()=>answerQuiz(idx,q);})();
     qcs.appendChild(b);
-  });
+  }
   let tl=20;
   const fill=document.getElementById('qtfill');
   fill.style.width='100%';fill.style.background='var(--orange)';
